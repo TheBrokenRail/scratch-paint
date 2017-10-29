@@ -63760,9 +63760,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var MIXED = 'scratch-paint/style-path/mixed';
+
 /**
  * Tool to handle freehand drawing of lines.
  */
+
 var PenTool2 = function (_paper$Tool) {
     _inherits(PenTool2, _paper$Tool);
 
@@ -63832,6 +63835,7 @@ var PenTool2 = function (_paper$Tool) {
             if (!this.path) {
                 this.path = new _paper2.default.Path();
                 (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
+                this.path.fillColor = this.colorState.fillColor === MIXED ? null : this.colorState.fillColor;
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             if (this.hitResult) {
