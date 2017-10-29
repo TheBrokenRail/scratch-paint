@@ -33,7 +33,8 @@ class PenModeTwo extends React.Component {
     componentWillReceiveProps (nextProps) {
         if (this.tool &&
                 (nextProps.colorState.strokeColor !== this.props.colorState.strokeColor ||
-                nextProps.colorState.strokeWidth !== this.props.colorState.strokeWidth)) {
+                nextProps.colorState.strokeWidth !== this.props.colorState.strokeWidth ||
+                nextProps.colorState.fillColor !== this.props.colorState.fillColor)) {
             this.tool.setColorState(nextProps.colorState);
         }
 
