@@ -1,5 +1,5 @@
 import paper from '@scratch/paper';
-import {MIXED, stylePath, styleCursorPreview} from '../style-path';
+import {MIXED, stylePath} from '../style-path';
 import {endPointHit, touching} from '../snapping';
 import {drawHitPoint, removeHitPoint} from '../guides';
 import {getGuideLayer} from '../../helper/layer';
@@ -122,15 +122,18 @@ class PenTool2 extends paper.Tool {
             this.pointer = null;
         }
         if (!this.path) {
+            const stroke =
+                  this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
             this.pointer = new paper.Path.Circle({
                 center: event.point,
-                radius: this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth / 2
+                radius: stroke / 2
             });
             this.pointer.parent = getGuideLayer();
             this.pointer.data.isHelperItem = true;
             this.pointer.strokeColor = this.colorState.strokeColor === MIXED ? 'black' : this.colorState.strokeColor;
             this.pointer.fillColor = this.colorState.strokeColor === MIXED ? null : this.colorState.strokeColor;
-            this.pointer.strokeWidth = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
+            this.pointer.strokeWidth =
+                this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
             this.pointer.position = event.point;
         }
     }
