@@ -123,7 +123,8 @@ class PenTool2 extends paper.Tool {
         }
         if (!this.path) {
             const stroke =
-                  this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
+                  this.colorState.strokeWidth === null ||
+                  this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
             this.pointer = new paper.Path.Circle({
                 center: event.point,
                 radius: stroke / 2
@@ -133,7 +134,8 @@ class PenTool2 extends paper.Tool {
             this.pointer.strokeColor = this.colorState.strokeColor === MIXED ? 'black' : this.colorState.strokeColor;
             this.pointer.fillColor = this.colorState.strokeColor === MIXED ? null : this.colorState.strokeColor;
             this.pointer.strokeWidth =
-                this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
+                this.colorState.strokeWidth === null ||
+                this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
             this.pointer.position = event.point;
         }
     }
