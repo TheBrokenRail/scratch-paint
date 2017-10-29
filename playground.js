@@ -63875,6 +63875,8 @@ var PenTool2 = function (_paper$Tool) {
                 point = event.point;
             }
             this.cursor = new _paper2.default.Path();
+            this.cursor.parent = (0, _layer.getGuideLayer)();
+            this.cursor.data.isHelperItem = true;
             (0, _stylePath.stylePath)(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
             this.cursor.add(point);
             this.cursor.add(event.point);
@@ -63888,15 +63890,15 @@ var PenTool2 = function (_paper$Tool) {
                     this.pointer.remove();
                     this.pointer = null;
                 }
-                var newPreview = new _paper2.default.Path.Circle({
+                this.pointer = new _paper2.default.Path.Circle({
                     center: event.point,
                     radius: this.colorState.strokeWidth / 2
                 });
-                newPreview.parent = (0, _layer.getGuideLayer)();
-                newPreview.strokeWidth = this.colorState.strokeWidth;
-                newPreview.fillColor = this.colorState.strokeColor;
-                newPreview.strokeColor = this.colorState.strokeColor;
-                this.pointer = newPreview;
+                this.pointer.parent = (0, _layer.getGuideLayer)();
+                this.pointer.data.isHelperItem = true;
+                this.pointer.strokeWidth = this.colorState.strokeWidth;
+                this.pointer.fillColor = this.colorState.strokeColor;
+                this.pointer.strokeColor = this.colorState.strokeColor;
                 this.pointer.position = event.point;
             }
         }
