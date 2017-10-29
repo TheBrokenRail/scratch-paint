@@ -62,8 +62,8 @@ class PenTool2 extends paper.Tool {
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
             if (
-                this.path.firstSegment && 
-				touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)
+                this.path.firstSegment &&
+                touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)
             ) {
                 this.path.closed = true;
                 this.path = null;
@@ -105,7 +105,7 @@ class PenTool2 extends paper.Tool {
                 this.pointer.remove();
                 this.pointer = null;
             }
-            let newPreview = new paper.Path.Circle({
+            const newPreview = new paper.Path.Circle({
                 center: event.point,
                 radius: this.colorState.strokeWidth / 2
             });
