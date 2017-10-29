@@ -4,6 +4,8 @@ import {endPointHit, touching} from '../snapping';
 import {drawHitPoint, removeHitPoint} from '../guides';
 import {getGuideLayer} from '../../helper/layer';
 
+const MIXED = 'scratch-paint/style-path/mixed';
+
 /**
  * Tool to handle freehand drawing of lines.
  */
@@ -58,6 +60,7 @@ class PenTool2 extends paper.Tool {
         if (!this.path) {
             this.path = new paper.Path();
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
+            this.path.fillColor = (this.colorState.fillColor === MIXED) ? null : this.colorState.fillColor;
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
