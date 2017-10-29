@@ -63829,6 +63829,15 @@ var PenTool2 = function (_paper$Tool) {
         key: 'handleMouseDown',
         value: function handleMouseDown(event) {
             if (event.event.button > 0) return; // only first mouse button
+            if (this.pointer) {
+                this.pointer.remove();
+                this.pointer = null;
+            }
+            // If Ctrl Key Pressed Leave The Path Open
+            if (event.event.ctrlKey) {
+                this.path = null;
+                return;
+            }
             if (!this.path) {
                 this.path = new _paper2.default.Path();
                 (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
@@ -63836,7 +63845,7 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             if (this.hitResult) {
-                if ((0, _snapping.touching)(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+                if (this.path && this.path.firstSegment && (0, _snapping.touching)(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
                     // close path
                     this.path.closed = true;
                     this.path = null;
@@ -63851,10 +63860,6 @@ var PenTool2 = function (_paper$Tool) {
                 this.hitResult = null;
             } else {
                 this.path.add(event.point);
-            }
-            if (this.pointer) {
-                this.pointer.remove();
-                this.pointer = null;
             }
         }
     }, {
