@@ -63896,13 +63896,16 @@ var PenTool2 = function (_paper$Tool) {
                 this.pointer = null;
             }
             if (!this.path) {
+                var stroke = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
                 this.pointer = new _paper2.default.Path.Circle({
                     center: event.point,
-                    radius: this.colorState.strokeWidth / 2
+                    radius: stroke / 2
                 });
                 this.pointer.parent = (0, _layer.getGuideLayer)();
                 this.pointer.data.isHelperItem = true;
-                (0, _stylePath.styleCursorPreview)(this.pointer, this.colorState);
+                this.pointer.strokeColor = this.colorState.strokeColor === _stylePath.MIXED ? 'black' : this.colorState.strokeColor;
+                this.pointer.fillColor = this.colorState.strokeColor === _stylePath.MIXED ? null : this.colorState.strokeColor;
+                this.pointer.strokeWidth = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
                 this.pointer.position = event.point;
             }
         }
