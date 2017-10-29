@@ -98,6 +98,8 @@ class PenTool2 extends paper.Tool {
             point = event.point;
         }
         this.cursor = new paper.Path();
+        this.cursor.parent = getGuideLayer();
+        this.cursor.data.isHelperItem = true;
         stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
         this.cursor.add(point);
         this.cursor.add(event.point);
@@ -111,15 +113,15 @@ class PenTool2 extends paper.Tool {
                 this.pointer.remove();
                 this.pointer = null;
             }
-            const newPreview = new paper.Path.Circle({
+            this.pointer = new paper.Path.Circle({
                 center: event.point,
                 radius: this.colorState.strokeWidth / 2
             });
-            newPreview.parent = getGuideLayer();
-            newPreview.strokeWidth = this.colorState.strokeWidth;
-            newPreview.fillColor = this.colorState.strokeColor;
-            newPreview.strokeColor = this.colorState.strokeColor;
-            this.pointer = newPreview;
+            this.pointer.parent = getGuideLayer();
+            this.pointer.data.isHelperItem = true;
+            this.pointer.strokeWidth = this.colorState.strokeWidth;
+            this.pointer.fillColor = this.colorState.strokeColor;
+            this.pointer.strokeColor = this.colorState.strokeColor;
             this.pointer.position = event.point;
         }
     }
