@@ -61,16 +61,19 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
-            if (
-                this.path.firstSegment &&
-                touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)
-            ) {
+            if (touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+                // close path
                 this.path.closed = true;
                 this.path = null;
-            } else if (!this.hitResult.isFirst) {
-                this.hitResult.path.reverse();
+            } else {
+                // joining two paths
+                if (!this.hitResult.isFirst) {
+                    this.hitResult.path.reverse();
+                }
+                this.path.join(this.hitResult.path);
             }
-            this.path.join(this.hitResult.path);
+            removeHitPoint();
+            this.hitResult = null;
         } else {
             this.path.add(event.point);
         }
