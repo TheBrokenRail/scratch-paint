@@ -30,7 +30,7 @@ deploy:
 - provider: npm
   on:
     branch: develop
-    condition: -z $NPM_TOKEN
+    condition: -n $NPM_TOKEN
   skip_cleanup: true
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
