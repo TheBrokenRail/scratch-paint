@@ -96,7 +96,6 @@ PenModeTwo.propTypes = {
 const mapStateToProps = state => ({
     colorState: state.scratchPaint.color,
     isPenModeActive: state.scratchPaint.mode === Modes.PENTWO
-
 });
 const mapDispatchToProps = dispatch => ({
     clearSelectedItems: () => {

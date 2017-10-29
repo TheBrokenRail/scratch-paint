@@ -8,7 +8,7 @@ import {getGuideLayer} from '../../helper/layer';
  * Tool to handle freehand drawing of lines.
  */
 class PenTool2 extends paper.Tool {
-	static get SNAP_TOLERANCE () {
+    static get SNAP_TOLERANCE () {
         return 5;
     }
     /**
@@ -22,9 +22,9 @@ class PenTool2 extends paper.Tool {
 
         this.colorState = null;
         this.path = null;
-		this.hitResult = null;
-		this.cursor = null;
-		this.pointer = null;
+        this.hitResult = null;
+        this.cursor = null;
+        this.pointer = null;
 
         // Piece of whole path that was added by last stroke. Used to smooth just the added part.
         this.subpath = null;
@@ -42,7 +42,7 @@ class PenTool2 extends paper.Tool {
     setColorState (colorState) {
         this.colorState = colorState;
     }
-	drawHitPoint (hitResult) {
+    drawHitPoint (hitResult) {
         // If near another path's endpoint, draw hit point to indicate that paths would merge
         if (hitResult) {
             const hitPath = hitResult.path;
@@ -56,76 +56,74 @@ class PenTool2 extends paper.Tool {
     handleMouseDown (event) {
         if (event.event.button > 0) return; // only first mouse button
         if (!this.path) {
-			this.path = new paper.Path();
-			stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
-		}
-		this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
-		if (this.hitResult) {
-			if (this.path.firstSegment && touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
-				this.path.closed = true;
-				this.path = null;
-			} else {
-				if (!this.hitResult.isFirst) {
-					this.hitResult.path.reverse();
-				}
-			}
+            this.path = new paper.Path();
+            stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
+        }
+        this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
+        if (this.hitResult) {
+            if (this.path.firstSegment && touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+                this.path.closed = true;
+                this.path = null;
+            } else if (!this.hitResult.isFirst) {
+                this.hitResult.path.reverse();
+            }
             this.path.join(this.hitResult.path);
         } else {
-			this.path.add(event.point);
-		}
-		if (this.pointer) {
-			this.pointer.remove();
-			this.pointer = null;
-		}
+            this.path.add(event.point);
+        }
+        if (this.pointer) {
+            this.pointer.remove();
+            this.pointer = null;
+        }
     }
     handleMouseMove (event) {
         if (event.event.button > 0) return;
-		if (this.cursor) {
-			this.cursor.remove();
-			this.cursor = null;
-		}
-		var point;
-		if (this.path && this.path.lastSegment) {
-			point = this.path.lastSegment.point;
-		} else {
-			point = event.point;
-		}
-		this.cursor = new paper.Path();
-		stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
-		this.cursor.add(point);
-		this.cursor.add(event.point);
-		if (this.hitResult) {
+        if (this.cursor) {
+            this.cursor.remove();
+            this.cursor = null;
+        }
+        let point;
+        if (this.path && this.path.lastSegment) {
+            point = this.path.lastSegment.point;
+        } else {
+            point = event.point;
+        }
+        this.cursor = new paper.Path();
+        stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
+        this.cursor.add(point);
+        this.cursor.add(event.point);
+        if (this.hitResult) {
             removeHitPoint();
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
-		if (!this.path) {
-			if (this.pointer) {
-				this.pointer.remove();
-				this.pointer = null;
-			}
-			var newPreview = new paper.Path.Circle({
-				center: event.point,
-				radius: this.colorState.strokeWidth / 2
-			});
-			newPreview.parent = getGuideLayer();
-			newPreview.strokeWidth = this.colorState.strokeWidth;
-			newPreview.fillColor = this.colorState.strokeColor;
-			newPreview.strokeColor = this.colorState.strokeColor;
-			this.pointer = newPreview;
-			this.pointer.position = event.point;
-		}
+        if (!this.path) {
+            if (this.pointer) {
+                this.pointer.remove();
+                this.pointer = null;
+            }
+            var newPreview = new paper.Path.Circle({
+                center: event.point,
+                radius: this.colorState.strokeWidth / 2
+            });
+            newPreview.parent = getGuideLayer();
+            newPreview.strokeWidth = this.colorState.strokeWidth;
+            newPreview.fillColor = this.colorState.strokeColor;
+            newPreview.strokeColor = this.colorState.strokeColor;
+            this.pointer = newPreview;
+            this.pointer.position = event.point;
+        }
     }
     deactivateTool () {
         this.fixedDistance = 1;
-		if (this.cursor) {
-			this.cursor.remove();
-			this.cursor = null;
-		}
-		if (this.pointer) {
-			this.pointer.remove();
-			this.pointer = null;
-		}
+        if (this.cursor) {
+            this.cursor.remove();
+            this.cursor = null;
+        }
+        if (this.pointer) {
+            this.pointer.remove();
+            this.pointer = null;
+        }
     }
 }
 
