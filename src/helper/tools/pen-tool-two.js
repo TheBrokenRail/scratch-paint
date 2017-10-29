@@ -108,11 +108,11 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
+        if (this.pointer) {
+            this.pointer.remove();
+            this.pointer = null;
+        }
         if (!this.path) {
-            if (this.pointer) {
-                this.pointer.remove();
-                this.pointer = null;
-            }
             this.pointer = new paper.Path.Circle({
                 center: event.point,
                 radius: this.colorState.strokeWidth / 2
