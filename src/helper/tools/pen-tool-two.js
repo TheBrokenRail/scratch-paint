@@ -1,10 +1,8 @@
 import paper from '@scratch/paper';
-import {stylePath} from '../style-path';
+import {MIXED, stylePath, styleCursorPreview} from '../style-path';
 import {endPointHit, touching} from '../snapping';
 import {drawHitPoint, removeHitPoint} from '../guides';
 import {getGuideLayer} from '../../helper/layer';
-
-const MIXED = 'scratch-paint/style-path/mixed';
 
 /**
  * Tool to handle freehand drawing of lines.
@@ -119,9 +117,7 @@ class PenTool2 extends paper.Tool {
             });
             this.pointer.parent = getGuideLayer();
             this.pointer.data.isHelperItem = true;
-            this.pointer.strokeWidth = this.colorState.strokeWidth;
-            this.pointer.fillColor = this.colorState.strokeColor;
-            this.pointer.strokeColor = this.colorState.strokeColor;
+            styleCursorPreview(this.pointer, this.colorState);
             this.pointer.position = event.point;
         }
     }
