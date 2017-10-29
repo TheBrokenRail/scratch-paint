@@ -61,6 +61,10 @@ class PenTool2 extends paper.Tool {
         }
         // If Ctrl Key Pressed Leave The Path Open
         if (event.event.ctrlKey) {
+            if (this.cursor) {
+                this.cursor.remove();
+                this.cursor = null;
+            }
             this.path = null;
             return;
         }
