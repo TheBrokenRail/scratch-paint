@@ -55,6 +55,15 @@ class PenTool2 extends paper.Tool {
     }
     handleMouseDown (event) {
         if (event.event.button > 0) return; // only first mouse button
+        if (this.pointer) {
+            this.pointer.remove();
+            this.pointer = null;
+        }
+        // If Ctrl Key Pressed Leave The Path Open
+        if (event.event.ctrlKey) {
+            this.path = null;
+            return;
+        }
         if (!this.path) {
             this.path = new paper.Path();
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
@@ -62,7 +71,9 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
-            if (this.path && this.path.firstSegment && touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+            if (this.path &&
+                    this.path.firstSegment &&
+                    touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
                 // close path
                 this.path.closed = true;
                 this.path = null;
@@ -77,10 +88,6 @@ class PenTool2 extends paper.Tool {
             this.hitResult = null;
         } else {
             this.path.add(event.point);
-        }
-        if (this.pointer) {
-            this.pointer.remove();
-            this.pointer = null;
         }
     }
     handleMouseMove (event) {
