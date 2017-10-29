@@ -234,7 +234,7 @@ class PaintEditorComponent extends React.Component {
                             <PenMode
                                 onUpdateSvg={this.props.onUpdateSvg}
                             />
-							<PenModeTwo
+                            <PenModeTwo
                                 onUpdateSvg={this.props.onUpdateSvg}
                             />
                             {/* Text mode will go here */}

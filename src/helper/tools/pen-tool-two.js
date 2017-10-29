@@ -61,7 +61,10 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
-            if (this.path.firstSegment && touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+            if (
+                this.path.firstSegment && 
+				touching(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)
+            ) {
                 this.path.closed = true;
                 this.path = null;
             } else if (!this.hitResult.isFirst) {
@@ -102,7 +105,7 @@ class PenTool2 extends paper.Tool {
                 this.pointer.remove();
                 this.pointer = null;
             }
-            var newPreview = new paper.Path.Circle({
+            let newPreview = new paper.Path.Circle({
                 center: event.point,
                 radius: this.colorState.strokeWidth / 2
             });
