@@ -63835,13 +63835,19 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             if (this.hitResult) {
-                if (this.path.firstSegment && (0, _snapping.touching)(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+                if ((0, _snapping.touching)(this.path.firstSegment.point, this.hitResult.segment.point, PenTool2.SNAP_TOLERANCE)) {
+                    // close path
                     this.path.closed = true;
                     this.path = null;
-                } else if (!this.hitResult.isFirst) {
-                    this.hitResult.path.reverse();
+                } else {
+                    // joining two paths
+                    if (!this.hitResult.isFirst) {
+                        this.hitResult.path.reverse();
+                    }
+                    this.path.join(this.hitResult.path);
                 }
-                this.path.join(this.hitResult.path);
+                (0, _guides.removeHitPoint)();
+                this.hitResult = null;
             } else {
                 this.path.add(event.point);
             }
