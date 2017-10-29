@@ -66,6 +66,7 @@ class PenTool2 extends paper.Tool {
                 this.cursor = null;
             }
             this.path = null;
+            this.handleMouseMove(event);
             return;
         }
         if (!this.path) {
@@ -81,6 +82,7 @@ class PenTool2 extends paper.Tool {
                 // close path
                 this.path.closed = true;
                 this.path = null;
+                this.handleMouseMove(event);
             } else {
                 // joining two paths
                 if (!this.hitResult.isFirst) {
