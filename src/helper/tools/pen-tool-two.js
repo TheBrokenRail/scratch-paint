@@ -71,7 +71,7 @@ class PenTool2 extends paper.Tool {
         if (!this.path) {
             this.path = new paper.Path();
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
-            this.path.fillColor = (this.colorState.fillColor === MIXED) ? null : this.colorState.fillColor;
+            this.path.fillColor = this.colorState.fillColor === MIXED ? null : this.colorState.fillColor;
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
@@ -124,11 +124,13 @@ class PenTool2 extends paper.Tool {
         if (!this.path) {
             this.pointer = new paper.Path.Circle({
                 center: event.point,
-                radius: this.colorState.strokeWidth / 2
+                radius: this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth / 2
             });
             this.pointer.parent = getGuideLayer();
             this.pointer.data.isHelperItem = true;
-            styleCursorPreview(this.pointer, this.colorState);
+            this.pointer.strokeColor = this.colorState.strokeColor === MIXED ? 'black' : this.colorState.strokeColor;
+            this.pointer.fillColor = this.colorState.strokeColor === MIXED ? null : this.colorState.strokeColor;
+            this.pointer.strokeWidth = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
             this.pointer.position = event.point;
         }
     }
