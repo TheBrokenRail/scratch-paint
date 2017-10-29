@@ -63885,11 +63885,11 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
+            if (this.pointer) {
+                this.pointer.remove();
+                this.pointer = null;
+            }
             if (!this.path) {
-                if (this.pointer) {
-                    this.pointer.remove();
-                    this.pointer = null;
-                }
                 this.pointer = new _paper2.default.Path.Circle({
                     center: event.point,
                     radius: this.colorState.strokeWidth / 2
