@@ -18951,9 +18951,9 @@ var MIXED = 'scratch-paint/style-path/mixed';
 /**
  * Called when setting fill color
  * @param {string} colorString New color, css format
- * @param {!function} onUpdateSvg A callback to call when the image visibly changes
+ * @return {boolean} Whether the color application actually changed visibly.
  */
-var applyFillColorToSelection = function applyFillColorToSelection(colorString, onUpdateSvg) {
+var applyFillColorToSelection = function applyFillColorToSelection(colorString) {
     var items = (0, _selection.getSelectedLeafItems)();
     var changed = false;
     var _iteratorNormalCompletion = true;
@@ -19049,9 +19049,7 @@ var applyFillColorToSelection = function applyFillColorToSelection(colorString, 
         }
     }
 
-    if (changed) {
-        onUpdateSvg();
-    }
+    return changed;
 };
 
 var _strokeColorMatch = function _strokeColorMatch(item, incomingColor) {
@@ -19061,9 +19059,9 @@ var _strokeColorMatch = function _strokeColorMatch(item, incomingColor) {
 /**
  * Called when setting stroke color
  * @param {string} colorString New color, css format
- * @param {!function} onUpdateSvg A callback to call when the image visibly changes
+ * @return {boolean} Whether the color application actually changed visibly.
  */
-var applyStrokeColorToSelection = function applyStrokeColorToSelection(colorString, onUpdateSvg) {
+var applyStrokeColorToSelection = function applyStrokeColorToSelection(colorString) {
     var items = (0, _selection.getSelectedLeafItems)();
     var changed = false;
     var _iteratorNormalCompletion4 = true;
@@ -19161,9 +19159,7 @@ var applyStrokeColorToSelection = function applyStrokeColorToSelection(colorStri
         }
     }
 
-    if (changed) {
-        onUpdateSvg();
-    }
+    return changed;
 };
 
 /**
@@ -26841,7 +26837,7 @@ var ColorButtonComponent = function ColorButtonComponent(props) {
         _react2.default.createElement(
             'div',
             {
-                className: (0, _classnames2.default)(_colorButton2.default.colorButtonSwatch, _defineProperty({}, _colorButton2.default.outlineSwatch, props.outline)),
+                className: (0, _classnames2.default)(_colorButton2.default.colorButtonSwatch, _defineProperty({}, _colorButton2.default.outlineSwatch, props.outline && !(props.color === _stylePath.MIXED))),
                 style: {
                     background: colorToBackground(props.color)
                 }
@@ -48256,12 +48252,12 @@ var PaintEditorComponent = function (_React$Component) {
                                     _button2.default,
                                     {
                                         className: _paintEditor2.default.buttonGroupButton,
-                                        onClick: this.props.onZoomIn
+                                        onClick: this.props.onZoomOut
                                     },
                                     _react2.default.createElement('img', {
-                                        alt: 'Zoom In',
+                                        alt: 'Zoom Out',
                                         className: _paintEditor2.default.buttonGroupButtonIcon,
-                                        src: _zoomIn2.default
+                                        src: _zoomOut2.default
                                     })
                                 ),
                                 _react2.default.createElement(
@@ -48280,12 +48276,12 @@ var PaintEditorComponent = function (_React$Component) {
                                     _button2.default,
                                     {
                                         className: _paintEditor2.default.buttonGroupButton,
-                                        onClick: this.props.onZoomOut
+                                        onClick: this.props.onZoomIn
                                     },
                                     _react2.default.createElement('img', {
-                                        alt: 'Zoom Out',
+                                        alt: 'Zoom In',
                                         className: _paintEditor2.default.buttonGroupButtonIcon,
-                                        src: _zoomOut2.default
+                                        src: _zoomIn2.default
                                     })
                                 )
                             )
@@ -57794,13 +57790,31 @@ var FillColorIndicator = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (FillColorIndicator.__proto__ || Object.getPrototypeOf(FillColorIndicator)).call(this, props));
 
         (0, _lodash2.default)(_this, ['handleChangeFillColor']);
+
+        // Flag to track whether an svg-update-worthy change has been made
+        _this._hasChanged = false;
         return _this;
     }
 
     _createClass(FillColorIndicator, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            var _props = this.props,
+                fillColorModalVisible = _props.fillColorModalVisible,
+                onUpdateSvg = _props.onUpdateSvg;
+
+            if (fillColorModalVisible && !newProps.fillColorModalVisible) {
+                // Submit the new SVG, which also stores a single undo/redo action.
+                if (this._hasChanged) onUpdateSvg();
+                this._hasChanged = false;
+            }
+        }
+    }, {
         key: 'handleChangeFillColor',
         value: function handleChangeFillColor(newColor) {
-            (0, _stylePath.applyFillColorToSelection)(newColor, this.props.onUpdateSvg);
+            // Apply color and update redux, but do not update svg until picker closes.
+            var isDifferent = (0, _stylePath.applyFillColorToSelection)(newColor);
+            this._hasChanged = this._hasChanged || isDifferent;
             this.props.onChangeFillColor(newColor);
         }
     }, {
@@ -57840,6 +57854,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 FillColorIndicator.propTypes = {
     disabled: _propTypes2.default.bool.isRequired,
     fillColor: _propTypes2.default.string,
+    fillColorModalVisible: _propTypes2.default.bool.isRequired,
     onChangeFillColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired
 };
@@ -61147,7 +61162,7 @@ var SliderComponent = function (_React$Component) {
             event.preventDefault();
             var backgroundBBox = this.background.getBoundingClientRect();
             var x = event.clientX - backgroundBBox.left;
-            this.props.onChange(Math.max(1, Math.min(99, 100 * x / backgroundBBox.width)));
+            this.props.onChange(Math.max(0, Math.min(100, 100 * x / backgroundBBox.width)));
         }
     }, {
         key: 'setBackground',
@@ -61347,7 +61362,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, ".color-button_color-button_2-mXT {\n    height: 2rem;\n    width: 3rem;\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.color-button_color-button-swatch_6Xhs3 {\n    position: relative;\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    cursor: pointer;\n    -webkit-flex-basis: 2rem;\n        -ms-flex-preferred-size: 2rem;\n            flex-basis: 2rem;\n    -webkit-flex-shrink: 0;\n        -ms-flex-negative: 0;\n            flex-shrink: 0;\n    height: 100%;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    border-top-left-radius: 4px;\n    border-bottom-left-radius: 4px;\n}\n\n.color-button_color-button-arrow_1b654 {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n    -webkit-flex-basis: 1rem;\n        -ms-flex-preferred-size: 1rem;\n            flex-basis: 1rem;\n    -webkit-flex-shrink: 0;\n        -ms-flex-negative: 0;\n            flex-shrink: 0;\n    height: 100%;\n\n    border-top-right-radius: 4px;\n    border-bottom-right-radius: 4px;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    border-left: none;\n\n    -webkit-box-align: center;\n\n    -webkit-align-items: center;\n\n        -ms-flex-align: center;\n\n            align-items: center;\n    -webkit-box-pack: center;\n    -webkit-justify-content: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    color: #575e75;\n    font-size: 0.75rem;\n}\n\n.color-button_swatch-icon_2gc40 {\n    width: 1.75rem;\n    margin: auto;\n    /* Make sure it appears above the outline box */\n    z-index: 2;\n}\n\n.color-button_outline-swatch_2ifeG:after {\n    content: \"\";\n    position: absolute;\n    top: calc(0.5rem + 1px);\n    left: calc(0.5rem + 1px);\n    width: 0.75rem;\n    height: 0.75rem;\n    background: white;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    /* Make sure it appears below the transparent icon */\n    z-index: 1;\n}\n", ""]);
+exports.push([module.i, ".color-button_color-button_2-mXT {\n    height: 2rem;\n    width: 3rem;\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n}\n\n.color-button_color-button-swatch_6Xhs3 {\n    position: relative;\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    cursor: pointer;\n    -webkit-flex-basis: 2rem;\n        -ms-flex-preferred-size: 2rem;\n            flex-basis: 2rem;\n    -webkit-flex-shrink: 0;\n        -ms-flex-negative: 0;\n            flex-shrink: 0;\n    height: 100%;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    border-top-left-radius: 4px;\n    border-bottom-left-radius: 4px;\n}\n\n.color-button_color-button-arrow_1b654 {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    cursor: pointer;\n    -webkit-flex-basis: 1rem;\n        -ms-flex-preferred-size: 1rem;\n            flex-basis: 1rem;\n    -webkit-flex-shrink: 0;\n        -ms-flex-negative: 0;\n            flex-shrink: 0;\n    height: 100%;\n\n    border-top-right-radius: 4px;\n    border-bottom-right-radius: 4px;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    border-left: none;\n\n    -webkit-box-align: center;\n\n    -webkit-align-items: center;\n\n        -ms-flex-align: center;\n\n            align-items: center;\n    -webkit-box-pack: center;\n    -webkit-justify-content: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    color: #575e75;\n    font-size: 0.75rem;\n}\n\n.color-button_swatch-icon_2gc40 {\n    width: 1.75rem;\n    margin: auto;\n    /* Make sure it appears above the outline box */\n    z-index: 2;\n}\n\n.color-button_outline-swatch_2ifeG:after {\n    content: \"\";\n    position: absolute;\n    top: calc(0.5rem);\n    left: calc(0.5rem);\n    width: 0.75rem;\n    height: 0.75rem;\n    background: white;\n    border: 1px solid rgba(0, 0, 0, 0.25);\n    /* Make sure it appears below the transparent icon */\n    z-index: 1;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -65924,13 +65939,31 @@ var StrokeColorIndicator = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (StrokeColorIndicator.__proto__ || Object.getPrototypeOf(StrokeColorIndicator)).call(this, props));
 
         (0, _lodash2.default)(_this, ['handleChangeStrokeColor']);
+
+        // Flag to track whether an svg-update-worthy change has been made
+        _this._hasChanged = false;
         return _this;
     }
 
     _createClass(StrokeColorIndicator, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            var _props = this.props,
+                strokeColorModalVisible = _props.strokeColorModalVisible,
+                onUpdateSvg = _props.onUpdateSvg;
+
+            if (strokeColorModalVisible && !newProps.strokeColorModalVisible) {
+                // Submit the new SVG, which also stores a single undo/redo action.
+                if (this._hasChanged) onUpdateSvg();
+                this._hasChanged = false;
+            }
+        }
+    }, {
         key: 'handleChangeStrokeColor',
         value: function handleChangeStrokeColor(newColor) {
-            (0, _stylePath.applyStrokeColorToSelection)(newColor, this.props.onUpdateSvg);
+            // Apply color and update redux, but do not update svg until picker closes.
+            var isDifferent = (0, _stylePath.applyStrokeColorToSelection)(newColor);
+            this._hasChanged = this._hasChanged || isDifferent;
             this.props.onChangeStrokeColor(newColor);
         }
     }, {
@@ -65971,7 +66004,8 @@ StrokeColorIndicator.propTypes = {
     disabled: _propTypes2.default.bool.isRequired,
     onChangeStrokeColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired,
-    strokeColor: _propTypes2.default.string
+    strokeColor: _propTypes2.default.string,
+    strokeColorModalVisible: _propTypes2.default.bool.isRequired
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StrokeColorIndicator);
