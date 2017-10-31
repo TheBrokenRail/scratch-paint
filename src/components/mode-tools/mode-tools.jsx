@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {changeBrushSize} from '../../reducers/brush-mode';
+import {changePenMode} from '../../reducers/pen-mode';
 import {changeBrushSize as changeEraserSize} from '../../reducers/eraser-mode';
 
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
@@ -14,11 +15,12 @@ import Modes from '../../modes/modes';
 import styles from './mode-tools.css';
 
 import brushIcon from '../brush-mode/brush.svg';
-// import curvedPointIcon from './curved-point.svg';
+import curvedPointIcon from './curved-point.svg';
 import eraserIcon from '../eraser-mode/eraser.svg';
 // import flipHorizontalIcon from './flip-horizontal.svg';
 // import flipVerticalIcon from './flip-vertical.svg';
-// import straightPointIcon from './straight-point.svg';
+import straightPointIcon from './straight-point.svg';
+import ToolSelectComponent from '../tool-select-base/tool-select-base.jsx';
 
 import {MAX_STROKE_WIDTH} from '../../reducers/stroke-width';
 
@@ -110,6 +112,31 @@ const ModeToolsComponent = props => {
                 /> */}
             </div>
         );
+    case Modes.PEN:
+        return (
+            <div className={classNames(props.className, styles.modeTools)}>
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Brush Mode',
+                        description: 'Pen Brush Mode',
+                        id: 'paint.penMode.brush'
+                    }}
+                    imgSrc={curvedPointIcon}
+                    isSelected={props.penMode.brushEnabled}
+                    onMouseDown={props.onPenModeBrush}
+                />
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Point Mode',
+                        description: 'Pen Point Mode',
+                        id: 'paint.penMode.point'
+                    }}
+                    imgSrc={straightPointIcon}
+                    isSelected={props.penMode.pointEnabled}
+                    onMouseDown={props.onPenModePoint}
+                />
+            </div>
+        );
     default:
         // Leave empty for now, if mode not supported
         return (
@@ -125,13 +152,17 @@ ModeToolsComponent.propTypes = {
     intl: intlShape.isRequired,
     mode: PropTypes.string.isRequired,
     onBrushSliderChange: PropTypes.func,
-    onEraserSliderChange: PropTypes.func
+    onEraserSliderChange: PropTypes.func,
+    penMode: PropTypes.object,
+    onPenModeBrush: PropTypes.func,
+    onPenModePoint: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     mode: state.scratchPaint.mode,
     brushValue: state.scratchPaint.brushMode.brushSize,
-    eraserValue: state.scratchPaint.eraserMode.brushSize
+    eraserValue: state.scratchPaint.eraserMode.brushSize,
+    penMode: state.scratchPaint.penMode
 });
 const mapDispatchToProps = dispatch => ({
     onBrushSliderChange: brushSize => {
@@ -139,6 +170,12 @@ const mapDispatchToProps = dispatch => ({
     },
     onEraserSliderChange: eraserSize => {
         dispatch(changeEraserSize(eraserSize));
+    },
+    onPenModeBrush: e => {
+        dispatch(changePenMode(false));
+    },
+    onPenModePoint: e => {
+        dispatch(changePenMode(true));
     }
 });
 
