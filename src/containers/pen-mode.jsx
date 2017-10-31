@@ -12,6 +12,7 @@ import {MIXED} from '../helper/style-path';
 
 import {clearSelection} from '../helper/selection';
 import PenTool from '../helper/tools/pen-tool';
+import PenToolTwo from '../helper/tools/pen-tool-two';
 import PenModeComponent from '../components/pen-mode/pen-mode.jsx';
 
 class PenMode extends React.Component {
@@ -37,16 +38,26 @@ class PenMode extends React.Component {
             this.tool.setColorState(nextProps.colorState);
         }
 
-        if (nextProps.isPenModeActive && !this.props.isPenModeActive) {
-            this.activateTool();
+        if ((nextProps.isPenModeActive && !this.props.isPenModeActive) || nextProps.penMode !== this.props.penMode) {
+            if (nextProps.penMode.brushEnabled) {
+                if (!this.props.penMode.brushEnabled) {
+                    this.deactivateTool();
+                }
+                this.activateTool(false);
+            } else if (nextProps.penMode.pointEnabled) {
+                if (!this.props.penMode.pointEnabled) {
+                    this.deactivateTool();
+                }
+                this.activateTool(true);
+            }
         } else if (!nextProps.isPenModeActive && this.props.isPenModeActive) {
             this.deactivateTool();
         }
     }
     shouldComponentUpdate (nextProps) {
-        return nextProps.isPenModeActive !== this.props.isPenModeActive;
+        return nextProps.isPenModeActive !== this.props.isPenModeActive || nextProps.penMode !== this.props.penMode;
     }
-    activateTool () {
+    activateTool (mode) {
         clearSelection(this.props.clearSelectedItems);
         // Force the default pen color if stroke is MIXED or transparent
         const {strokeColor} = this.props.colorState;
@@ -57,10 +68,17 @@ class PenMode extends React.Component {
         if (!this.props.colorState.strokeWidth) {
             this.props.onChangeStrokeWidth(1);
         }
-        this.tool = new PenTool(
-            this.props.clearSelectedItems,
-            this.props.onUpdateSvg
-        );
+        if (!mode) {
+            this.tool = new PenTool(
+                this.props.clearSelectedItems,
+                this.props.onUpdateSvg
+            );
+        } else {
+            this.tool = new PenToolTwo(
+                this.props.clearSelectedItems,
+                this.props.onUpdateSvg
+            );
+        }
         this.tool.setColorState(this.props.colorState);
         this.tool.activate();
     }
@@ -90,13 +108,14 @@ PenMode.propTypes = {
     isPenModeActive: PropTypes.bool.isRequired,
     onChangeStrokeColor: PropTypes.func.isRequired,
     onChangeStrokeWidth: PropTypes.func.isRequired,
-    onUpdateSvg: PropTypes.func.isRequired
+    onUpdateSvg: PropTypes.func.isRequired,
+    penMode: PropTypes.object
 };
 
 const mapStateToProps = state => ({
     colorState: state.scratchPaint.color,
-    isPenModeActive: state.scratchPaint.mode === Modes.PEN
-
+    isPenModeActive: state.scratchPaint.mode === Modes.PEN,
+    penMode: state.scratchPaint.penMode
 });
 const mapDispatchToProps = dispatch => ({
     clearSelectedItems: () => {
