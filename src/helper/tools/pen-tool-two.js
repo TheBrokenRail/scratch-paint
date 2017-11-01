@@ -33,8 +33,7 @@ class PenTool2 extends paper.Tool {
         // paper.js tools hook up the listeners in the setter functions.
         this.onMouseDown = this.handleMouseDown;
         this.onMouseMove = this.handleMouseMove;
-        this.onMouseDrag = this.handleMouseDrag;
-        this.onMouseUp = this.handleMouseUp;
+        this.onFrame = this.handleFrame;
 
         this.fixedDistance = 2;
     }
@@ -125,6 +124,11 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
+    }
+    handleFrame () {
+        if (this.path && !this.path.parent) {
+            this.path = null;
+        }
     }
     deactivateTool () {
         this.fixedDistance = 1;
