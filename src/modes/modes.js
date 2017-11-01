@@ -6,6 +6,7 @@ const Modes = keyMirror({
     LINE: null,
     SELECT: null,
     RESHAPE: null,
+    PEN: null,
     OVAL: null,
     RECT: null,
     ROUNDED_RECT: null
