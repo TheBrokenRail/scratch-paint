@@ -68,7 +68,7 @@ class PenTool2 extends paper.Tool {
             this.handleMouseMove(event);
             return;
         }
-        if (this.path && !this.path.project) {
+        if (this.path && !this.path.parent) {
             this.path = null;
         }
         if (!this.path) {
@@ -101,6 +101,9 @@ class PenTool2 extends paper.Tool {
     }
     handleMouseMove (event) {
         if (event.event.button > 0) return;
+        if (this.path && !this.path.parent) {
+            this.path = null;
+        }
         if (this.cursor) {
             this.cursor.remove();
             this.cursor = null;
