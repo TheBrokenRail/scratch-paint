@@ -63705,7 +63705,6 @@ var PenTool2 = function (_paper$Tool) {
         _this.path = null;
         _this.hitResult = null;
         _this.cursor = null;
-        _this.pointer = null;
 
         // Piece of whole path that was added by last stroke. Used to smooth just the added part.
         _this.subpath = null;
@@ -63726,6 +63725,10 @@ var PenTool2 = function (_paper$Tool) {
         key: 'setColorState',
         value: function setColorState(colorState) {
             this.colorState = colorState;
+            if (this.path) {
+                (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
+                this.path.fillColor = this.colorState.fillColor === _stylePath.MIXED ? null : this.colorState.fillColor;
+            }
         }
     }, {
         key: 'drawHitPoint',
@@ -63744,10 +63747,6 @@ var PenTool2 = function (_paper$Tool) {
         key: 'handleMouseDown',
         value: function handleMouseDown(event) {
             if (event.event.button > 0) return; // only first mouse button
-            if (this.pointer) {
-                this.pointer.remove();
-                this.pointer = null;
-            }
             // If Ctrl Key Pressed Leave The Path Open
             if (event.event.ctrlKey) {
                 if (this.cursor) {
@@ -63808,23 +63807,6 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
-            if (this.pointer) {
-                this.pointer.remove();
-                this.pointer = null;
-            }
-            if (!this.path) {
-                var stroke = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
-                this.pointer = new _paper2.default.Path.Circle({
-                    center: event.point,
-                    radius: stroke / 2
-                });
-                this.pointer.parent = (0, _layer.getGuideLayer)();
-                this.pointer.data.isHelperItem = true;
-                this.pointer.strokeColor = this.colorState.strokeColor === _stylePath.MIXED ? 'black' : this.colorState.strokeColor;
-                this.pointer.fillColor = this.colorState.strokeColor === _stylePath.MIXED ? null : this.colorState.strokeColor;
-                this.pointer.strokeWidth = this.colorState.strokeWidth === null || this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
-                this.pointer.position = event.point;
-            }
         }
     }, {
         key: 'deactivateTool',
@@ -63833,10 +63815,6 @@ var PenTool2 = function (_paper$Tool) {
             if (this.cursor) {
                 this.cursor.remove();
                 this.cursor = null;
-            }
-            if (this.pointer) {
-                this.pointer.remove();
-                this.pointer = null;
             }
         }
     }]);
