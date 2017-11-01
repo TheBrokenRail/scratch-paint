@@ -15,6 +15,7 @@ import Modes from '../../modes/modes';
 import styles from './mode-tools.css';
 
 import brushIcon from '../brush-mode/brush.svg';
+import penIcon from '../pen-mode/pen.svg';
 import curvedPointIcon from './curved-point.svg';
 import eraserIcon from '../eraser-mode/eraser.svg';
 // import flipHorizontalIcon from './flip-horizontal.svg';
@@ -36,6 +37,11 @@ const ModeToolsComponent = props => {
         description: 'Label for the eraser tool',
         id: 'paint.eraserMode.eraser'
     });
+    const penMessage = props.intl.formatMessage{{
+        defaultMessage: 'Pen',
+        description: 'Label for the pen tool, which draws outlines',
+        id: 'paint.penMode.pen'
+    }}
 
     switch (props.mode) {
     case Modes.BRUSH:
@@ -115,6 +121,13 @@ const ModeToolsComponent = props => {
     case Modes.PEN:
         return (
             <div className={classNames(props.className, styles.modeTools)}>
+                <div>
+                    <img
+                        alt={penMessage}
+                        className={styles.modeToolsIcon}
+                        src={penIcon}
+                    />
+                </div>
                 <ToolSelectComponent
                     imgDescriptor={{
                         defaultMessage: 'Brush Mode',
