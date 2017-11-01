@@ -24,7 +24,6 @@ class PenTool2 extends paper.Tool {
         this.path = null;
         this.hitResult = null;
         this.cursor = null;
-        this.pointer = null;
 
         // Piece of whole path that was added by last stroke. Used to smooth just the added part.
         this.subpath = null;
@@ -41,6 +40,10 @@ class PenTool2 extends paper.Tool {
     }
     setColorState (colorState) {
         this.colorState = colorState;
+        if (this.path) {
+            stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
+            this.path.fillColor = this.colorState.fillColor === MIXED ? null : this.colorState.fillColor;
+        }
     }
     drawHitPoint (hitResult) {
         // If near another path's endpoint, draw hit point to indicate that paths would merge
@@ -55,10 +58,6 @@ class PenTool2 extends paper.Tool {
     }
     handleMouseDown (event) {
         if (event.event.button > 0) return; // only first mouse button
-        if (this.pointer) {
-            this.pointer.remove();
-            this.pointer = null;
-        }
         // If Ctrl Key Pressed Leave The Path Open
         if (event.event.ctrlKey) {
             if (this.cursor) {
@@ -119,37 +118,12 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
-        if (this.pointer) {
-            this.pointer.remove();
-            this.pointer = null;
-        }
-        if (!this.path) {
-            const stroke =
-                  this.colorState.strokeWidth === null ||
-                  this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
-            this.pointer = new paper.Path.Circle({
-                center: event.point,
-                radius: stroke / 2
-            });
-            this.pointer.parent = getGuideLayer();
-            this.pointer.data.isHelperItem = true;
-            this.pointer.strokeColor = this.colorState.strokeColor === MIXED ? 'black' : this.colorState.strokeColor;
-            this.pointer.fillColor = this.colorState.strokeColor === MIXED ? null : this.colorState.strokeColor;
-            this.pointer.strokeWidth =
-                this.colorState.strokeWidth === null ||
-                this.colorState.strokeWidth === 0 ? 1 : this.colorState.strokeWidth;
-            this.pointer.position = event.point;
-        }
     }
     deactivateTool () {
         this.fixedDistance = 1;
         if (this.cursor) {
             this.cursor.remove();
             this.cursor = null;
-        }
-        if (this.pointer) {
-            this.pointer.remove();
-            this.pointer = null;
         }
     }
 }
