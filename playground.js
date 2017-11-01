@@ -57864,7 +57864,7 @@ var FillColorIndicator = function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        disabled: state.scratchPaint.mode === _modes2.default.PEN,
+        disabled: state.scratchPaint.mode === _modes2.default.PEN && state.scratchPaint.penMode.brushEnabled,
         fillColor: state.scratchPaint.color.fillColor,
         fillColorModalVisible: state.scratchPaint.modals.fillColor
     };
