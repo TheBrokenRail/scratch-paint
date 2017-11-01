@@ -118,11 +118,7 @@ class PenTool2 extends paper.Tool {
         stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
         this.cursor.add(point);
         this.cursor.add(event.point);
-        this.cursor.onFrame = () => {
-            if (this.path && !this.path.parent) {
-                this.path = null;
-            }
-        };
+        this.cursor.onFrame = this.handleFrame;
         if (this.hitResult) {
             removeHitPoint();
         }
