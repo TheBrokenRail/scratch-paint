@@ -52,12 +52,12 @@ const ModeToolsComponent = props => {
             defaultMessage: 'Paste',
             description: 'Label for the paste button',
             id: 'paint.modeTools.paste'
+        },
+        pen: {
+            defaultMessage: 'Pen',
+            description: 'Label for the pen tool, which draws outlines',
+            id: 'paint.penMode.pen'
         }
-    });
-    const penMessage = props.intl.formatMessage({
-        defaultMessage: 'Pen',
-        description: 'Label for the pen tool, which draws outlines',
-        id: 'paint.penMode.pen'
     });
 
     switch (props.mode) {
@@ -152,33 +152,35 @@ const ModeToolsComponent = props => {
     case Modes.PEN:
         return (
             <div className={classNames(props.className, styles.modeTools)}>
-                <div>
-                    <img
-                        alt={penMessage}
-                        className={styles.modeToolsIcon}
-                        src={penIcon}
+                <InputGroup className={classNames(styles.modDashedBorder, styles.modLabeledIconHeight)}>
+                    <div>
+                        <img
+                            alt={props.intl.formatMessage(messages.pen)}
+                            className={styles.modeToolsIcon}
+                            src={penIcon}
+                        />
+                    </div>
+                    <ToolSelectComponent
+                        imgDescriptor={{
+                            defaultMessage: 'Brush Mode',
+                            description: 'Pen Brush Mode',
+                            id: 'paint.penMode.brush'
+                        }}
+                        imgSrc={curvedPointIcon}
+                        isSelected={props.brushPenMode}
+                        onMouseDown={props.onPenModeBrush}
                     />
-                </div>
-                <ToolSelectComponent
-                    imgDescriptor={{
-                        defaultMessage: 'Brush Mode',
-                        description: 'Pen Brush Mode',
-                        id: 'paint.penMode.brush'
-                    }}
-                    imgSrc={curvedPointIcon}
-                    isSelected={props.brushPenMode}
-                    onMouseDown={props.onPenModeBrush}
-                />
-                <ToolSelectComponent
-                    imgDescriptor={{
-                        defaultMessage: 'Point Mode',
-                        description: 'Pen Point Mode',
-                        id: 'paint.penMode.point'
-                    }}
-                    imgSrc={straightPointIcon}
-                    isSelected={props.pointPenMode}
-                    onMouseDown={props.onPenModePoint}
-                />
+                    <ToolSelectComponent
+                        imgDescriptor={{
+                            defaultMessage: 'Point Mode',
+                            description: 'Pen Point Mode',
+                            id: 'paint.penMode.point'
+                        }}
+                        imgSrc={straightPointIcon}
+                        isSelected={props.pointPenMode}
+                        onMouseDown={props.onPenModePoint}
+                    />
+                </InputGroup>
             </div>
         );
     default:
