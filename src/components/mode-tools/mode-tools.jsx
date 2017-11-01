@@ -37,11 +37,11 @@ const ModeToolsComponent = props => {
         description: 'Label for the eraser tool',
         id: 'paint.eraserMode.eraser'
     });
-    const penMessage = props.intl.formatMessage{{
+    const penMessage = props.intl.formatMessage({
         defaultMessage: 'Pen',
         description: 'Label for the pen tool, which draws outlines',
         id: 'paint.penMode.pen'
-    }}
+    });
 
     switch (props.mode) {
     case Modes.BRUSH:
