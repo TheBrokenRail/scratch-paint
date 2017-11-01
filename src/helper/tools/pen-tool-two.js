@@ -68,6 +68,9 @@ class PenTool2 extends paper.Tool {
             this.handleMouseMove(event);
             return;
         }
+        if (this.path && !this.path.project) {
+            this.path = null;
+        }
         if (!this.path) {
             this.path = new paper.Path();
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
