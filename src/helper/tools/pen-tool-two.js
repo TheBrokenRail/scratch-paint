@@ -94,6 +94,7 @@ class PenTool2 extends paper.Tool {
         } else {
             this.path.add(event.point);
         }
+        this.onUpdateSvg();
     }
     handleMouseMove (event) {
         if (event.event.button > 0) return;
