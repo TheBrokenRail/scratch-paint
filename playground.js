@@ -63874,6 +63874,9 @@ var PenTool2 = function (_paper$Tool) {
                 this.handleMouseMove(event);
                 return;
             }
+            if (this.path && !this.path.project) {
+                this.path = null;
+            }
             if (!this.path) {
                 this.path = new _paper2.default.Path();
                 (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
