@@ -34,9 +34,11 @@ class FillColorIndicator extends React.Component {
         this.props.onChangeFillColor(newColor);
     }
     render () {
+        const disabled = this.props.mode === Modes.PEN && this.props.brushPenMode;
         return (
             <FillColorIndicatorComponent
                 {...this.props}
+				disabled={disabled}
                 onChangeFillColor={this.handleChangeFillColor}
             />
         );
@@ -44,7 +46,8 @@ class FillColorIndicator extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    disabled: state.scratchPaint.mode === Modes.PEN && state.scratchPaint.penMode.brushEnabled,
+    brushPenMode: state.scratchPaint.penMode.brushEnabled,
+    mode: state.scratchPaint.mode,
     fillColor: state.scratchPaint.color.fillColor,
     fillColorModalVisible: state.scratchPaint.modals.fillColor
 });
@@ -62,9 +65,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 FillColorIndicator.propTypes = {
-    disabled: PropTypes.bool.isRequired,
     fillColor: PropTypes.string,
     fillColorModalVisible: PropTypes.bool.isRequired,
+    mode: PropTypes.bool.isRequired,
     onChangeFillColor: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired
 };
