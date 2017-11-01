@@ -62221,12 +62221,11 @@ var ModeToolsComponent = function ModeToolsComponent(props) {
         paste: {
             'id': 'paint.modeTools.paste',
             'defaultMessage': 'Paste'
+        },
+        pen: {
+            'id': 'paint.penMode.pen',
+            'defaultMessage': 'Pen'
         }
-    });
-    var penMessage = props.intl.formatMessage({
-        defaultMessage: 'Pen',
-        description: 'Label for the pen tool, which draws outlines',
-        id: 'paint.penMode.pen'
     });
 
     switch (props.mode) {
@@ -62302,34 +62301,38 @@ var ModeToolsComponent = function ModeToolsComponent(props) {
                 'div',
                 { className: (0, _classnames2.default)(props.className, _modeTools2.default.modeTools) },
                 _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement('img', {
-                        alt: penMessage,
-                        className: _modeTools2.default.modeToolsIcon,
-                        src: _pen2.default
+                    _inputGroup2.default,
+                    { className: (0, _classnames2.default)(_modeTools2.default.modDashedBorder, _modeTools2.default.modLabeledIconHeight) },
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('img', {
+                            alt: props.intl.formatMessage(messages.pen),
+                            className: _modeTools2.default.modeToolsIcon,
+                            src: _pen2.default
+                        })
+                    ),
+                    _react2.default.createElement(_toolSelectBase2.default, {
+                        imgDescriptor: {
+                            defaultMessage: 'Brush Mode',
+                            description: 'Pen Brush Mode',
+                            id: 'paint.penMode.brush'
+                        },
+                        imgSrc: _curvedPoint2.default,
+                        isSelected: props.brushPenMode,
+                        onMouseDown: props.onPenModeBrush
+                    }),
+                    _react2.default.createElement(_toolSelectBase2.default, {
+                        imgDescriptor: {
+                            defaultMessage: 'Point Mode',
+                            description: 'Pen Point Mode',
+                            id: 'paint.penMode.point'
+                        },
+                        imgSrc: _straightPoint2.default,
+                        isSelected: props.pointPenMode,
+                        onMouseDown: props.onPenModePoint
                     })
-                ),
-                _react2.default.createElement(_toolSelectBase2.default, {
-                    imgDescriptor: {
-                        defaultMessage: 'Brush Mode',
-                        description: 'Pen Brush Mode',
-                        id: 'paint.penMode.brush'
-                    },
-                    imgSrc: _curvedPoint2.default,
-                    isSelected: props.brushPenMode,
-                    onMouseDown: props.onPenModeBrush
-                }),
-                _react2.default.createElement(_toolSelectBase2.default, {
-                    imgDescriptor: {
-                        defaultMessage: 'Point Mode',
-                        description: 'Pen Point Mode',
-                        id: 'paint.penMode.point'
-                    },
-                    imgSrc: _straightPoint2.default,
-                    isSelected: props.pointPenMode,
-                    onMouseDown: props.onPenModePoint
-                })
+                )
             );
         default:
             // Leave empty for now, if mode not supported
