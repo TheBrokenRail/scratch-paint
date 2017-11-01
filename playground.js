@@ -57891,7 +57891,7 @@ FillColorIndicator.propTypes = {
     brushPenMode: _propTypes2.default.bool,
     fillColor: _propTypes2.default.string,
     fillColorModalVisible: _propTypes2.default.bool.isRequired,
-    mode: _propTypes2.default.bool.isRequired,
+    mode: _propTypes2.default.string.isRequired,
     onChangeFillColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired
 };
