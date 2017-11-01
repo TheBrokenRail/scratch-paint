@@ -63898,6 +63898,7 @@ var PenTool2 = function (_paper$Tool) {
             } else {
                 this.path.add(event.point);
             }
+            this.onUpdateSvg();
         }
     }, {
         key: 'handleMouseMove',
