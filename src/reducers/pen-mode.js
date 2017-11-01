@@ -1,4 +1,3 @@
-import log from '../log/log';
 const CHANGE_PEN_MODE = 'scratch-paint/pen-mode/CHANGE_PEN_MODE';
 const initialState = {brushEnabled: true, pointEnabled: false};
 

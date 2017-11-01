@@ -122,7 +122,7 @@ const ModeToolsComponent = props => {
                         id: 'paint.penMode.brush'
                     }}
                     imgSrc={curvedPointIcon}
-                    isSelected={props.penMode.brushEnabled}
+                    isSelected={props.brushPenMode}
                     onMouseDown={props.onPenModeBrush}
                 />
                 <ToolSelectComponent
@@ -132,7 +132,7 @@ const ModeToolsComponent = props => {
                         id: 'paint.penMode.point'
                     }}
                     imgSrc={straightPointIcon}
-                    isSelected={props.penMode.pointEnabled}
+                    isSelected={props.pointPenMode}
                     onMouseDown={props.onPenModePoint}
                 />
             </div>
@@ -146,6 +146,7 @@ const ModeToolsComponent = props => {
 };
 
 ModeToolsComponent.propTypes = {
+    brushPenMode: PropTypes.bool,
     brushValue: PropTypes.number,
     className: PropTypes.string,
     eraserValue: PropTypes.number,
@@ -153,16 +154,17 @@ ModeToolsComponent.propTypes = {
     mode: PropTypes.string.isRequired,
     onBrushSliderChange: PropTypes.func,
     onEraserSliderChange: PropTypes.func,
-    penMode: PropTypes.object,
     onPenModeBrush: PropTypes.func,
-    onPenModePoint: PropTypes.func
+    onPenModePoint: PropTypes.func,
+    pointPenMode: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     mode: state.scratchPaint.mode,
     brushValue: state.scratchPaint.brushMode.brushSize,
     eraserValue: state.scratchPaint.eraserMode.brushSize,
-    penMode: state.scratchPaint.penMode
+    brushPenMode: state.scratchPaint.penMode.brushEnabled,
+    pointPenMode: state.scratchPaint.penMode.pointEnabled,
 });
 const mapDispatchToProps = dispatch => ({
     onBrushSliderChange: brushSize => {
@@ -171,10 +173,10 @@ const mapDispatchToProps = dispatch => ({
     onEraserSliderChange: eraserSize => {
         dispatch(changeEraserSize(eraserSize));
     },
-    onPenModeBrush: e => {
+    onPenModeBrush: () => {
         dispatch(changePenMode(false));
     },
-    onPenModePoint: e => {
+    onPenModePoint: () => {
         dispatch(changePenMode(true));
     }
 });

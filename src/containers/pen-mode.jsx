@@ -38,14 +38,14 @@ class PenMode extends React.Component {
             this.tool.setColorState(nextProps.colorState);
         }
 
-        if ((nextProps.isPenModeActive && !this.props.isPenModeActive) || nextProps.penMode !== this.props.penMode) {
-            if (nextProps.penMode.brushEnabled) {
-                if (!this.props.penMode.brushEnabled) {
+        if ((nextProps.isPenModeActive && !this.props.isPenModeActive) || nextProps.brushPenMode !== this.props.brushPenMode || nextProps.pointPenMode !== this.props.pointPenMode) {
+            if (nextProps.brushPenMode) {
+                if (!this.props.brushPenMode) {
                     this.deactivateTool();
                 }
                 this.activateTool(false);
-            } else if (nextProps.penMode.pointEnabled) {
-                if (!this.props.penMode.pointEnabled) {
+            } else if (nextProps.pointPenMode) {
+                if (!this.props.pointPenMode) {
                     this.deactivateTool();
                 }
                 this.activateTool(true);
@@ -55,7 +55,7 @@ class PenMode extends React.Component {
         }
     }
     shouldComponentUpdate (nextProps) {
-        return nextProps.isPenModeActive !== this.props.isPenModeActive || nextProps.penMode !== this.props.penMode;
+        return nextProps.isPenModeActive !== this.props.isPenModeActive || nextProps.brushPenMode !== this.props.brushPenMode || nextProps.pointPenMode !== this.props.pointPenMode;
     }
     activateTool (mode) {
         clearSelection(this.props.clearSelectedItems);
@@ -68,13 +68,13 @@ class PenMode extends React.Component {
         if (!this.props.colorState.strokeWidth) {
             this.props.onChangeStrokeWidth(1);
         }
-        if (!mode) {
-            this.tool = new PenTool(
+        if (mode) {
+            this.tool = new PenToolTwo(
                 this.props.clearSelectedItems,
                 this.props.onUpdateSvg
             );
         } else {
-            this.tool = new PenToolTwo(
+            this.tool = new PenTool(
                 this.props.clearSelectedItems,
                 this.props.onUpdateSvg
             );
@@ -109,13 +109,15 @@ PenMode.propTypes = {
     onChangeStrokeColor: PropTypes.func.isRequired,
     onChangeStrokeWidth: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired,
-    penMode: PropTypes.object
+    brushPenMode: PropTypes.bool,
+    pointPenMode: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     colorState: state.scratchPaint.color,
     isPenModeActive: state.scratchPaint.mode === Modes.PEN,
-    penMode: state.scratchPaint.penMode
+    brushPenMode: state.scratchPaint.penMode.brushEnabled,
+    pointPenMode: state.scratchPaint.penMode.pointEnabled
 });
 const mapDispatchToProps = dispatch => ({
     clearSelectedItems: () => {
