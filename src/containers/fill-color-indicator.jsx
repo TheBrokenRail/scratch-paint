@@ -38,7 +38,7 @@ class FillColorIndicator extends React.Component {
         return (
             <FillColorIndicatorComponent
                 {...this.props}
-				disabled={disabled}
+                disabled={disabled}
                 onChangeFillColor={this.handleChangeFillColor}
             />
         );
@@ -65,6 +65,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 FillColorIndicator.propTypes = {
+    brushPenMode: PropTypes.bool,
     fillColor: PropTypes.string,
     fillColorModalVisible: PropTypes.bool.isRequired,
     mode: PropTypes.bool.isRequired,
