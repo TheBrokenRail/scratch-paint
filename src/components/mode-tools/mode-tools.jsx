@@ -8,34 +8,51 @@ import {changePenMode} from '../../reducers/pen-mode';
 import {changeBrushSize as changeEraserSize} from '../../reducers/eraser-mode';
 
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
-import {injectIntl, intlShape} from 'react-intl';
+import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import Input from '../forms/input.jsx';
+import InputGroup from '../input-group/input-group.jsx';
+import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
 // import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
 import Modes from '../../modes/modes';
 import styles from './mode-tools.css';
 
+import copyIcon from './icons/copy.svg';
+import pasteIcon from './icons/paste.svg';
+
 import brushIcon from '../brush-mode/brush.svg';
 import penIcon from '../pen-mode/pen.svg';
-import curvedPointIcon from './curved-point.svg';
+import curvedPointIcon from './icons/curved-point.svg';
 import eraserIcon from '../eraser-mode/eraser.svg';
-// import flipHorizontalIcon from './flip-horizontal.svg';
-// import flipVerticalIcon from './flip-vertical.svg';
-import straightPointIcon from './straight-point.svg';
+// import flipHorizontalIcon from './icons/flip-horizontal.svg';
+// import flipVerticalIcon from './icons/flip-vertical.svg';
+import straightPointIcon from './icons/straight-point.svg';
 import ToolSelectComponent from '../tool-select-base/tool-select-base.jsx';
 
 import {MAX_STROKE_WIDTH} from '../../reducers/stroke-width';
 
 const BufferedInput = BufferedInputHOC(Input);
 const ModeToolsComponent = props => {
-    const brushMessage = props.intl.formatMessage({
-        defaultMessage: 'Brush',
-        description: 'Label for the brush tool',
-        id: 'paint.brushMode.brush'
-    });
-    const eraserMessage = props.intl.formatMessage({
-        defaultMessage: 'Eraser',
-        description: 'Label for the eraser tool',
-        id: 'paint.eraserMode.eraser'
+    const messages = defineMessages({
+        brushSize: {
+            defaultMessage: 'Brush size',
+            description: 'Label for the brush size input',
+            id: 'paint.modeTools.brushSize'
+        },
+        eraserSize: {
+            defaultMessage: 'Eraser size',
+            description: 'Label for the eraser size input',
+            id: 'paint.modeTools.eraserSize'
+        },
+        copy: {
+            defaultMessage: 'Copy',
+            description: 'Label for the copy button',
+            id: 'paint.modeTools.copy'
+        },
+        paste: {
+            defaultMessage: 'Paste',
+            description: 'Label for the paste button',
+            id: 'paint.modeTools.paste'
+        }
     });
     const penMessage = props.intl.formatMessage({
         defaultMessage: 'Pen',
@@ -49,7 +66,7 @@ const ModeToolsComponent = props => {
             <div className={classNames(props.className, styles.modeTools)}>
                 <div>
                     <img
-                        alt={brushMessage}
+                        alt={props.intl.formatMessage(messages.brushSize)}
                         className={styles.modeToolsIcon}
                         src={brushIcon}
                     />
@@ -69,7 +86,7 @@ const ModeToolsComponent = props => {
             <div className={classNames(props.className, styles.modeTools)}>
                 <div>
                     <img
-                        alt={eraserMessage}
+                        alt={props.intl.formatMessage(messages.eraserSize)}
                         className={styles.modeToolsIcon}
                         src={eraserIcon}
                     />
@@ -104,6 +121,20 @@ const ModeToolsComponent = props => {
     case Modes.SELECT:
         return (
             <div className={classNames(props.className, styles.modeTools)}>
+                <InputGroup className={classNames(styles.modDashedBorder, styles.modLabeledIconHeight)}>
+                    <LabeledIconButton
+                        disabled
+                        imgSrc={copyIcon}
+                        title={props.intl.formatMessage(messages.copy)}
+                        onClick={function () {}}
+                    />
+                    <LabeledIconButton
+                        disabled
+                        imgSrc={pasteIcon}
+                        title={props.intl.formatMessage(messages.paste)}
+                        onClick={function () {}}
+                    />
+                </InputGroup>
                 {/* <LabeledIconButton
                     imgAlt="Flip Horizontal Icon"
                     imgSrc={flipHorizontalIcon}
