@@ -63870,7 +63870,7 @@ var PenTool2 = function (_paper$Tool) {
                 this.handleMouseMove(event);
                 return;
             }
-            if (this.path && !this.path.project) {
+            if (this.path && !this.path.parent) {
                 this.path = null;
             }
             if (!this.path) {
@@ -63903,6 +63903,9 @@ var PenTool2 = function (_paper$Tool) {
         key: 'handleMouseMove',
         value: function handleMouseMove(event) {
             if (event.event.button > 0) return;
+            if (this.path && !this.path.parent) {
+                this.path = null;
+            }
             if (this.cursor) {
                 this.cursor.remove();
                 this.cursor = null;
