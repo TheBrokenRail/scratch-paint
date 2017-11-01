@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 91);
+/******/ 	return __webpack_require__(__webpack_require__.s = 92);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(92);
-} else {
   module.exports = __webpack_require__(93);
+} else {
+  module.exports = __webpack_require__(94);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
@@ -104,11 +104,11 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(104)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(105)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(105)();
+  module.exports = __webpack_require__(106)();
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
@@ -151,7 +151,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var paper = function(self, undefined) {
 
-self = self || __webpack_require__(153);
+self = self || __webpack_require__(154);
 var window = self.window,
 	document = self.document;
 
@@ -14893,7 +14893,7 @@ Base.exports.PaperScript = function() {
 	var global = this,
 		acorn = global.acorn;
 	if (!acorn && "function" !== 'undefined') {
-		try { acorn = __webpack_require__(154); } catch(e) {}
+		try { acorn = __webpack_require__(155); } catch(e) {}
 	}
 	if (!acorn) {
 		var exports, module;
@@ -16603,7 +16603,7 @@ paper = new (PaperScope.inject(Base.exports, {
 }))();
 
 if (paper.agent.node) {
-	__webpack_require__(155)(paper);
+	__webpack_require__(156)(paper);
 }
 
 if (true) {
@@ -16646,7 +16646,7 @@ var _group = __webpack_require__(21);
 
 var _item = __webpack_require__(22);
 
-var _compoundPath = __webpack_require__(167);
+var _compoundPath = __webpack_require__(168);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17365,7 +17365,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keymirror = __webpack_require__(39);
+var _keymirror = __webpack_require__(40);
 
 var _keymirror2 = _interopRequireDefault(_keymirror);
 
@@ -17388,6 +17388,482 @@ exports.default = Modes;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.styleCursorPreview = exports.stylePath = exports.styleShape = exports.styleBlob = exports.MIXED = exports.getColorsFromSelection = exports.applyStrokeWidthToSelection = exports.applyStrokeColorToSelection = exports.applyFillColorToSelection = undefined;
+
+var _paper = __webpack_require__(2);
+
+var _paper2 = _interopRequireDefault(_paper);
+
+var _selection = __webpack_require__(3);
+
+var _item = __webpack_require__(22);
+
+var _group = __webpack_require__(21);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MIXED = 'scratch-paint/style-path/mixed';
+
+/**
+ * Called when setting fill color
+ * @param {string} colorString New color, css format
+ * @return {boolean} Whether the color application actually changed visibly.
+ */
+var applyFillColorToSelection = function applyFillColorToSelection(colorString) {
+    var items = (0, _selection.getSelectedLeafItems)();
+    var changed = false;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var item = _step.value;
+
+            if ((0, _item.isPGTextItem)(item)) {
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+
+                try {
+                    for (var _iterator2 = item.children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var child = _step2.value;
+
+                        if (child.children) {
+                            var _iteratorNormalCompletion3 = true;
+                            var _didIteratorError3 = false;
+                            var _iteratorError3 = undefined;
+
+                            try {
+                                for (var _iterator3 = child.children[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                                    var path = _step3.value;
+
+                                    if (!path.data.isPGGlyphRect) {
+                                        if (path.fillColor === null && colorString || path.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
+                                            changed = true;
+                                            path.fillColor = colorString;
+                                        }
+                                    }
+                                }
+                            } catch (err) {
+                                _didIteratorError3 = true;
+                                _iteratorError3 = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                        _iterator3.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError3) {
+                                        throw _iteratorError3;
+                                    }
+                                }
+                            }
+                        } else if (!child.data.isPGGlyphRect) {
+                            if (child.fillColor === null && colorString || child.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
+                                changed = true;
+                                child.fillColor = colorString;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                            _iterator2.return();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
+                    }
+                }
+            } else {
+                if ((0, _item.isPointTextItem)(item) && !colorString) {
+                    colorString = 'rgba(0,0,0,0)';
+                }
+                if (item.fillColor === null && colorString || item.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
+                    changed = true;
+                    item.fillColor = colorString;
+                }
+            }
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return changed;
+};
+
+var _strokeColorMatch = function _strokeColorMatch(item, incomingColor) {
+    return !item.strokeColor && !incomingColor || item.strokeColor && incomingColor && item.strokeColor.toCSS() === new _paper2.default.Color(incomingColor).toCSS();
+};
+
+/**
+ * Called when setting stroke color
+ * @param {string} colorString New color, css format
+ * @return {boolean} Whether the color application actually changed visibly.
+ */
+var applyStrokeColorToSelection = function applyStrokeColorToSelection(colorString) {
+    var items = (0, _selection.getSelectedLeafItems)();
+    var changed = false;
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
+
+    try {
+        for (var _iterator4 = items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var item = _step4.value;
+
+            if ((0, _item.isPGTextItem)(item)) {
+                if (item.children) {
+                    var _iteratorNormalCompletion5 = true;
+                    var _didIteratorError5 = false;
+                    var _iteratorError5 = undefined;
+
+                    try {
+                        for (var _iterator5 = item.children[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                            var child = _step5.value;
+
+                            if (child.children) {
+                                var _iteratorNormalCompletion6 = true;
+                                var _didIteratorError6 = false;
+                                var _iteratorError6 = undefined;
+
+                                try {
+                                    for (var _iterator6 = child.children[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                                        var path = _step6.value;
+
+                                        if (!path.data.isPGGlyphRect) {
+                                            if (!_strokeColorMatch(path, colorString)) {
+                                                changed = true;
+                                                path.strokeColor = colorString;
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                    _didIteratorError6 = true;
+                                    _iteratorError6 = err;
+                                } finally {
+                                    try {
+                                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                                            _iterator6.return();
+                                        }
+                                    } finally {
+                                        if (_didIteratorError6) {
+                                            throw _iteratorError6;
+                                        }
+                                    }
+                                }
+                            } else if (!child.data.isPGGlyphRect) {
+                                if (child.strokeColor !== colorString) {
+                                    changed = true;
+                                    child.strokeColor = colorString;
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError5 = true;
+                        _iteratorError5 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                                _iterator5.return();
+                            }
+                        } finally {
+                            if (_didIteratorError5) {
+                                throw _iteratorError5;
+                            }
+                        }
+                    }
+                } else if (!item.data.isPGGlyphRect) {
+                    if (!_strokeColorMatch(item, colorString)) {
+                        changed = true;
+                        item.strokeColor = colorString;
+                    }
+                }
+            } else if (!_strokeColorMatch(item, colorString)) {
+                changed = true;
+                item.strokeColor = colorString;
+            }
+        }
+    } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                _iterator4.return();
+            }
+        } finally {
+            if (_didIteratorError4) {
+                throw _iteratorError4;
+            }
+        }
+    }
+
+    return changed;
+};
+
+/**
+ * Called when setting stroke width
+ * @param {number} value New stroke width
+ * @param {!function} onUpdateSvg A callback to call when the image visibly changes
+ */
+var applyStrokeWidthToSelection = function applyStrokeWidthToSelection(value, onUpdateSvg) {
+    var changed = false;
+    var items = (0, _selection.getSelectedLeafItems)();
+    var _iteratorNormalCompletion7 = true;
+    var _didIteratorError7 = false;
+    var _iteratorError7 = undefined;
+
+    try {
+        for (var _iterator7 = items[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var item = _step7.value;
+
+            if ((0, _group.isGroup)(item)) {
+                continue;
+            } else if (item.strokeWidth !== value) {
+                item.strokeWidth = value;
+                changed = true;
+            }
+        }
+    } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                _iterator7.return();
+            }
+        } finally {
+            if (_didIteratorError7) {
+                throw _iteratorError7;
+            }
+        }
+    }
+
+    if (changed) {
+        onUpdateSvg();
+    }
+};
+
+/**
+ * Get state of colors and stroke width for selection
+ * @param {!Array<paper.Item>} selectedItems Selected paper items
+ * @return {object} Object of strokeColor, strokeWidth, fillColor of the selection.
+ *     Gives MIXED when there are mixed values for a color, and null for transparent.
+ *     Gives null when there are mixed values for stroke width.
+ */
+var getColorsFromSelection = function getColorsFromSelection(selectedItems) {
+    var selectionFillColorString = void 0;
+    var selectionStrokeColorString = void 0;
+    var selectionStrokeWidth = void 0;
+    var firstChild = true;
+
+    var _iteratorNormalCompletion8 = true;
+    var _didIteratorError8 = false;
+    var _iteratorError8 = undefined;
+
+    try {
+        for (var _iterator8 = selectedItems[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var item = _step8.value;
+
+            var itemFillColorString = void 0;
+            var itemStrokeColorString = void 0;
+
+            // handle pgTextItems differently by going through their children
+            if ((0, _item.isPGTextItem)(item)) {
+                var _iteratorNormalCompletion9 = true;
+                var _didIteratorError9 = false;
+                var _iteratorError9 = undefined;
+
+                try {
+                    for (var _iterator9 = item.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+                        var child = _step9.value;
+                        var _iteratorNormalCompletion10 = true;
+                        var _didIteratorError10 = false;
+                        var _iteratorError10 = undefined;
+
+                        try {
+                            for (var _iterator10 = child.children[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+                                var path = _step10.value;
+
+                                if (!path.data.isPGGlyphRect) {
+                                    if (path.fillColor) {
+                                        itemFillColorString = path.fillColor.toCSS();
+                                    }
+                                    if (path.strokeColor) {
+                                        itemStrokeColorString = path.strokeColor.toCSS();
+                                    }
+                                    // check every style against the first of the items
+                                    if (firstChild) {
+                                        firstChild = false;
+                                        selectionFillColorString = itemFillColorString;
+                                        selectionStrokeColorString = itemStrokeColorString;
+                                        selectionStrokeWidth = path.strokeWidth;
+                                    }
+                                    if (itemFillColorString !== selectionFillColorString) {
+                                        selectionFillColorString = MIXED;
+                                    }
+                                    if (itemStrokeColorString !== selectionStrokeColorString) {
+                                        selectionStrokeColorString = MIXED;
+                                    }
+                                    if (selectionStrokeWidth !== path.strokeWidth) {
+                                        selectionStrokeWidth = null;
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError10 = true;
+                            _iteratorError10 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion10 && _iterator10.return) {
+                                    _iterator10.return();
+                                }
+                            } finally {
+                                if (_didIteratorError10) {
+                                    throw _iteratorError10;
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError9 = true;
+                    _iteratorError9 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion9 && _iterator9.return) {
+                            _iterator9.return();
+                        }
+                    } finally {
+                        if (_didIteratorError9) {
+                            throw _iteratorError9;
+                        }
+                    }
+                }
+            } else if (!(0, _group.isGroup)(item)) {
+                if (item.fillColor) {
+                    // hack bc text items with null fill can't be detected by fill-hitTest anymore
+                    if ((0, _item.isPointTextItem)(item) && item.fillColor.toCSS() === 'rgba(0,0,0,0)') {
+                        itemFillColorString = null;
+                    } else {
+                        itemFillColorString = item.fillColor.toCSS();
+                    }
+                }
+                if (item.strokeColor) {
+                    itemStrokeColorString = item.strokeColor.toCSS();
+                }
+                // check every style against the first of the items
+                if (firstChild) {
+                    firstChild = false;
+                    selectionFillColorString = itemFillColorString;
+                    selectionStrokeColorString = itemStrokeColorString;
+                    selectionStrokeWidth = item.strokeWidth;
+                }
+                if (itemFillColorString !== selectionFillColorString) {
+                    selectionFillColorString = MIXED;
+                }
+                if (itemStrokeColorString !== selectionStrokeColorString) {
+                    selectionStrokeColorString = MIXED;
+                }
+                if (selectionStrokeWidth !== item.strokeWidth) {
+                    selectionStrokeWidth = null;
+                }
+            }
+        }
+    } catch (err) {
+        _didIteratorError8 = true;
+        _iteratorError8 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+                _iterator8.return();
+            }
+        } finally {
+            if (_didIteratorError8) {
+                throw _iteratorError8;
+            }
+        }
+    }
+
+    return {
+        fillColor: selectionFillColorString ? selectionFillColorString : null,
+        strokeColor: selectionStrokeColorString ? selectionStrokeColorString : null,
+        strokeWidth: selectionStrokeWidth || selectionStrokeWidth === null ? selectionStrokeWidth : 0
+    };
+};
+
+var styleBlob = function styleBlob(path, options) {
+    if (options.isEraser) {
+        path.fillColor = 'white';
+    } else if (options.fillColor) {
+        path.fillColor = options.fillColor;
+    } else {
+        // Make sure something visible is drawn
+        path.fillColor = 'black';
+    }
+};
+
+var stylePath = function stylePath(path, strokeColor, strokeWidth) {
+    // Make sure a visible line is drawn
+    path.setStrokeColor(strokeColor === MIXED || strokeColor === null ? 'black' : strokeColor);
+    path.setStrokeWidth(strokeWidth === null || strokeWidth === 0 ? 1 : strokeWidth);
+};
+
+var styleCursorPreview = function styleCursorPreview(path, options) {
+    if (options.isEraser) {
+        path.fillColor = 'white';
+        path.strokeColor = 'cornflowerblue';
+        path.strokeWidth = 1;
+    } else if (options.fillColor) {
+        path.fillColor = options.fillColor;
+    } else {
+        // Make sure something visible is drawn
+        path.fillColor = 'black';
+    }
+};
+
+var styleShape = function styleShape(path, options) {
+    path.fillColor = options.fillColor;
+    path.strokeColor = options.strokeColor;
+    path.strokeWidth = options.strokeWidth;
+};
+
+exports.applyFillColorToSelection = applyFillColorToSelection;
+exports.applyStrokeColorToSelection = applyStrokeColorToSelection;
+exports.applyStrokeWidthToSelection = applyStrokeWidthToSelection;
+exports.getColorsFromSelection = getColorsFromSelection;
+exports.MIXED = MIXED;
+exports.styleBlob = styleBlob;
+exports.styleShape = styleShape;
+exports.stylePath = stylePath;
+exports.styleCursorPreview = styleCursorPreview;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -18901,17 +19377,17 @@ bind.placeholder = {};
 
 module.exports = bindAll;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Provider__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Provider__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connect_connect__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connect_connect__ = __webpack_require__(132);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Provider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__["a"]; });
@@ -18921,482 +19397,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.styleCursorPreview = exports.stylePath = exports.styleShape = exports.styleBlob = exports.MIXED = exports.getColorsFromSelection = exports.applyStrokeWidthToSelection = exports.applyStrokeColorToSelection = exports.applyFillColorToSelection = undefined;
-
-var _paper = __webpack_require__(2);
-
-var _paper2 = _interopRequireDefault(_paper);
-
-var _selection = __webpack_require__(3);
-
-var _item = __webpack_require__(22);
-
-var _group = __webpack_require__(21);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var MIXED = 'scratch-paint/style-path/mixed';
-
-/**
- * Called when setting fill color
- * @param {string} colorString New color, css format
- * @return {boolean} Whether the color application actually changed visibly.
- */
-var applyFillColorToSelection = function applyFillColorToSelection(colorString) {
-    var items = (0, _selection.getSelectedLeafItems)();
-    var changed = false;
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var item = _step.value;
-
-            if ((0, _item.isPGTextItem)(item)) {
-                var _iteratorNormalCompletion2 = true;
-                var _didIteratorError2 = false;
-                var _iteratorError2 = undefined;
-
-                try {
-                    for (var _iterator2 = item.children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                        var child = _step2.value;
-
-                        if (child.children) {
-                            var _iteratorNormalCompletion3 = true;
-                            var _didIteratorError3 = false;
-                            var _iteratorError3 = undefined;
-
-                            try {
-                                for (var _iterator3 = child.children[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                                    var path = _step3.value;
-
-                                    if (!path.data.isPGGlyphRect) {
-                                        if (path.fillColor === null && colorString || path.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
-                                            changed = true;
-                                            path.fillColor = colorString;
-                                        }
-                                    }
-                                }
-                            } catch (err) {
-                                _didIteratorError3 = true;
-                                _iteratorError3 = err;
-                            } finally {
-                                try {
-                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                        _iterator3.return();
-                                    }
-                                } finally {
-                                    if (_didIteratorError3) {
-                                        throw _iteratorError3;
-                                    }
-                                }
-                            }
-                        } else if (!child.data.isPGGlyphRect) {
-                            if (child.fillColor === null && colorString || child.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
-                                changed = true;
-                                child.fillColor = colorString;
-                            }
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError2 = true;
-                    _iteratorError2 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                            _iterator2.return();
-                        }
-                    } finally {
-                        if (_didIteratorError2) {
-                            throw _iteratorError2;
-                        }
-                    }
-                }
-            } else {
-                if ((0, _item.isPointTextItem)(item) && !colorString) {
-                    colorString = 'rgba(0,0,0,0)';
-                }
-                if (item.fillColor === null && colorString || item.fillColor.toCSS() !== new _paper2.default.Color(colorString).toCSS()) {
-                    changed = true;
-                    item.fillColor = colorString;
-                }
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
-    return changed;
-};
-
-var _strokeColorMatch = function _strokeColorMatch(item, incomingColor) {
-    return !item.strokeColor && !incomingColor || item.strokeColor && incomingColor && item.strokeColor.toCSS() === new _paper2.default.Color(incomingColor).toCSS();
-};
-
-/**
- * Called when setting stroke color
- * @param {string} colorString New color, css format
- * @return {boolean} Whether the color application actually changed visibly.
- */
-var applyStrokeColorToSelection = function applyStrokeColorToSelection(colorString) {
-    var items = (0, _selection.getSelectedLeafItems)();
-    var changed = false;
-    var _iteratorNormalCompletion4 = true;
-    var _didIteratorError4 = false;
-    var _iteratorError4 = undefined;
-
-    try {
-        for (var _iterator4 = items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var item = _step4.value;
-
-            if ((0, _item.isPGTextItem)(item)) {
-                if (item.children) {
-                    var _iteratorNormalCompletion5 = true;
-                    var _didIteratorError5 = false;
-                    var _iteratorError5 = undefined;
-
-                    try {
-                        for (var _iterator5 = item.children[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                            var child = _step5.value;
-
-                            if (child.children) {
-                                var _iteratorNormalCompletion6 = true;
-                                var _didIteratorError6 = false;
-                                var _iteratorError6 = undefined;
-
-                                try {
-                                    for (var _iterator6 = child.children[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                                        var path = _step6.value;
-
-                                        if (!path.data.isPGGlyphRect) {
-                                            if (!_strokeColorMatch(path, colorString)) {
-                                                changed = true;
-                                                path.strokeColor = colorString;
-                                            }
-                                        }
-                                    }
-                                } catch (err) {
-                                    _didIteratorError6 = true;
-                                    _iteratorError6 = err;
-                                } finally {
-                                    try {
-                                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                                            _iterator6.return();
-                                        }
-                                    } finally {
-                                        if (_didIteratorError6) {
-                                            throw _iteratorError6;
-                                        }
-                                    }
-                                }
-                            } else if (!child.data.isPGGlyphRect) {
-                                if (child.strokeColor !== colorString) {
-                                    changed = true;
-                                    child.strokeColor = colorString;
-                                }
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError5 = true;
-                        _iteratorError5 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                                _iterator5.return();
-                            }
-                        } finally {
-                            if (_didIteratorError5) {
-                                throw _iteratorError5;
-                            }
-                        }
-                    }
-                } else if (!item.data.isPGGlyphRect) {
-                    if (!_strokeColorMatch(item, colorString)) {
-                        changed = true;
-                        item.strokeColor = colorString;
-                    }
-                }
-            } else if (!_strokeColorMatch(item, colorString)) {
-                changed = true;
-                item.strokeColor = colorString;
-            }
-        }
-    } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                _iterator4.return();
-            }
-        } finally {
-            if (_didIteratorError4) {
-                throw _iteratorError4;
-            }
-        }
-    }
-
-    return changed;
-};
-
-/**
- * Called when setting stroke width
- * @param {number} value New stroke width
- * @param {!function} onUpdateSvg A callback to call when the image visibly changes
- */
-var applyStrokeWidthToSelection = function applyStrokeWidthToSelection(value, onUpdateSvg) {
-    var changed = false;
-    var items = (0, _selection.getSelectedLeafItems)();
-    var _iteratorNormalCompletion7 = true;
-    var _didIteratorError7 = false;
-    var _iteratorError7 = undefined;
-
-    try {
-        for (var _iterator7 = items[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-            var item = _step7.value;
-
-            if ((0, _group.isGroup)(item)) {
-                continue;
-            } else if (item.strokeWidth !== value) {
-                item.strokeWidth = value;
-                changed = true;
-            }
-        }
-    } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-                _iterator7.return();
-            }
-        } finally {
-            if (_didIteratorError7) {
-                throw _iteratorError7;
-            }
-        }
-    }
-
-    if (changed) {
-        onUpdateSvg();
-    }
-};
-
-/**
- * Get state of colors and stroke width for selection
- * @param {!Array<paper.Item>} selectedItems Selected paper items
- * @return {object} Object of strokeColor, strokeWidth, fillColor of the selection.
- *     Gives MIXED when there are mixed values for a color, and null for transparent.
- *     Gives null when there are mixed values for stroke width.
- */
-var getColorsFromSelection = function getColorsFromSelection(selectedItems) {
-    var selectionFillColorString = void 0;
-    var selectionStrokeColorString = void 0;
-    var selectionStrokeWidth = void 0;
-    var firstChild = true;
-
-    var _iteratorNormalCompletion8 = true;
-    var _didIteratorError8 = false;
-    var _iteratorError8 = undefined;
-
-    try {
-        for (var _iterator8 = selectedItems[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-            var item = _step8.value;
-
-            var itemFillColorString = void 0;
-            var itemStrokeColorString = void 0;
-
-            // handle pgTextItems differently by going through their children
-            if ((0, _item.isPGTextItem)(item)) {
-                var _iteratorNormalCompletion9 = true;
-                var _didIteratorError9 = false;
-                var _iteratorError9 = undefined;
-
-                try {
-                    for (var _iterator9 = item.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-                        var child = _step9.value;
-                        var _iteratorNormalCompletion10 = true;
-                        var _didIteratorError10 = false;
-                        var _iteratorError10 = undefined;
-
-                        try {
-                            for (var _iterator10 = child.children[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-                                var path = _step10.value;
-
-                                if (!path.data.isPGGlyphRect) {
-                                    if (path.fillColor) {
-                                        itemFillColorString = path.fillColor.toCSS();
-                                    }
-                                    if (path.strokeColor) {
-                                        itemStrokeColorString = path.strokeColor.toCSS();
-                                    }
-                                    // check every style against the first of the items
-                                    if (firstChild) {
-                                        firstChild = false;
-                                        selectionFillColorString = itemFillColorString;
-                                        selectionStrokeColorString = itemStrokeColorString;
-                                        selectionStrokeWidth = path.strokeWidth;
-                                    }
-                                    if (itemFillColorString !== selectionFillColorString) {
-                                        selectionFillColorString = MIXED;
-                                    }
-                                    if (itemStrokeColorString !== selectionStrokeColorString) {
-                                        selectionStrokeColorString = MIXED;
-                                    }
-                                    if (selectionStrokeWidth !== path.strokeWidth) {
-                                        selectionStrokeWidth = null;
-                                    }
-                                }
-                            }
-                        } catch (err) {
-                            _didIteratorError10 = true;
-                            _iteratorError10 = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion10 && _iterator10.return) {
-                                    _iterator10.return();
-                                }
-                            } finally {
-                                if (_didIteratorError10) {
-                                    throw _iteratorError10;
-                                }
-                            }
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError9 = true;
-                    _iteratorError9 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion9 && _iterator9.return) {
-                            _iterator9.return();
-                        }
-                    } finally {
-                        if (_didIteratorError9) {
-                            throw _iteratorError9;
-                        }
-                    }
-                }
-            } else if (!(0, _group.isGroup)(item)) {
-                if (item.fillColor) {
-                    // hack bc text items with null fill can't be detected by fill-hitTest anymore
-                    if ((0, _item.isPointTextItem)(item) && item.fillColor.toCSS() === 'rgba(0,0,0,0)') {
-                        itemFillColorString = null;
-                    } else {
-                        itemFillColorString = item.fillColor.toCSS();
-                    }
-                }
-                if (item.strokeColor) {
-                    itemStrokeColorString = item.strokeColor.toCSS();
-                }
-                // check every style against the first of the items
-                if (firstChild) {
-                    firstChild = false;
-                    selectionFillColorString = itemFillColorString;
-                    selectionStrokeColorString = itemStrokeColorString;
-                    selectionStrokeWidth = item.strokeWidth;
-                }
-                if (itemFillColorString !== selectionFillColorString) {
-                    selectionFillColorString = MIXED;
-                }
-                if (itemStrokeColorString !== selectionStrokeColorString) {
-                    selectionStrokeColorString = MIXED;
-                }
-                if (selectionStrokeWidth !== item.strokeWidth) {
-                    selectionStrokeWidth = null;
-                }
-            }
-        }
-    } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                _iterator8.return();
-            }
-        } finally {
-            if (_didIteratorError8) {
-                throw _iteratorError8;
-            }
-        }
-    }
-
-    return {
-        fillColor: selectionFillColorString ? selectionFillColorString : null,
-        strokeColor: selectionStrokeColorString ? selectionStrokeColorString : null,
-        strokeWidth: selectionStrokeWidth || selectionStrokeWidth === null ? selectionStrokeWidth : 0
-    };
-};
-
-var styleBlob = function styleBlob(path, options) {
-    if (options.isEraser) {
-        path.fillColor = 'white';
-    } else if (options.fillColor) {
-        path.fillColor = options.fillColor;
-    } else {
-        // Make sure something visible is drawn
-        path.fillColor = 'black';
-    }
-};
-
-var stylePath = function stylePath(path, strokeColor, strokeWidth) {
-    // Make sure a visible line is drawn
-    path.setStrokeColor(strokeColor === MIXED || strokeColor === null ? 'black' : strokeColor);
-    path.setStrokeWidth(strokeWidth === null || strokeWidth === 0 ? 1 : strokeWidth);
-};
-
-var styleCursorPreview = function styleCursorPreview(path, options) {
-    if (options.isEraser) {
-        path.fillColor = 'white';
-        path.strokeColor = 'cornflowerblue';
-        path.strokeWidth = 1;
-    } else if (options.fillColor) {
-        path.fillColor = options.fillColor;
-    } else {
-        // Make sure something visible is drawn
-        path.fillColor = 'black';
-    }
-};
-
-var styleShape = function styleShape(path, options) {
-    path.fillColor = options.fillColor;
-    path.strokeColor = options.strokeColor;
-    path.strokeWidth = options.strokeWidth;
-};
-
-exports.applyFillColorToSelection = applyFillColorToSelection;
-exports.applyStrokeColorToSelection = applyStrokeColorToSelection;
-exports.applyStrokeWidthToSelection = applyStrokeWidthToSelection;
-exports.getColorsFromSelection = getColorsFromSelection;
-exports.MIXED = MIXED;
-exports.styleBlob = styleBlob;
-exports.styleShape = styleShape;
-exports.stylePath = stylePath;
-exports.styleCursorPreview = styleCursorPreview;
 
 /***/ }),
 /* 9 */
@@ -19596,7 +19596,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(170);
+var	fixUrls = __webpack_require__(171);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -19919,7 +19919,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _minilog = __webpack_require__(157);
+var _minilog = __webpack_require__(158);
 
 var _minilog2 = _interopRequireDefault(_minilog);
 
@@ -20059,11 +20059,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactIntl = __webpack_require__(17);
 
-var _button = __webpack_require__(41);
+var _button = __webpack_require__(42);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _toolSelectBase = __webpack_require__(180);
+var _toolSelectBase = __webpack_require__(181);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
@@ -20165,11 +20165,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormattedPlural", function() { return FormattedPlural; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormattedMessage", function() { return FormattedMessage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormattedHTMLMessage", function() { return FormattedHTMLMessage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_data_index_js__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_data_index_js__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_data_index_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__locale_data_index_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_intl_messageformat__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_intl_messageformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_intl_messageformat__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_intl_relativeformat__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_intl_relativeformat__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_intl_relativeformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_intl_relativeformat__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
@@ -20177,7 +20177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_invariant__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_intl_format_cache__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_intl_format_cache__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_intl_format_cache___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_intl_format_cache__);
 /*
  * Copyright 2017, Yahoo Inc.
@@ -21829,7 +21829,7 @@ addLocaleData(__WEBPACK_IMPORTED_MODULE_0__locale_data_index_js___default.a);
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var microee = __webpack_require__(159);
+var microee = __webpack_require__(160);
 
 // Implements a subset of Node's stream.Transform - in a cross-platform manner.
 function Transform() {}
@@ -21979,7 +21979,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _background = __webpack_require__(156);
+var _background = __webpack_require__(157);
 
 var _background2 = _interopRequireDefault(_background);
 
@@ -22558,6 +22558,64 @@ exports.setDefaultGuideStyle = setDefaultGuideStyle;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.changeStrokeColor = exports.default = undefined;
+
+var _log = __webpack_require__(12);
+
+var _log2 = _interopRequireDefault(_log);
+
+var _selectedItems = __webpack_require__(9);
+
+var _stylePath = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CHANGE_STROKE_COLOR = 'scratch-paint/stroke-color/CHANGE_STROKE_COLOR';
+var initialState = '#000';
+// Matches hex colors
+var regExp = /^#([0-9a-f]{3}){1,2}$/i;
+
+var reducer = function reducer(state, action) {
+    if (typeof state === 'undefined') state = initialState;
+    switch (action.type) {
+        case CHANGE_STROKE_COLOR:
+            if (!regExp.test(action.strokeColor) && action.strokeColor !== null) {
+                _log2.default.warn('Invalid hex color code: ' + action.fillColor);
+                return state;
+            }
+            return action.strokeColor;
+        case _selectedItems.CHANGE_SELECTED_ITEMS:
+            // Don't change state if no selection
+            if (!action.selectedItems || !action.selectedItems.length) {
+                return state;
+            }
+            return (0, _stylePath.getColorsFromSelection)(action.selectedItems).strokeColor;
+        default:
+            return state;
+    }
+};
+
+// Action creators ==================================
+var changeStrokeColor = function changeStrokeColor(strokeColor) {
+    return {
+        type: CHANGE_STROKE_COLOR,
+        strokeColor: strokeColor
+    };
+};
+
+exports.default = reducer;
+exports.changeStrokeColor = changeStrokeColor;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.MAX_STROKE_WIDTH = exports.changeStrokeWidth = exports.default = undefined;
 
 var _log = __webpack_require__(12);
@@ -22566,7 +22624,7 @@ var _log2 = _interopRequireDefault(_log);
 
 var _selectedItems = __webpack_require__(9);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22607,7 +22665,7 @@ exports.changeStrokeWidth = changeStrokeWidth;
 exports.MAX_STROKE_WIDTH = MAX_STROKE_WIDTH;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22704,17 +22762,17 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(149);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(39);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
@@ -22741,7 +22799,116 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 27 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.DEFAULT_COLOR = exports.changeFillColor = exports.default = undefined;
+
+var _log = __webpack_require__(12);
+
+var _log2 = _interopRequireDefault(_log);
+
+var _selectedItems = __webpack_require__(9);
+
+var _stylePath = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CHANGE_FILL_COLOR = 'scratch-paint/fill-color/CHANGE_FILL_COLOR';
+var DEFAULT_COLOR = '#9966FF';
+var initialState = DEFAULT_COLOR;
+// Matches hex colors
+var regExp = /^#([0-9a-f]{3}){1,2}$/i;
+
+var reducer = function reducer(state, action) {
+    if (typeof state === 'undefined') state = initialState;
+    switch (action.type) {
+        case CHANGE_FILL_COLOR:
+            if (!regExp.test(action.fillColor) && action.fillColor !== null) {
+                _log2.default.warn('Invalid hex color code: ' + action.fillColor);
+                return state;
+            }
+            return action.fillColor;
+        case _selectedItems.CHANGE_SELECTED_ITEMS:
+            // Don't change state if no selection
+            if (!action.selectedItems || !action.selectedItems.length) {
+                return state;
+            }
+            return (0, _stylePath.getColorsFromSelection)(action.selectedItems).fillColor;
+        default:
+            return state;
+    }
+};
+
+// Action creators ==================================
+var changeFillColor = function changeFillColor(fillColor) {
+    return {
+        type: CHANGE_FILL_COLOR,
+        fillColor: fillColor
+    };
+};
+
+exports.default = reducer;
+exports.changeFillColor = changeFillColor;
+exports.DEFAULT_COLOR = DEFAULT_COLOR;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _classnames = __webpack_require__(13);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _inputGroup = __webpack_require__(212);
+
+var _inputGroup2 = _interopRequireDefault(_inputGroup);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var InputGroup = function InputGroup(props) {
+    return _react2.default.createElement(
+        'div',
+        {
+            className: (0, _classnames2.default)(props.className, _inputGroup2.default.inputGroup, _defineProperty({}, _inputGroup2.default.disabled, props.disabled))
+        },
+        props.children
+    );
+};
+
+InputGroup.propTypes = {
+    children: _propTypes2.default.node.isRequired,
+    className: _propTypes2.default.string,
+    disabled: _propTypes2.default.bool
+};
+
+exports.default = InputGroup;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22765,7 +22932,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22834,7 +23001,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22861,114 +23028,7 @@ exports.window = WINDOW;
 exports.document = DOCUMENT;
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _classnames = __webpack_require__(13);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _inputGroup = __webpack_require__(211);
-
-var _inputGroup2 = _interopRequireDefault(_inputGroup);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var InputGroup = function InputGroup(props) {
-    return _react2.default.createElement(
-        'div',
-        {
-            className: (0, _classnames2.default)(props.className, _inputGroup2.default.inputGroup, _defineProperty({}, _inputGroup2.default.disabled, props.disabled))
-        },
-        props.children
-    );
-};
-
-InputGroup.propTypes = {
-    children: _propTypes2.default.node.isRequired,
-    className: _propTypes2.default.string,
-    disabled: _propTypes2.default.bool
-};
-
-exports.default = InputGroup;
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.changeStrokeColor = exports.default = undefined;
-
-var _log = __webpack_require__(12);
-
-var _log2 = _interopRequireDefault(_log);
-
-var _selectedItems = __webpack_require__(9);
-
-var _stylePath = __webpack_require__(8);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var CHANGE_STROKE_COLOR = 'scratch-paint/stroke-color/CHANGE_STROKE_COLOR';
-var initialState = '#000';
-// Matches hex colors
-var regExp = /^#([0-9a-f]{3}){1,2}$/i;
-
-var reducer = function reducer(state, action) {
-    if (typeof state === 'undefined') state = initialState;
-    switch (action.type) {
-        case CHANGE_STROKE_COLOR:
-            if (!regExp.test(action.strokeColor) && action.strokeColor !== null) {
-                _log2.default.warn('Invalid hex color code: ' + action.fillColor);
-                return state;
-            }
-            return action.strokeColor;
-        case _selectedItems.CHANGE_SELECTED_ITEMS:
-            // Don't change state if no selection
-            if (!action.selectedItems || !action.selectedItems.length) {
-                return state;
-            }
-            return (0, _stylePath.getColorsFromSelection)(action.selectedItems).strokeColor;
-        default:
-            return state;
-    }
-};
-
-// Action creators ==================================
-var changeStrokeColor = function changeStrokeColor(strokeColor) {
-    return {
-        type: CHANGE_STROKE_COLOR,
-        strokeColor: strokeColor
-    };
-};
-
-exports.default = reducer;
-exports.changeStrokeColor = changeStrokeColor;
-
-/***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 var g;
@@ -22995,7 +23055,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23010,8 +23070,8 @@ module.exports = g;
 
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(19);
-  var warning = __webpack_require__(28);
-  var ReactPropTypesSecret = __webpack_require__(34);
+  var warning = __webpack_require__(31);
+  var ReactPropTypesSecret = __webpack_require__(35);
   var loggedTypeFailures = {};
 }
 
@@ -23062,7 +23122,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23081,7 +23141,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23120,7 +23180,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23148,13 +23208,13 @@ function warning(message) {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(142);
 
 
 
@@ -23220,7 +23280,7 @@ function isPlainObject(value) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23248,7 +23308,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23308,7 +23368,7 @@ module.exports = keyMirror;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23402,7 +23462,7 @@ exports.undoSnapshot = undoSnapshot;
 exports.clearUndoState = clearUndoState;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23426,7 +23486,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _button = __webpack_require__(171);
+var _button = __webpack_require__(172);
 
 var _button2 = _interopRequireDefault(_button);
 
@@ -23470,64 +23530,6 @@ ButtonComponent.propTypes = {
     onClick: _propTypes2.default.func.isRequired
 };
 exports.default = ButtonComponent;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.changeFillColor = exports.default = undefined;
-
-var _log = __webpack_require__(12);
-
-var _log2 = _interopRequireDefault(_log);
-
-var _selectedItems = __webpack_require__(9);
-
-var _stylePath = __webpack_require__(8);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var CHANGE_FILL_COLOR = 'scratch-paint/fill-color/CHANGE_FILL_COLOR';
-var initialState = '#9966FF';
-// Matches hex colors
-var regExp = /^#([0-9a-f]{3}){1,2}$/i;
-
-var reducer = function reducer(state, action) {
-    if (typeof state === 'undefined') state = initialState;
-    switch (action.type) {
-        case CHANGE_FILL_COLOR:
-            if (!regExp.test(action.fillColor) && action.fillColor !== null) {
-                _log2.default.warn('Invalid hex color code: ' + action.fillColor);
-                return state;
-            }
-            return action.fillColor;
-        case _selectedItems.CHANGE_SELECTED_ITEMS:
-            // Don't change state if no selection
-            if (!action.selectedItems || !action.selectedItems.length) {
-                return state;
-            }
-            return (0, _stylePath.getColorsFromSelection)(action.selectedItems).fillColor;
-        default:
-            return state;
-    }
-};
-
-// Action creators ==================================
-var changeFillColor = function changeFillColor(fillColor) {
-    return {
-        type: CHANGE_FILL_COLOR,
-        fillColor: fillColor
-    };
-};
-
-exports.default = reducer;
-exports.changeFillColor = changeFillColor;
 
 /***/ }),
 /* 43 */
@@ -23658,7 +23660,7 @@ exports.default = function (Input) {
     return BufferedInput;
 };
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -23890,7 +23892,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.clientOnly = exports.noop = exports.equalRecords = exports.find = undefined;
 
-var _platform = __webpack_require__(29);
+var _platform = __webpack_require__(32);
 
 var find = function find(f, xs) {
   return xs.reduce(function (b, x) {
@@ -23942,7 +23944,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _label = __webpack_require__(213);
+var _label = __webpack_require__(214);
 
 var _label2 = _interopRequireDefault(_label);
 
@@ -24000,7 +24002,7 @@ var _classnames = __webpack_require__(13);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _input = __webpack_require__(215);
+var _input = __webpack_require__(216);
 
 var _input2 = _interopRequireDefault(_input);
 
@@ -24123,7 +24125,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _keymirror = __webpack_require__(39);
+var _keymirror = __webpack_require__(40);
 
 var _keymirror2 = _interopRequireDefault(_keymirror);
 
@@ -24133,15 +24135,15 @@ var _guides = __webpack_require__(23);
 
 var _layer = __webpack_require__(20);
 
-var _scaleTool = __webpack_require__(230);
+var _scaleTool = __webpack_require__(232);
 
 var _scaleTool2 = _interopRequireDefault(_scaleTool);
 
-var _rotateTool = __webpack_require__(231);
+var _rotateTool = __webpack_require__(233);
 
 var _rotateTool2 = _interopRequireDefault(_rotateTool);
 
-var _moveTool = __webpack_require__(85);
+var _moveTool = __webpack_require__(86);
 
 var _moveTool2 = _interopRequireDefault(_moveTool);
 
@@ -24487,9 +24489,9 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(94);
+  module.exports = __webpack_require__(95);
 } else {
-  module.exports = __webpack_require__(97);
+  module.exports = __webpack_require__(98);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
@@ -24662,7 +24664,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(95);
+var isTextNode = __webpack_require__(96);
 
 /*eslint-disable no-bitwise */
 
@@ -24773,15 +24775,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ScratchPaintReducer = exports.default = undefined;
 
-var _paintEditor = __webpack_require__(106);
+var _paintEditor = __webpack_require__(107);
 
 var _paintEditor2 = _interopRequireDefault(_paintEditor);
 
-var _selectionHoc = __webpack_require__(269);
+var _selectionHoc = __webpack_require__(271);
 
 var _selectionHoc2 = _interopRequireDefault(_selectionHoc);
 
-var _scratchPaintReducer = __webpack_require__(270);
+var _scratchPaintReducer = __webpack_require__(272);
 
 var _scratchPaintReducer2 = _interopRequireDefault(_scratchPaintReducer);
 
@@ -24801,11 +24803,11 @@ exports.ScratchPaintReducer = _scratchPaintReducer2.default;
 
 
 
-var IntlMessageFormat = __webpack_require__(109)['default'];
+var IntlMessageFormat = __webpack_require__(110)['default'];
 
 // Add all locale data to `IntlMessageFormat`. This module will be ignored when
 // bundling for the browser with Browserify/Webpack.
-__webpack_require__(116);
+__webpack_require__(117);
 
 // Re-export `IntlMessageFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define
@@ -24941,13 +24943,13 @@ var storeShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = connectAdvanced;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_Subscription__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_Subscription__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_PropTypes__ = __webpack_require__(65);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -25230,8 +25232,8 @@ selectorFactory) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionTypes; });
 /* harmony export (immutable) */ __webpack_exports__["b"] = createStore;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 
 
@@ -25487,7 +25489,7 @@ var ActionTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(136);
 
 
 /** Built-in value references. */
@@ -25619,8 +25621,8 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = verifyPlainObject;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__warning__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__warning__ = __webpack_require__(37);
 
 
 
@@ -26026,15 +26028,15 @@ var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
-var _broadBrushHelper = __webpack_require__(177);
+var _broadBrushHelper = __webpack_require__(178);
 
 var _broadBrushHelper2 = _interopRequireDefault(_broadBrushHelper);
 
-var _segmentBrushHelper = __webpack_require__(178);
+var _segmentBrushHelper = __webpack_require__(179);
 
 var _segmentBrushHelper2 = _interopRequireDefault(_segmentBrushHelper);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _selection = __webpack_require__(3);
 
@@ -26480,7 +26482,7 @@ module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' stan
 
 // http://stackoverflow.com/questions/33505992/babel-6-changes-how-it-exports-default
 
-const lib = __webpack_require__(186)
+const lib = __webpack_require__(187)
 module.exports = lib.default
 
 
@@ -26511,21 +26513,21 @@ var _classnames = __webpack_require__(13);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _parseColor = __webpack_require__(200);
+var _parseColor = __webpack_require__(201);
 
 var _parseColor2 = _interopRequireDefault(_parseColor);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
-var _slider = __webpack_require__(203);
+var _slider = __webpack_require__(204);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _colorPicker = __webpack_require__(206);
+var _colorPicker = __webpack_require__(207);
 
 var _colorPicker2 = _interopRequireDefault(_colorPicker);
 
@@ -26804,17 +26806,17 @@ var _classnames = __webpack_require__(13);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _noFill = __webpack_require__(81);
 
 var _noFill2 = _interopRequireDefault(_noFill);
 
-var _mixedFill = __webpack_require__(208);
+var _mixedFill = __webpack_require__(209);
 
 var _mixedFill2 = _interopRequireDefault(_mixedFill);
 
-var _colorButton = __webpack_require__(209);
+var _colorButton = __webpack_require__(210);
 
 var _colorButton2 = _interopRequireDefault(_colorButton);
 
@@ -26880,6 +26882,82 @@ exports.default = ColorButtonComponent;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _classnames = __webpack_require__(13);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _button = __webpack_require__(42);
+
+var _button2 = _interopRequireDefault(_button);
+
+var _labeledIconButton = __webpack_require__(218);
+
+var _labeledIconButton2 = _interopRequireDefault(_labeledIconButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } /* @todo This file should be pulled out into a shared library with scratch-gui,
+                                                                                                                                                                                                                             consolidating this component with icon-button.jsx in gui.
+                                                                                                                                                                                                                             See #13 */
+
+var LabeledIconButton = function LabeledIconButton(_ref) {
+    var className = _ref.className,
+        imgAlt = _ref.imgAlt,
+        imgSrc = _ref.imgSrc,
+        onClick = _ref.onClick,
+        title = _ref.title,
+        props = _objectWithoutProperties(_ref, ['className', 'imgAlt', 'imgSrc', 'onClick', 'title']);
+
+    return _react2.default.createElement(
+        _button2.default,
+        _extends({
+            className: (0, _classnames2.default)(className, _labeledIconButton2.default.modEditField),
+            onClick: onClick
+        }, props),
+        _react2.default.createElement('img', {
+            alt: imgAlt,
+            className: _labeledIconButton2.default.editFieldIcon,
+            src: imgSrc
+        }),
+        _react2.default.createElement(
+            'span',
+            { className: _labeledIconButton2.default.editFieldTitle },
+            title
+        )
+    );
+};
+
+LabeledIconButton.propTypes = {
+    className: _propTypes2.default.string,
+    imgAlt: _propTypes2.default.string,
+    imgSrc: _propTypes2.default.string.isRequired,
+    onClick: _propTypes2.default.func.isRequired,
+    title: _propTypes2.default.string.isRequired
+};
+
+exports.default = LabeledIconButton;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var CHANGE_PEN_MODE = 'scratch-paint/pen-mode/CHANGE_PEN_MODE';
 var initialState = { brushEnabled: true, pointEnabled: false };
 
@@ -26905,13 +26983,13 @@ exports.default = reducer;
 exports.changePenMode = changePenMode;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Epen%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='pen' fill='%23575E75'%3E %3Cpath d='M9.27946052,8.11513566 L11.8843907,10.7200659 L7.2902411,15.3142155 C7.13236654,15.47209 6.87976725,15.47209 6.72189269,15.3142155 L6.53244322,15.124766 L5.06420984,16.5772119 C4.98527256,16.6561492 4.89054782,16.6877241 4.78003563,16.6877241 C4.66952344,16.6877241 4.57479871,16.6561492 4.49586143,16.5772119 L4.24326214,16.3246126 L3.67491373,16.8929611 C3.59597645,16.9718983 3.48546426,17.0034732 3.39073953,17.0034732 C3.2960148,17.0034732 3.1855026,16.9718983 3.10656533,16.8929611 C2.96447822,16.7350865 2.96447822,16.4824872 3.10656533,16.3246126 L3.67491373,15.7562642 L3.42231444,15.5036649 C3.34337716,15.4247277 3.31180225,15.3300029 3.31180225,15.2194907 C3.31180225,15.1089786 3.34337716,15.0142538 3.42231444,14.9353165 L4.89054782,13.4828706 L4.6853109,13.2776337 C4.52743634,13.1197591 4.52743634,12.8671598 4.6853109,12.7092853 L9.27946052,8.11513566 Z M12.6000004,10 L10,7.30000019 L12.7689619,4.62610794 L12.1690385,4.02618462 L8.08008751,8.0993482 C8.00115023,8.17828548 7.90642549,8.22564785 7.81170076,8.22564785 C7.70118857,8.22564785 7.60646384,8.17828548 7.52752656,8.0993482 C7.369652,7.94147365 7.369652,7.70466181 7.52752656,7.54678725 L11.8848643,3.18944947 C11.9638016,3.11051219 12.0585264,3.06314982 12.1690385,3.06314982 C12.2795507,3.06314982 12.3742755,3.11051219 12.4532127,3.18944947 L13.3215228,4.07354699 L14.158258,3.23681184 C14.4740071,2.92106272 14.9792057,2.92106272 15.2949548,3.23681184 L16.7631882,4.70504522 C17.0789373,5.02079433 17.0789373,5.52599292 16.7631882,5.84174203 L12.6000004,10 Z' id='pen-icon'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26931,7 +27009,7 @@ var _group = __webpack_require__(21);
 
 var _item = __webpack_require__(22);
 
-var _math = __webpack_require__(86);
+var _math = __webpack_require__(87);
 
 var _selection = __webpack_require__(3);
 
@@ -27110,7 +27188,7 @@ var MoveTool = function () {
 exports.default = MoveTool;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27160,7 +27238,7 @@ exports.getRandomBoolean = getRandomBoolean;
 exports.snapDeltaToAngle = snapDeltaToAngle;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27240,7 +27318,7 @@ var getHoveredItem = function getHoveredItem(event, hitOptions, subselect) {
 exports.getHoveredItem = getHoveredItem;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27311,7 +27389,7 @@ var SelectionBoxTool = function () {
 exports.default = SelectionBoxTool;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27324,13 +27402,13 @@ exports.updateIntl = exports.intlInitialState = exports.IntlProvider = exports.d
 
 var _reactIntl = __webpack_require__(17);
 
-var _reactIntlRedux = __webpack_require__(273);
+var _reactIntlRedux = __webpack_require__(275);
 
-var _scratchL10n = __webpack_require__(276);
+var _scratchL10n = __webpack_require__(278);
 
 var _scratchL10n2 = _interopRequireDefault(_scratchL10n);
 
-var _paintMsgs = __webpack_require__(277);
+var _paintMsgs = __webpack_require__(279);
 
 var _paintMsgs2 = _interopRequireDefault(_paintMsgs);
 
@@ -27362,7 +27440,7 @@ exports.intlInitialState = intlInitialState;
 exports.updateIntl = updateIntl;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27374,7 +27452,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _reactIntl = __webpack_require__(17);
 
@@ -27395,7 +27473,7 @@ var mapStateToProps = function mapStateToProps(state, _ref) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(_reactIntl.IntlProvider);
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27405,7 +27483,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -27421,15 +27499,15 @@ var _ = __webpack_require__(61);
 
 var _2 = _interopRequireDefault(_);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _redux = __webpack_require__(26);
+var _redux = __webpack_require__(27);
 
-var _combineReducers = __webpack_require__(272);
+var _combineReducers = __webpack_require__(274);
 
 var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-var _intl = __webpack_require__(89);
+var _intl = __webpack_require__(90);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27499,7 +27577,7 @@ _reactDom2.default.render(_react2.default.createElement(
 ), appTarget);
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27512,7 +27590,7 @@ _reactDom2.default.render(_react2.default.createElement(
  This source code is licensed under the MIT license found in the
  LICENSE file in the root directory of this source tree.
 */
-var f=__webpack_require__(25),p=__webpack_require__(27);__webpack_require__(19);var r=__webpack_require__(16);
+var f=__webpack_require__(26),p=__webpack_require__(30);__webpack_require__(19);var r=__webpack_require__(16);
 function t(a){for(var b=arguments.length-1,d="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,e=0;e<b;e++)d+="\x26args[]\x3d"+encodeURIComponent(arguments[e+1]);b=Error(d+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var u={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function v(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}v.prototype.isReactComponent={};v.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?t("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};v.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function w(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}function x(){}x.prototype=v.prototype;var y=w.prototype=new x;y.constructor=w;f(y,v.prototype);y.isPureReactComponent=!0;function z(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}var A=z.prototype=new x;A.constructor=z;f(A,v.prototype);A.unstable_isAsyncReactComponent=!0;A.render=function(){return this.props.children};
@@ -27529,7 +27607,7 @@ module.exports={Children:{map:S.map,forEach:S.forEach,count:S.count,toArray:S.to
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27549,12 +27627,12 @@ if (process.env.NODE_ENV !== "production") {
 
 'use strict';
 
-var objectAssign$1 = __webpack_require__(25);
-var require$$0 = __webpack_require__(28);
-var emptyObject = __webpack_require__(27);
+var objectAssign$1 = __webpack_require__(26);
+var require$$0 = __webpack_require__(31);
+var emptyObject = __webpack_require__(30);
 var invariant = __webpack_require__(19);
 var emptyFunction = __webpack_require__(16);
-var checkPropTypes = __webpack_require__(33);
+var checkPropTypes = __webpack_require__(34);
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -29235,7 +29313,7 @@ module.exports = ReactEntry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29249,7 +29327,7 @@ module.exports = ReactEntry;
  LICENSE file in the root directory of this source tree.
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0);__webpack_require__(19);var l=__webpack_require__(35),n=__webpack_require__(25),ba=__webpack_require__(56),ca=__webpack_require__(16),da=__webpack_require__(27),ea=__webpack_require__(57),fa=__webpack_require__(58),ha=__webpack_require__(59),ia=__webpack_require__(60);
+var aa=__webpack_require__(0);__webpack_require__(19);var l=__webpack_require__(36),n=__webpack_require__(26),ba=__webpack_require__(56),ca=__webpack_require__(16),da=__webpack_require__(30),ea=__webpack_require__(57),fa=__webpack_require__(58),ha=__webpack_require__(59),ia=__webpack_require__(60);
 function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
 function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
 var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -29498,7 +29576,7 @@ unstable_deferredUpdates:Xj.deferredUpdates,flushSync:Xj.flushSync,__SECRET_INTE
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29513,7 +29591,7 @@ unstable_deferredUpdates:Xj.deferredUpdates,flushSync:Xj.flushSync,__SECRET_INTE
  * @typechecks
  */
 
-var isNode = __webpack_require__(96);
+var isNode = __webpack_require__(97);
 
 /**
  * @param {*} object The object to check.
@@ -29526,7 +29604,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29554,7 +29632,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29576,17 +29654,17 @@ if (process.env.NODE_ENV !== "production") {
 
 var react = __webpack_require__(0);
 var invariant = __webpack_require__(19);
-var ExecutionEnvironment = __webpack_require__(35);
-var _assign = __webpack_require__(25);
+var ExecutionEnvironment = __webpack_require__(36);
+var _assign = __webpack_require__(26);
 var EventListener = __webpack_require__(56);
-var require$$0 = __webpack_require__(28);
-var hyphenateStyleName = __webpack_require__(98);
+var require$$0 = __webpack_require__(31);
+var hyphenateStyleName = __webpack_require__(99);
 var emptyFunction = __webpack_require__(16);
-var camelizeStyleName = __webpack_require__(100);
-var performanceNow = __webpack_require__(102);
+var camelizeStyleName = __webpack_require__(101);
+var performanceNow = __webpack_require__(103);
 var propTypes = __webpack_require__(1);
-var emptyObject = __webpack_require__(27);
-var checkPropTypes = __webpack_require__(33);
+var emptyObject = __webpack_require__(30);
+var checkPropTypes = __webpack_require__(34);
 var shallowEqual = __webpack_require__(57);
 var containsNode = __webpack_require__(58);
 var focusNode = __webpack_require__(59);
@@ -46783,7 +46861,7 @@ module.exports = ReactDOMFiberEntry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46798,7 +46876,7 @@ module.exports = ReactDOMFiberEntry;
 
 
 
-var hyphenate = __webpack_require__(99);
+var hyphenate = __webpack_require__(100);
 
 var msPattern = /^ms-/;
 
@@ -46825,7 +46903,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46861,7 +46939,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46876,7 +46954,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(101);
+var camelize = __webpack_require__(102);
 
 var msPattern = /^-ms-/;
 
@@ -46904,7 +46982,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46939,7 +47017,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46954,7 +47032,7 @@ module.exports = camelize;
  * @typechecks
  */
 
-var performance = __webpack_require__(103);
+var performance = __webpack_require__(104);
 
 var performanceNow;
 
@@ -46976,7 +47054,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46991,7 +47069,7 @@ module.exports = performanceNow;
 
 
 
-var ExecutionEnvironment = __webpack_require__(35);
+var ExecutionEnvironment = __webpack_require__(36);
 
 var performance;
 
@@ -47002,7 +47080,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = performance || {};
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47017,11 +47095,11 @@ module.exports = performance || {};
 
 var emptyFunction = __webpack_require__(16);
 var invariant = __webpack_require__(19);
-var warning = __webpack_require__(28);
-var assign = __webpack_require__(25);
+var warning = __webpack_require__(31);
+var assign = __webpack_require__(26);
 
-var ReactPropTypesSecret = __webpack_require__(34);
-var checkPropTypes = __webpack_require__(33);
+var ReactPropTypesSecret = __webpack_require__(35);
+var checkPropTypes = __webpack_require__(34);
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -47552,7 +47630,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47567,7 +47645,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 var emptyFunction = __webpack_require__(16);
 var invariant = __webpack_require__(19);
-var ReactPropTypesSecret = __webpack_require__(34);
+var ReactPropTypesSecret = __webpack_require__(35);
 
 module.exports = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -47617,7 +47695,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47637,13 +47715,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _paintEditor = __webpack_require__(107);
+var _paintEditor = __webpack_require__(108);
 
 var _paintEditor2 = _interopRequireDefault(_paintEditor);
 
 var _modes = __webpack_require__(14);
 
-var _undo = __webpack_require__(40);
+var _undo = __webpack_require__(41);
 
 var _selectedItems = __webpack_require__(9);
 
@@ -47663,9 +47741,9 @@ var _modes2 = __webpack_require__(5);
 
 var _modes3 = _interopRequireDefault(_modes2);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47895,7 +47973,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PaintEditor);
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47907,7 +47985,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47925,7 +48003,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _paperCanvas = __webpack_require__(127);
+var _paperCanvas = __webpack_require__(128);
 
 var _paperCanvas2 = _interopRequireDefault(_paperCanvas);
 
@@ -47933,15 +48011,15 @@ var _group = __webpack_require__(21);
 
 var _order = __webpack_require__(75);
 
-var _button = __webpack_require__(41);
+var _button = __webpack_require__(42);
 
 var _button2 = _interopRequireDefault(_button);
 
-var _buttonGroup = __webpack_require__(173);
+var _buttonGroup = __webpack_require__(174);
 
 var _buttonGroup2 = _interopRequireDefault(_buttonGroup);
 
-var _brushMode = __webpack_require__(176);
+var _brushMode = __webpack_require__(177);
 
 var _brushMode2 = _interopRequireDefault(_brushMode);
 
@@ -47949,11 +48027,11 @@ var _bufferedInputHoc = __webpack_require__(44);
 
 var _bufferedInputHoc2 = _interopRequireDefault(_bufferedInputHoc);
 
-var _eraserMode = __webpack_require__(182);
+var _eraserMode = __webpack_require__(183);
 
 var _eraserMode2 = _interopRequireDefault(_eraserMode);
 
-var _fillColorIndicator = __webpack_require__(184);
+var _fillColorIndicator = __webpack_require__(185);
 
 var _fillColorIndicator2 = _interopRequireDefault(_fillColorIndicator);
 
@@ -47961,7 +48039,7 @@ var _input = __webpack_require__(51);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _inputGroup = __webpack_require__(30);
+var _inputGroup = __webpack_require__(29);
 
 var _inputGroup2 = _interopRequireDefault(_inputGroup);
 
@@ -47969,7 +48047,7 @@ var _label = __webpack_require__(50);
 
 var _label2 = _interopRequireDefault(_label);
 
-var _labeledIconButton = __webpack_require__(217);
+var _labeledIconButton = __webpack_require__(83);
 
 var _labeledIconButton2 = _interopRequireDefault(_labeledIconButton);
 
@@ -47981,79 +48059,79 @@ var _modeTools = __webpack_require__(223);
 
 var _modeTools2 = _interopRequireDefault(_modeTools);
 
-var _ovalMode = __webpack_require__(228);
+var _ovalMode = __webpack_require__(230);
 
 var _ovalMode2 = _interopRequireDefault(_ovalMode);
 
-var _penMode = __webpack_require__(234);
+var _penMode = __webpack_require__(236);
 
 var _penMode2 = _interopRequireDefault(_penMode);
 
-var _rectMode = __webpack_require__(238);
+var _rectMode = __webpack_require__(240);
 
 var _rectMode2 = _interopRequireDefault(_rectMode);
 
-var _reshapeMode = __webpack_require__(242);
+var _reshapeMode = __webpack_require__(244);
 
 var _reshapeMode2 = _interopRequireDefault(_reshapeMode);
 
-var _selectMode = __webpack_require__(248);
+var _selectMode = __webpack_require__(250);
 
 var _selectMode2 = _interopRequireDefault(_selectMode);
 
-var _strokeColorIndicator = __webpack_require__(252);
+var _strokeColorIndicator = __webpack_require__(254);
 
 var _strokeColorIndicator2 = _interopRequireDefault(_strokeColorIndicator);
 
-var _strokeWidthIndicator = __webpack_require__(254);
+var _strokeWidthIndicator = __webpack_require__(256);
 
 var _strokeWidthIndicator2 = _interopRequireDefault(_strokeWidthIndicator);
 
-var _paintEditor = __webpack_require__(256);
+var _paintEditor = __webpack_require__(258);
 
 var _paintEditor2 = _interopRequireDefault(_paintEditor);
 
-var _group2 = __webpack_require__(258);
+var _group2 = __webpack_require__(260);
 
 var _group3 = _interopRequireDefault(_group2);
 
-var _redo = __webpack_require__(259);
+var _redo = __webpack_require__(261);
 
 var _redo2 = _interopRequireDefault(_redo);
 
-var _sendBack = __webpack_require__(260);
+var _sendBack = __webpack_require__(262);
 
 var _sendBack2 = _interopRequireDefault(_sendBack);
 
-var _sendBackward = __webpack_require__(261);
+var _sendBackward = __webpack_require__(263);
 
 var _sendBackward2 = _interopRequireDefault(_sendBackward);
 
-var _sendForward = __webpack_require__(262);
+var _sendForward = __webpack_require__(264);
 
 var _sendForward2 = _interopRequireDefault(_sendForward);
 
-var _sendFront = __webpack_require__(263);
+var _sendFront = __webpack_require__(265);
 
 var _sendFront2 = _interopRequireDefault(_sendFront);
 
-var _undo = __webpack_require__(264);
+var _undo = __webpack_require__(266);
 
 var _undo2 = _interopRequireDefault(_undo);
 
-var _ungroup = __webpack_require__(265);
+var _ungroup = __webpack_require__(267);
 
 var _ungroup2 = _interopRequireDefault(_ungroup);
 
-var _zoomIn = __webpack_require__(266);
+var _zoomIn = __webpack_require__(268);
 
 var _zoomIn2 = _interopRequireDefault(_zoomIn);
 
-var _zoomOut = __webpack_require__(267);
+var _zoomOut = __webpack_require__(269);
 
 var _zoomOut2 = _interopRequireDefault(_zoomOut);
 
-var _zoomReset = __webpack_require__(268);
+var _zoomReset = __webpack_require__(270);
 
 var _zoomReset2 = _interopRequireDefault(_zoomReset);
 
@@ -48072,6 +48150,38 @@ var messages = (0, _reactIntl.defineMessages)({
     costume: {
         'id': 'paint.paintEditor.costume',
         'defaultMessage': 'Costume'
+    },
+    group: {
+        'id': 'paint.paintEditor.group',
+        'defaultMessage': 'Group'
+    },
+    ungroup: {
+        'id': 'paint.paintEditor.ungroup',
+        'defaultMessage': 'Ungroup'
+    },
+    undo: {
+        'id': 'paint.paintEditor.undo',
+        'defaultMessage': 'Undo'
+    },
+    redo: {
+        'id': 'paint.paintEditor.redo',
+        'defaultMessage': 'Redo'
+    },
+    forward: {
+        'id': 'paint.paintEditor.forward',
+        'defaultMessage': 'Forward'
+    },
+    backward: {
+        'id': 'paint.paintEditor.backward',
+        'defaultMessage': 'Backward'
+    },
+    front: {
+        'id': 'paint.paintEditor.front',
+        'defaultMessage': 'Front'
+    },
+    back: {
+        'id': 'paint.paintEditor.back',
+        'defaultMessage': 'Back'
     }
 });
 
@@ -48135,7 +48245,7 @@ var PaintEditorComponent = function (_React$Component) {
                                         onClick: this.props.onUndo
                                     },
                                     _react2.default.createElement('img', {
-                                        alt: 'Undo',
+                                        alt: this.props.intl.formatMessage(messages.undo),
                                         className: _paintEditor2.default.buttonGroupButtonIcon,
                                         src: _undo2.default
                                     })
@@ -48148,7 +48258,7 @@ var PaintEditorComponent = function (_React$Component) {
                                         onClick: this.props.onRedo
                                     },
                                     _react2.default.createElement('img', {
-                                        alt: 'Redo',
+                                        alt: this.props.intl.formatMessage(messages.redo),
                                         className: _paintEditor2.default.buttonGroupButtonIcon,
                                         src: _redo2.default
                                     })
@@ -48160,16 +48270,14 @@ var PaintEditorComponent = function (_React$Component) {
                             { className: _paintEditor2.default.modDashedBorder },
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _group.shouldShowGroup)(),
-                                imgAlt: 'Group',
                                 imgSrc: _group3.default,
-                                title: 'Group',
+                                title: this.props.intl.formatMessage(messages.group),
                                 onClick: this.props.onGroup
                             }),
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _group.shouldShowUngroup)(),
-                                imgAlt: 'Ungroup',
                                 imgSrc: _ungroup2.default,
-                                title: 'Ungroup',
+                                title: this.props.intl.formatMessage(messages.ungroup),
                                 onClick: this.props.onUngroup
                             })
                         ),
@@ -48178,16 +48286,14 @@ var PaintEditorComponent = function (_React$Component) {
                             { className: _paintEditor2.default.modDashedBorder },
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _order.shouldShowBringForward)(),
-                                imgAlt: 'Send Forward',
                                 imgSrc: _sendForward2.default,
-                                title: 'Forward',
+                                title: this.props.intl.formatMessage(messages.forward),
                                 onClick: this.props.onSendForward
                             }),
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _order.shouldShowSendBackward)(),
-                                imgAlt: 'Send Backward',
                                 imgSrc: _sendBackward2.default,
-                                title: 'Backward',
+                                title: this.props.intl.formatMessage(messages.backward),
                                 onClick: this.props.onSendBackward
                             })
                         ),
@@ -48196,16 +48302,14 @@ var PaintEditorComponent = function (_React$Component) {
                             null,
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _order.shouldShowBringForward)(),
-                                imgAlt: 'Send to Front',
                                 imgSrc: _sendFront2.default,
-                                title: 'Front',
+                                title: this.props.intl.formatMessage(messages.front),
                                 onClick: this.props.onSendToFront
                             }),
                             _react2.default.createElement(_labeledIconButton2.default, {
                                 disabled: !(0, _order.shouldShowSendBackward)(),
-                                imgAlt: 'Send to Back',
                                 imgSrc: _sendBack2.default,
-                                title: 'Back',
+                                title: this.props.intl.formatMessage(messages.back),
                                 onClick: this.props.onSendToBack
                             })
                         )
@@ -48214,8 +48318,10 @@ var PaintEditorComponent = function (_React$Component) {
                         'div',
                         { className: _paintEditor2.default.row },
                         _react2.default.createElement(
-                            'div',
-                            { className: (0, _classnames2.default)(_paintEditor2.default.row, _paintEditor2.default.modDashedBorder) },
+                            _inputGroup2.default,
+                            {
+                                className: (0, _classnames2.default)(_paintEditor2.default.row, _paintEditor2.default.modDashedBorder, _paintEditor2.default.modLabeledIconHeight)
+                            },
                             _react2.default.createElement(_fillColorIndicator2.default, {
                                 onUpdateSvg: this.props.onUpdateSvg
                             }),
@@ -48355,20 +48461,20 @@ PaintEditorComponent.propTypes = {
 exports.default = (0, _reactIntl.injectIntl)(PaintEditorComponent);
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* jslint esnext: true */
 
 
-var src$core$$ = __webpack_require__(110), src$en$$ = __webpack_require__(115);
+var src$core$$ = __webpack_require__(111), src$en$$ = __webpack_require__(116);
 
 src$core$$["default"].__addLocaleData(src$en$$["default"]);
 src$core$$["default"].defaultLocale = 'en';
@@ -48378,7 +48484,7 @@ exports["default"] = src$core$$["default"];
 //# sourceMappingURL=main.js.map
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48391,7 +48497,7 @@ See the accompanying LICENSE file for terms.
 /* jslint esnext: true */
 
 
-var src$utils$$ = __webpack_require__(63), src$es5$$ = __webpack_require__(111), src$compiler$$ = __webpack_require__(112), intl$messageformat$parser$$ = __webpack_require__(113);
+var src$utils$$ = __webpack_require__(63), src$es5$$ = __webpack_require__(112), src$compiler$$ = __webpack_require__(113), intl$messageformat$parser$$ = __webpack_require__(114);
 exports["default"] = MessageFormat;
 
 // -- MessageFormat --------------------------------------------------------
@@ -48661,7 +48767,7 @@ MessageFormat.prototype._resolveLocale = function (locales) {
 //# sourceMappingURL=core.js.map
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48717,7 +48823,7 @@ exports.defineProperty = defineProperty, exports.objCreate = objCreate;
 //# sourceMappingURL=es5.js.map
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48932,18 +49038,18 @@ SelectFormat.prototype.getOption = function (value) {
 //# sourceMappingURL=compiler.js.map
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports = module.exports = __webpack_require__(114)['default'];
+exports = module.exports = __webpack_require__(115)['default'];
 exports['default'] = exports;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50308,7 +50414,7 @@ exports["default"] = (function() {
 //# sourceMappingURL=parser.js.map
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50319,13 +50425,13 @@ exports["default"] = {"locale":"en","pluralRuleFunction":function (n,ord){var s=
 //# sourceMappingURL=en.js.map
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50333,11 +50439,11 @@ exports["default"] = {"locale":"en","pluralRuleFunction":function (n,ord){var s=
 
 
 
-var IntlRelativeFormat = __webpack_require__(118)['default'];
+var IntlRelativeFormat = __webpack_require__(119)['default'];
 
 // Add all locale data to `IntlRelativeFormat`. This module will be ignored when
 // bundling for the browser with Browserify/Webpack.
-__webpack_require__(123);
+__webpack_require__(124);
 
 // Re-export `IntlRelativeFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define
@@ -50347,14 +50453,14 @@ exports['default'] = exports;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* jslint esnext: true */
 
 
-var src$core$$ = __webpack_require__(119), src$en$$ = __webpack_require__(122);
+var src$core$$ = __webpack_require__(120), src$en$$ = __webpack_require__(123);
 
 src$core$$["default"].__addLocaleData(src$en$$["default"]);
 src$core$$["default"].defaultLocale = 'en';
@@ -50364,7 +50470,7 @@ exports["default"] = src$core$$["default"];
 //# sourceMappingURL=main.js.map
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50377,7 +50483,7 @@ See the accompanying LICENSE file for terms.
 /* jslint esnext: true */
 
 
-var intl$messageformat$$ = __webpack_require__(62), src$diff$$ = __webpack_require__(120), src$es5$$ = __webpack_require__(121);
+var intl$messageformat$$ = __webpack_require__(62), src$diff$$ = __webpack_require__(121), src$es5$$ = __webpack_require__(122);
 exports["default"] = RelativeFormat;
 
 // -----------------------------------------------------------------------------
@@ -50677,7 +50783,7 @@ RelativeFormat.prototype._selectUnits = function (diffReport) {
 //# sourceMappingURL=core.js.map
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50736,7 +50842,7 @@ exports["default"] = function (from, to) {
 //# sourceMappingURL=diff.js.map
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50818,7 +50924,7 @@ exports.defineProperty = defineProperty, exports.objCreate = objCreate, exports.
 //# sourceMappingURL=es5.js.map
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50829,21 +50935,10 @@ exports["default"] = {"locale":"en","pluralRuleFunction":function (n,ord){var s=
 //# sourceMappingURL=en.js.map
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports = module.exports = __webpack_require__(125)['default'];
-exports['default'] = exports;
-
 
 /***/ }),
 /* 125 */
@@ -50851,7 +50946,18 @@ exports['default'] = exports;
 
 "use strict";
 
-var src$es5$$ = __webpack_require__(126);
+
+exports = module.exports = __webpack_require__(126)['default'];
+exports['default'] = exports;
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var src$es5$$ = __webpack_require__(127);
 exports["default"] = createFormatCache;
 
 // -----------------------------------------------------------------------------
@@ -50927,7 +51033,7 @@ function orderedProps(obj) {
 //# sourceMappingURL=memoizer.js.map
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51012,7 +51118,7 @@ exports.bind = bind, exports.defineProperty = defineProperty, exports.objCreate 
 //# sourceMappingURL=es5.js.map
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51024,7 +51130,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -51036,7 +51142,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _paper = __webpack_require__(2);
 
@@ -51048,7 +51154,7 @@ var _modes2 = _interopRequireDefault(_modes);
 
 var _undo = __webpack_require__(72);
 
-var _undo2 = __webpack_require__(40);
+var _undo2 = __webpack_require__(41);
 
 var _group = __webpack_require__(21);
 
@@ -51060,7 +51166,7 @@ var _view = __webpack_require__(74);
 
 var _selectedItems = __webpack_require__(9);
 
-var _paperCanvas = __webpack_require__(168);
+var _paperCanvas = __webpack_require__(169);
 
 var _paperCanvas2 = _interopRequireDefault(_paperCanvas);
 
@@ -51302,7 +51408,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PaperCanvas);
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51312,7 +51418,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_PropTypes__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(37);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -51389,7 +51495,7 @@ function createProvider() {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51446,7 +51552,7 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51542,17 +51648,17 @@ var Subscription = function () {
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export createConnect */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_connectAdvanced__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_shallowEqual__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mapDispatchToProps__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mapStateToProps__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mergeProps__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__selectorFactory__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_shallowEqual__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mapDispatchToProps__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mapStateToProps__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mergeProps__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__selectorFactory__ = __webpack_require__(152);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -51658,7 +51764,7 @@ function createConnect() {
 /* harmony default export */ __webpack_exports__["a"] = (createConnect());
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51695,14 +51801,14 @@ function shallowEqual(objA, objB) {
 }
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export whenMapDispatchToPropsIsFunction */
 /* unused harmony export whenMapDispatchToPropsIsMissing */
 /* unused harmony export whenMapDispatchToPropsIsObject */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wrapMapToProps__ = __webpack_require__(70);
 
 
@@ -51726,13 +51832,13 @@ function whenMapDispatchToPropsIsObject(mapDispatchToProps) {
 /* harmony default export */ __webpack_exports__["a"] = ([whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject]);
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(139);
 
 
 
@@ -51764,11 +51870,11 @@ function baseGetTag(value) {
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(137);
 
 
 /** Detect free variable `self`. */
@@ -51781,7 +51887,7 @@ var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || fr
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51790,10 +51896,10 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 /* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(33)))
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51847,7 +51953,7 @@ function getRawTag(value) {
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51876,11 +51982,11 @@ function objectToString(value) {
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(141);
 
 
 /** Built-in value references. */
@@ -51890,7 +51996,7 @@ var getPrototype = Object(__WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* defau
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51912,7 +52018,7 @@ function overArg(func, transform) {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51948,14 +52054,14 @@ function isObjectLike(value) {
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(143);
+module.exports = __webpack_require__(144);
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51965,7 +52071,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ponyfill = __webpack_require__(145);
+var _ponyfill = __webpack_require__(146);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -51988,10 +52094,10 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32), __webpack_require__(144)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33), __webpack_require__(145)(module)))
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -52019,7 +52125,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52048,14 +52154,14 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(39);
 
 
 
@@ -52189,12 +52295,12 @@ function combineReducers(reducers) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = bindActionCreators;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(39);
 
 
 function bindActionCreator(actionCreator, dispatch) {
@@ -52248,7 +52354,7 @@ function bindActionCreators(actionCreators, dispatch) {
 }
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52304,7 +52410,7 @@ function applyMiddleware() {
 }
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52326,7 +52432,7 @@ function whenMapStateToPropsIsMissing(mapStateToProps) {
 /* harmony default export */ __webpack_exports__["a"] = ([whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing]);
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52383,14 +52489,14 @@ function whenMergePropsIsOmitted(mergeProps) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* unused harmony export impureFinalPropsSelectorFactory */
 /* unused harmony export pureFinalPropsSelectorFactory */
 /* harmony export (immutable) */ __webpack_exports__["a"] = finalPropsSelectorFactory;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__verifySubselectors__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__verifySubselectors__ = __webpack_require__(153);
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 
@@ -52496,12 +52602,12 @@ function finalPropsSelectorFactory(dispatch, _ref2) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = verifySubselectors;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(37);
 
 
 function verify(selector, methodName, displayName) {
@@ -52521,13 +52627,13 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, dis
 }
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56257,27 +56363,27 @@ function addLooseExports(parse, Parser$$1, plugins$$1) {
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAGQCAIAAADX0QWRAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAALjvSURBVHhe7NkxDQAxAAOx8uf5OL7SyUNBxOMByJLzPf6HFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSjhYtUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUHapIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUnaoIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZoYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZYcqUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipQdqkiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSdqgiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNmhihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJlhypSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlB2qSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVJ2qCJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUHapIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUnaoIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZoYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZYcqUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipQdqkiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSdqgiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNmhihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJlhypSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlB2qSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVJ2qCJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUHapIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUnaoIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZoYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZYcqUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipQdqkiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSdqgiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNmhihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJlhypSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlB2qSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVJ2qCJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRctmzYxoAAACEYf5dkyyVQc8J4EGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKT9UkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqT8UEWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8kMVKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcoPVaRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpP1SRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpPxQRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHyQxUpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyg9VpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCk/VJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKk/FBFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJDFSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKD1WkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKT9UkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqT8UEWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8kMVKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcoPVaRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpP1SRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpPxQRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHyQxUpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyg9VpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCk/VJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKk/FBFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJDFSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKD1WkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKT9UkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqT8UEWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8kMVKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcoPVaRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpP1SRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpPxQRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHyQxUpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyg9VpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCk/VJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKk/FBFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJDFSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFyscdKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKD1WkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKR93pEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCkfd6RIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpH3ekSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKT9UkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqR83JEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkfNyRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpHzckSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqT8UEWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8nFHihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkfJxR4oUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJHycUeKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiR8kMVKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRcrHHSlSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkXKxx0pUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIWXt2TAMADMRAjD/qb3UyjHg8AFkiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlB2qSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVJ2qCJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUHapIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUnaoIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZoYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZYcqUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipQdqkiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSdqgiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNmhihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJlhypSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlB2qSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVJ2qCJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2aGKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImWHKlKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUHapIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUnaoIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZuCNFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRI2bgjRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSNm4I0WKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEjZoYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZeOOFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRImXjjhQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJl444UKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiZYcqUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipSNO1KkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYqUjTtSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKlI07UqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFipQdqkiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSNu5IkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUqRIkSJFihQpUjbuSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYoUKVI27kiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFClSpEiRIkWKFCnSd/cAxWgVWYpYYG0AAAAASUVORK5CYII="
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Minilog = __webpack_require__(158);
+var Minilog = __webpack_require__(159);
 
 var oldEnable = Minilog.enable,
     oldDisable = Minilog.disable,
     isChrome = (typeof navigator != 'undefined' && /chrome/i.test(navigator.userAgent)),
-    console = __webpack_require__(161);
+    console = __webpack_require__(162);
 
 // Use a more capable logging backend if on Chrome
 Minilog.defaultBackend = (isChrome ? console.minilog : console);
@@ -56309,19 +56415,19 @@ Minilog.disable = function() {
 exports = module.exports = Minilog;
 
 exports.backends = {
-  array: __webpack_require__(164),
+  array: __webpack_require__(165),
   browser: Minilog.defaultBackend,
-  localStorage: __webpack_require__(165),
-  jQuery: __webpack_require__(166)
+  localStorage: __webpack_require__(166),
+  jQuery: __webpack_require__(167)
 };
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18),
-    Filter = __webpack_require__(160);
+    Filter = __webpack_require__(161);
 
 var log = new Transform(),
     slice = Array.prototype.slice;
@@ -56368,7 +56474,7 @@ exports.enable = function() {
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports) {
 
 function M() { this._events = {}; }
@@ -56424,7 +56530,7 @@ module.exports = M;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // default filter
@@ -56486,7 +56592,7 @@ module.exports = Filter;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18);
@@ -56517,14 +56623,14 @@ logger.write = function(name, level, args) {
 };
 
 logger.formatters = ['color', 'minilog'];
-logger.color = __webpack_require__(162);
-logger.minilog = __webpack_require__(163);
+logger.color = __webpack_require__(163);
+logger.minilog = __webpack_require__(164);
 
 module.exports = logger;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18),
@@ -56548,7 +56654,7 @@ module.exports = logger;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18),
@@ -56580,7 +56686,7 @@ module.exports = logger;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18),
@@ -56600,7 +56706,7 @@ module.exports = logger;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18),
@@ -56620,7 +56726,7 @@ logger.write = function(name, level, args) {
 module.exports = logger;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Transform = __webpack_require__(18);
@@ -56700,7 +56806,7 @@ module.exports = AjaxLogger;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56734,13 +56840,13 @@ exports.isCompoundPathChild = isCompoundPathChild;
 exports.getItemsCompoundPath = getItemsCompoundPath;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(169);
+var content = __webpack_require__(170);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -56765,7 +56871,7 @@ if(false) {
 }
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -56782,7 +56888,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports) {
 
 
@@ -56877,13 +56983,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(173);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -56908,7 +57014,7 @@ if(false) {
 }
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -56926,7 +57032,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56948,7 +57054,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _buttonGroup = __webpack_require__(174);
+var _buttonGroup = __webpack_require__(175);
 
 var _buttonGroup2 = _interopRequireDefault(_buttonGroup);
 
@@ -56970,13 +57076,13 @@ ButtonGroup.propTypes = {
 exports.default = ButtonGroup;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(175);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -57001,7 +57107,7 @@ if(false) {
 }
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -57018,7 +57124,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57040,9 +57146,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -57054,9 +57160,9 @@ var _blob = __webpack_require__(76);
 
 var _blob2 = _interopRequireDefault(_blob);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
-var _fillColor = __webpack_require__(42);
+var _fillColor = __webpack_require__(28);
 
 var _brushMode = __webpack_require__(43);
 
@@ -57066,7 +57172,7 @@ var _selectedItems = __webpack_require__(9);
 
 var _selection = __webpack_require__(3);
 
-var _brushMode2 = __webpack_require__(179);
+var _brushMode2 = __webpack_require__(180);
 
 var _brushMode3 = _interopRequireDefault(_brushMode2);
 
@@ -57080,13 +57186,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var BrushMode = function (_React$Component) {
     _inherits(BrushMode, _React$Component);
-
-    _createClass(BrushMode, null, [{
-        key: 'DEFAULT_COLOR',
-        get: function get() {
-            return '#9966FF';
-        }
-    }]);
 
     function BrushMode(props) {
         _classCallCheck(this, BrushMode);
@@ -57133,7 +57232,7 @@ var BrushMode = function (_React$Component) {
             var fillColor = this.props.colorState.fillColor;
 
             if (fillColor === _stylePath.MIXED || fillColor === null) {
-                this.props.onChangeFillColor(BrushMode.DEFAULT_COLOR);
+                this.props.onChangeFillColor(_fillColor.DEFAULT_COLOR);
             }
             this.blob.activateTool(_extends({
                 isEraser: false
@@ -57200,7 +57299,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BrushMode);
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57217,7 +57316,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57340,7 +57439,7 @@ var BroadBrushHelper = function () {
 exports.default = BroadBrushHelper;
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57356,7 +57455,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57466,7 +57565,7 @@ var SegmentBrushHelper = function () {
 exports.default = SegmentBrushHelper;
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57515,13 +57614,13 @@ BrushModeComponent.propTypes = {
 exports.default = BrushModeComponent;
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(181);
+var content = __webpack_require__(182);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -57546,7 +57645,7 @@ if(false) {
 }
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -57567,7 +57666,7 @@ exports.locals = {
 };
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57589,9 +57688,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -57607,7 +57706,7 @@ var _eraserMode = __webpack_require__(45);
 
 var _selectedItems = __webpack_require__(9);
 
-var _eraserMode2 = __webpack_require__(183);
+var _eraserMode2 = __webpack_require__(184);
 
 var _eraserMode3 = _interopRequireDefault(_eraserMode2);
 
@@ -57715,7 +57814,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(EraserMode);
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57764,7 +57863,7 @@ EraserModeComponent.propTypes = {
 exports.default = EraserModeComponent;
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57778,7 +57877,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _propTypes = __webpack_require__(1);
 
@@ -57788,11 +57887,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _fillColor = __webpack_require__(42);
+var _fillColor = __webpack_require__(28);
 
 var _modals = __webpack_require__(46);
 
@@ -57800,11 +57899,11 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _fillColorIndicator = __webpack_require__(185);
+var _fillColorIndicator = __webpack_require__(186);
 
 var _fillColorIndicator2 = _interopRequireDefault(_fillColorIndicator);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57899,7 +57998,7 @@ FillColorIndicator.propTypes = {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FillColorIndicator);
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57931,7 +58030,7 @@ var _colorButton = __webpack_require__(82);
 
 var _colorButton2 = _interopRequireDefault(_colorButton);
 
-var _inputGroup = __webpack_require__(30);
+var _inputGroup = __webpack_require__(29);
 
 var _inputGroup2 = _interopRequireDefault(_inputGroup);
 
@@ -57988,7 +58087,7 @@ FillColorIndicatorComponent.propTypes = {
 exports.default = (0, _reactIntl.injectIntl)(FillColorIndicatorComponent);
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58014,27 +58113,27 @@ var _reactDom = __webpack_require__(55);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _debug = __webpack_require__(187);
+var _debug = __webpack_require__(188);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _lodash = __webpack_require__(190);
+var _lodash = __webpack_require__(191);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _cssVendor = __webpack_require__(193);
+var _cssVendor = __webpack_require__(194);
 
 var cssVendor = _interopRequireWildcard(_cssVendor);
 
-var _onResize = __webpack_require__(197);
+var _onResize = __webpack_require__(198);
 
 var _onResize2 = _interopRequireDefault(_onResize);
 
-var _layout = __webpack_require__(198);
+var _layout = __webpack_require__(199);
 
 var _layout2 = _interopRequireDefault(_layout);
 
-var _platform = __webpack_require__(29);
+var _platform = __webpack_require__(32);
 
 var _platform2 = _interopRequireDefault(_platform);
 
@@ -58042,7 +58141,7 @@ var _utils = __webpack_require__(49);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _tip = __webpack_require__(199);
+var _tip = __webpack_require__(200);
 
 var _tip2 = _interopRequireDefault(_tip);
 
@@ -58555,7 +58654,7 @@ Popover.defaultProps = {
 exports.default = Popover;
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58564,7 +58663,7 @@ exports.default = Popover;
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(188);
+exports = module.exports = __webpack_require__(189);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -58747,7 +58846,7 @@ function localstorage() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -58763,7 +58862,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(189);
+exports.humanize = __webpack_require__(190);
 
 /**
  * The currently active debug mode names, and names to skip.
@@ -58955,7 +59054,7 @@ function coerce(val) {
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports) {
 
 /**
@@ -59113,7 +59212,7 @@ function plural(ms, n, name) {
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -59124,7 +59223,7 @@ function plural(ms, n, name) {
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var debounce = __webpack_require__(191);
+var debounce = __webpack_require__(192);
 
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -59215,7 +59314,7 @@ module.exports = throttle;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -59226,7 +59325,7 @@ module.exports = throttle;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var getNative = __webpack_require__(192);
+var getNative = __webpack_require__(193);
 
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -59455,7 +59554,7 @@ module.exports = debounce;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports) {
 
 /**
@@ -59598,7 +59697,7 @@ module.exports = getNative;
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59613,11 +59712,11 @@ var _prefix = __webpack_require__(47);
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
-var _supportedProperty = __webpack_require__(194);
+var _supportedProperty = __webpack_require__(195);
 
 var _supportedProperty2 = _interopRequireDefault(_supportedProperty);
 
-var _supportedValue = __webpack_require__(196);
+var _supportedValue = __webpack_require__(197);
 
 var _supportedValue2 = _interopRequireDefault(_supportedValue);
 
@@ -59640,7 +59739,7 @@ exports.supportedProperty = _supportedProperty2['default'];
 exports.supportedValue = _supportedValue2['default'];
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59659,7 +59758,7 @@ var _prefix = __webpack_require__(47);
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
-var _camelize = __webpack_require__(195);
+var _camelize = __webpack_require__(196);
 
 var _camelize2 = _interopRequireDefault(_camelize);
 
@@ -59718,7 +59817,7 @@ function supportedProperty(prop) {
 }
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59745,7 +59844,7 @@ function toUpper(match, c) {
 }
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59825,7 +59924,7 @@ function supportedValue(property, value) {
 }
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59836,7 +59935,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.removeEventListener = exports.addEventListener = exports.off = exports.on = undefined;
 
-var _platform = __webpack_require__(29);
+var _platform = __webpack_require__(32);
 
 var _utils = __webpack_require__(49);
 
@@ -59950,7 +60049,7 @@ exports.addEventListener = on;
 exports.removeEventListener = off;
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59961,7 +60060,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.equalCoords = exports.doesFitWithin = exports.centerOfBoundsFromBounds = exports.centerOfBounds = exports.centerOfSize = exports.axes = exports.pickZone = exports.place = exports.calcRelPos = exports.validTypeValues = exports.types = exports.El = undefined;
 
-var _platform = __webpack_require__(29);
+var _platform = __webpack_require__(32);
 
 var _utils = __webpack_require__(49);
 
@@ -60197,7 +60296,7 @@ exports.doesFitWithin = doesFitWithin;
 exports.equalCoords = _utils.equalRecords;
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60240,10 +60339,10 @@ var Tip = function Tip(props) {
 exports.default = Tip;
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var convert = __webpack_require__(201);
+var convert = __webpack_require__(202);
 
 module.exports = function (cstr) {
     var m, conv, parts, alpha;
@@ -60329,10 +60428,10 @@ module.exports = function (cstr) {
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(202);
+var conversions = __webpack_require__(203);
 
 var convert = function() {
    return new Converter();
@@ -60426,7 +60525,7 @@ Converter.prototype.getValues = function(space) {
 module.exports = convert;
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports) {
 
 /* MIT license */
@@ -61130,7 +61229,7 @@ for (var key in cssKeywords) {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61150,11 +61249,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _slider = __webpack_require__(204);
+var _slider = __webpack_require__(205);
 
 var _slider2 = _interopRequireDefault(_slider);
 
@@ -61249,13 +61348,13 @@ SliderComponent.defaultProps = {
 exports.default = SliderComponent;
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61280,7 +61379,7 @@ if(false) {
 }
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61297,13 +61396,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61328,7 +61427,7 @@ if(false) {
 }
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61354,19 +61453,19 @@ exports.locals = {
 };
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Emixed-fill%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' fill-opacity='0.75'%3E %3Cg id='mixed-fill'%3E %3Cg id='mixed-fill-icon' transform='translate(2.000000, 2.500000)'%3E %3Ccircle id='blue' fill='%234C97FF' cx='4.5' cy='10.5' r='4.5'%3E%3C/circle%3E %3Ccircle id='red' fill='%23FF5500' cx='8' cy='4.5' r='4.5'%3E%3C/circle%3E %3Ccircle id='yellow' fill='%23FFBF00' cx='11.4099998' cy='10.5' r='4.5'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(210);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61391,7 +61490,7 @@ if(false) {
 }
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61416,13 +61515,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(212);
+var content = __webpack_require__(213);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61447,7 +61546,7 @@ if(false) {
 }
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61465,13 +61564,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(214);
+var content = __webpack_require__(215);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61496,7 +61595,7 @@ if(false) {
 }
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61517,13 +61616,13 @@ exports.locals = {
 };
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(216);
+var content = __webpack_require__(217);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61548,7 +61647,7 @@ if(false) {
 }
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -61556,7 +61655,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n.input_input-form_l9eYg {\n    height: 2rem;\n    padding: 0 0.75rem;\n\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 0.75rem;\n    font-weight: bold;\n    color: #575e75;\n\n    border-width: 1px;\n    border-style: solid;\n    border-color: #E9EEF2;\n    border-radius: 2rem;\n\n    outline: none;\n    cursor: text;\n    -webkit-transition: 0.25s ease-out;\n    -o-transition: 0.25s ease-out;\n    transition: 0.25s ease-out; /* @todo: standardize with var */\n    -webkit-box-shadow: none;\n            box-shadow: none;\n\n    /*\n        For truncating overflowing text gracefully\n        Min-width is for a bug: https://css-tricks.com/flexbox-truncated-text\n        @todo: move this out into a mixin or a helper component\n    */\n    overflow: hidden;\n    -o-text-overflow: ellipsis;\n       text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 0;\n}\n\n.input_input-form_l9eYg:focus {\n    border-color: #4C97FF;\n    -webkit-box-shadow: 0 0 0 .25rem hsla(215, 100%, 65%, 0.20);\n            box-shadow: 0 0 0 .25rem hsla(215, 100%, 65%, 0.20);\n}\n\n.input_input-small_2qj1C {\n    width: 3rem; \n    text-align: center;\n}\n", ""]);
+exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n.input_input-form_l9eYg {\n    height: 2rem;\n    padding: 0 0.75rem;\n\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 0.75rem;\n    font-weight: bold;\n    color: #575e75;\n\n    border-width: 1px;\n    border-style: solid;\n    border-color: #E9EEF2;\n    border-radius: 2rem;\n\n    outline: none;\n    cursor: text;\n    -webkit-transition: 0.25s ease-out;\n    -o-transition: 0.25s ease-out;\n    transition: 0.25s ease-out; /* @todo: standardize with var */\n    -webkit-box-shadow: none;\n            box-shadow: none;\n\n    /*\n        For truncating overflowing text gracefully\n        Min-width is for a bug: https://css-tricks.com/flexbox-truncated-text\n        @todo: move this out into a mixin or a helper component\n    */\n    overflow: hidden;\n    -o-text-overflow: ellipsis;\n       text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 0;\n}\n\n.input_input-form_l9eYg:focus {\n    border-color: #4C97FF;\n    -webkit-box-shadow: 0 0 0 .25rem hsla(215, 100%, 65%, 0.20);\n            box-shadow: 0 0 0 .25rem hsla(215, 100%, 65%, 0.20);\n}\n\n.input_input-small_2qj1C {\n    width: 3.5rem; \n    text-align: center;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -61565,82 +61664,6 @@ exports.locals = {
 	"input-small": "input_input-small_2qj1C",
 	"inputSmall": "input_input-small_2qj1C"
 };
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _classnames = __webpack_require__(13);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _button = __webpack_require__(41);
-
-var _button2 = _interopRequireDefault(_button);
-
-var _labeledIconButton = __webpack_require__(218);
-
-var _labeledIconButton2 = _interopRequireDefault(_labeledIconButton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } /* @todo This file should be pulled out into a shared library with scratch-gui,
-                                                                                                                                                                                                                             consolidating this component with icon-button.jsx in gui.
-                                                                                                                                                                                                                             See #13 */
-
-var LabeledIconButton = function LabeledIconButton(_ref) {
-    var className = _ref.className,
-        imgAlt = _ref.imgAlt,
-        imgSrc = _ref.imgSrc,
-        onClick = _ref.onClick,
-        title = _ref.title,
-        props = _objectWithoutProperties(_ref, ['className', 'imgAlt', 'imgSrc', 'onClick', 'title']);
-
-    return _react2.default.createElement(
-        _button2.default,
-        _extends({
-            className: (0, _classnames2.default)(className, _labeledIconButton2.default.modEditField),
-            onClick: onClick
-        }, props),
-        _react2.default.createElement('img', {
-            alt: imgAlt,
-            className: _labeledIconButton2.default.editFieldIcon,
-            src: imgSrc
-        }),
-        _react2.default.createElement(
-            'span',
-            { className: _labeledIconButton2.default.editFieldTitle },
-            title
-        )
-    );
-};
-
-LabeledIconButton.propTypes = {
-    className: _propTypes2.default.string,
-    imgAlt: _propTypes2.default.string.isRequired,
-    imgSrc: _propTypes2.default.string.isRequired,
-    onClick: _propTypes2.default.func.isRequired,
-    title: _propTypes2.default.string.isRequired
-};
-
-exports.default = LabeledIconButton;
 
 /***/ }),
 /* 218 */
@@ -61719,9 +61742,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61735,11 +61758,11 @@ var _snapping = __webpack_require__(52);
 
 var _guides = __webpack_require__(23);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
-var _strokeColor = __webpack_require__(31);
+var _strokeColor = __webpack_require__(24);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
 var _modes3 = __webpack_require__(14);
 
@@ -62097,7 +62120,7 @@ var _classnames = __webpack_require__(13);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _propTypes = __webpack_require__(1);
 
@@ -62109,7 +62132,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _brushMode = __webpack_require__(43);
 
-var _penMode = __webpack_require__(83);
+var _penMode = __webpack_require__(84);
 
 var _eraserMode = __webpack_require__(45);
 
@@ -62123,6 +62146,14 @@ var _input = __webpack_require__(51);
 
 var _input2 = _interopRequireDefault(_input);
 
+var _inputGroup = __webpack_require__(29);
+
+var _inputGroup2 = _interopRequireDefault(_inputGroup);
+
+var _labeledIconButton = __webpack_require__(83);
+
+var _labeledIconButton2 = _interopRequireDefault(_labeledIconButton);
+
 var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
@@ -62131,15 +62162,23 @@ var _modeTools = __webpack_require__(224);
 
 var _modeTools2 = _interopRequireDefault(_modeTools);
 
+var _copy = __webpack_require__(226);
+
+var _copy2 = _interopRequireDefault(_copy);
+
+var _paste = __webpack_require__(227);
+
+var _paste2 = _interopRequireDefault(_paste);
+
 var _brush = __webpack_require__(77);
 
 var _brush2 = _interopRequireDefault(_brush);
 
-var _pen = __webpack_require__(84);
+var _pen = __webpack_require__(85);
 
 var _pen2 = _interopRequireDefault(_pen);
 
-var _curvedPoint = __webpack_require__(226);
+var _curvedPoint = __webpack_require__(228);
 
 var _curvedPoint2 = _interopRequireDefault(_curvedPoint);
 
@@ -62147,7 +62186,7 @@ var _eraser = __webpack_require__(78);
 
 var _eraser2 = _interopRequireDefault(_eraser);
 
-var _straightPoint = __webpack_require__(227);
+var _straightPoint = __webpack_require__(229);
 
 var _straightPoint2 = _interopRequireDefault(_straightPoint);
 
@@ -62155,26 +62194,34 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BufferedInput = (0, _bufferedInputHoc2.default)(_input2.default);
-// import flipHorizontalIcon from './flip-horizontal.svg';
-// import flipVerticalIcon from './flip-vertical.svg';
+// import flipHorizontalIcon from './icons/flip-horizontal.svg';
+// import flipVerticalIcon from './icons/flip-vertical.svg';
 
 // import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
 
 var ModeToolsComponent = function ModeToolsComponent(props) {
-    var brushMessage = props.intl.formatMessage({
-        defaultMessage: 'Brush',
-        description: 'Label for the brush tool',
-        id: 'paint.brushMode.brush'
-    });
-    var eraserMessage = props.intl.formatMessage({
-        defaultMessage: 'Eraser',
-        description: 'Label for the eraser tool',
-        id: 'paint.eraserMode.eraser'
+    var messages = (0, _reactIntl.defineMessages)({
+        brushSize: {
+            'id': 'paint.modeTools.brushSize',
+            'defaultMessage': 'Brush size'
+        },
+        eraserSize: {
+            'id': 'paint.modeTools.eraserSize',
+            'defaultMessage': 'Eraser size'
+        },
+        copy: {
+            'id': 'paint.modeTools.copy',
+            'defaultMessage': 'Copy'
+        },
+        paste: {
+            'id': 'paint.modeTools.paste',
+            'defaultMessage': 'Paste'
+        }
     });
     var penMessage = props.intl.formatMessage({
         defaultMessage: 'Pen',
@@ -62191,7 +62238,7 @@ var ModeToolsComponent = function ModeToolsComponent(props) {
                     'div',
                     null,
                     _react2.default.createElement('img', {
-                        alt: brushMessage,
+                        alt: props.intl.formatMessage(messages.brushSize),
                         className: _modeTools2.default.modeToolsIcon,
                         src: _brush2.default
                     })
@@ -62213,7 +62260,7 @@ var ModeToolsComponent = function ModeToolsComponent(props) {
                     'div',
                     null,
                     _react2.default.createElement('img', {
-                        alt: eraserMessage,
+                        alt: props.intl.formatMessage(messages.eraserSize),
                         className: _modeTools2.default.modeToolsIcon,
                         src: _eraser2.default
                     })
@@ -62230,7 +62277,26 @@ var ModeToolsComponent = function ModeToolsComponent(props) {
         case _modes2.default.RESHAPE:
             return _react2.default.createElement('div', { className: (0, _classnames2.default)(props.className, _modeTools2.default.modeTools) });
         case _modes2.default.SELECT:
-            return _react2.default.createElement('div', { className: (0, _classnames2.default)(props.className, _modeTools2.default.modeTools) });
+            return _react2.default.createElement(
+                'div',
+                { className: (0, _classnames2.default)(props.className, _modeTools2.default.modeTools) },
+                _react2.default.createElement(
+                    _inputGroup2.default,
+                    { className: (0, _classnames2.default)(_modeTools2.default.modDashedBorder, _modeTools2.default.modLabeledIconHeight) },
+                    _react2.default.createElement(_labeledIconButton2.default, {
+                        disabled: true,
+                        imgSrc: _copy2.default,
+                        title: props.intl.formatMessage(messages.copy),
+                        onClick: function onClick() {}
+                    }),
+                    _react2.default.createElement(_labeledIconButton2.default, {
+                        disabled: true,
+                        imgSrc: _paste2.default,
+                        title: props.intl.formatMessage(messages.paste),
+                        onClick: function onClick() {}
+                    })
+                )
+            );
         case _modes2.default.PEN:
             return _react2.default.createElement(
                 'div',
@@ -62353,30 +62419,46 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n.mode-tools_mode-tools_UREem {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    min-height: 3rem;\n    -webkit-box-align: center;\n    -webkit-align-items: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n\n.mode-tools_mode-tools-icon_3yoZ2 {\n    margin-right: calc(2 * .25rem);\n    width: 2rem;\n    height: 2rem;\n}\n", ""]);
+exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n.mode-tools_mode-tools_UREem {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    min-height: 3rem;\n    -webkit-box-align: center;\n    -webkit-align-items: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n\n.mode-tools_mode-tools-icon_3yoZ2 {\n    margin-right: calc(2 * .25rem);\n    width: 2rem;\n    height: 2rem;\n}\n\n.mode-tools_mod-dashed-border_3Bmy_ {\n    border-right: 1px dashed #D9D9D9;\n    padding-right: calc(3 * .25rem);\n}\n\n.mode-tools_mod-labeled-icon-height_kRA3W {\n    height: 2.85rem; /* for the second row so the dashed borders are equal in size */\n}\n", ""]);
 
 // exports
 exports.locals = {
 	"mode-tools": "mode-tools_mode-tools_UREem",
 	"modeTools": "mode-tools_mode-tools_UREem",
 	"mode-tools-icon": "mode-tools_mode-tools-icon_3yoZ2",
-	"modeToolsIcon": "mode-tools_mode-tools-icon_3yoZ2"
+	"modeToolsIcon": "mode-tools_mode-tools-icon_3yoZ2",
+	"mod-dashed-border": "mode-tools_mod-dashed-border_3Bmy_",
+	"modDashedBorder": "mode-tools_mod-dashed-border_3Bmy_",
+	"mod-labeled-icon-height": "mode-tools_mod-labeled-icon-height_kRA3W",
+	"modLabeledIconHeight": "mode-tools_mod-labeled-icon-height_kRA3W"
 };
 
 /***/ }),
 /* 226 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Ecurved-point%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='curved-point'%3E %3Cpath d='M2,15 C2,10.5818452 5.58151214,7 10.000744,7 C14.4184879,7 18,10.5818452 18,15' id='Stroke-3' stroke='%234C97FF' stroke-width='0.75' fill-opacity='0.25' fill='%234C97FF' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M3,7 L17,7' id='Stroke-7' stroke='%234C97FF' stroke-width='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Ccircle id='Oval-4' fill-opacity='0.25' fill='%234C97FF' cx='10' cy='7' r='3'%3E%3C/circle%3E %3Ccircle id='Oval-4' fill='%234C97FF' cx='10' cy='7' r='2'%3E%3C/circle%3E %3Ccircle id='Oval-5' fill='%234C97FF' cx='3' cy='7' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-5-Copy' fill='%234C97FF' cx='17' cy='7' r='1'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Ecopy%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='copy'%3E %3Cg transform='translate(3.000000, 2.000000)'%3E %3Cpath d='M2,1.00684547 C2,0.450780073 2.45303631,0 2.99703014,0 L10,0 L10,2.34995317 C10,3.26124887 10.7336617,4 11.6500468,4 L14,4 L14,13.0046024 C14,13.5543453 13.544239,14 12.9975267,14 L3.00247329,14 C2.44882258,14 2,13.5500512 2,12.9931545 L2,1.00684547 Z' id='Rectangle-4' fill='%234C97FF'%3E%3C/path%3E %3Ccircle id='Oval' fill='%23575E75' opacity='0.5' cx='0.5' cy='3.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy' fill='%23575E75' opacity='0.5' cx='0.5' cy='5.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-2' fill='%23575E75' opacity='0.5' cx='0.5' cy='7.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-3' fill='%23575E75' opacity='0.5' cx='0.5' cy='9.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-4' fill='%23575E75' opacity='0.5' cx='0.5' cy='11.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-5' fill='%23575E75' opacity='0.5' cx='0.5' cy='13.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-6' fill='%23575E75' opacity='0.5' cx='0.5' cy='15.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-7' fill='%23575E75' opacity='0.5' cx='2.5' cy='15.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-8' fill='%23575E75' opacity='0.5' cx='4.5' cy='15.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-9' fill='%23575E75' opacity='0.5' cx='6.5' cy='15.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-10' fill='%23575E75' opacity='0.5' cx='8.5' cy='15.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-11' fill='%23575E75' opacity='0.5' cx='10.5' cy='15.5' r='1'%3E%3C/circle%3E %3Cpath d='M11,0 L14,3 L11.9989566,3 C11.4472481,3 11,2.55733967 11,2.00104344 L11,0 Z' id='Rectangle-5' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M9.8115942,9.1884058 L8.6884058,9.1884058 L8.6884058,10.3115942 C8.6884058,10.6859903 8.38647343,11 8,11 C7.61352657,11 7.3115942,10.6859903 7.3115942,10.3115942 L7.3115942,9.1884058 L6.1884058,9.1884058 C5.81400966,9.1884058 5.5,8.88647343 5.5,8.5 C5.5,8.11352657 5.81400966,7.8115942 6.1884058,7.8115942 L7.3115942,7.8115942 L7.3115942,6.6884058 C7.3115942,6.31280193 7.61352657,6 8,6 C8.38647343,6 8.6884058,6.31280193 8.6884058,6.6884058 L8.6884058,7.8115942 L9.8115942,7.8115942 C10.1859903,7.8115942 10.5,8.11352657 10.5,8.5 C10.5,8.88647343 10.1859903,9.1884058 9.8115942,9.1884058 Z' id='Fill-1' stroke='%23FFFFFF' stroke-width='0.25' fill='%23FFFFFF'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
 /* 227 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Estraight-point%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='straight-point' fill='%234C97FF'%3E %3Cpolyline id='Path-2' stroke='%234C97FF' stroke-width='0.75' fill-opacity='0.25' stroke-linecap='round' stroke-linejoin='round' points='2 15 10 7 18 15'%3E%3C/polyline%3E %3Ccircle id='Oval-4' fill-opacity='0.25' cx='10' cy='7' r='3'%3E%3C/circle%3E %3Ccircle id='Oval-4' cx='10' cy='7' r='2'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Epaste%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='paste'%3E %3Cg transform='translate(3.000000, 2.000000)'%3E %3Cpath d='M2,3.00684547 C2,2.45078007 2.45303631,2 2.99703014,2 L10,2 L10,4.34995317 C10,5.26124887 10.7336617,6 11.6500468,6 L14,6 L14,15.0046024 C14,15.5543453 13.544239,16 12.9975267,16 L3.00247329,16 C2.44882258,16 2,15.5500512 2,14.9931545 L2,3.00684547 Z' id='Rectangle-4' fill='%234C97FF'%3E%3C/path%3E %3Ccircle id='Oval' fill='%23575E75' opacity='0.5' cx='0.5' cy='2.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy' fill='%23575E75' opacity='0.5' cx='0.5' cy='4.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-2' fill='%23575E75' opacity='0.5' cx='0.5' cy='6.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-3' fill='%23575E75' opacity='0.5' cx='0.5' cy='8.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-4' fill='%23575E75' opacity='0.5' cx='0.5' cy='10.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-5' fill='%23575E75' opacity='0.5' cx='0.5' cy='12.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-6' fill='%23575E75' opacity='0.5' cx='0.5' cy='0.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-7' fill='%23575E75' opacity='0.5' cx='2.5' cy='0.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-8' fill='%23575E75' opacity='0.5' cx='4.5' cy='0.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-9' fill='%23575E75' opacity='0.5' cx='6.5' cy='0.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-10' fill='%23575E75' opacity='0.5' cx='8.5' cy='0.5' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-Copy-11' fill='%23575E75' opacity='0.5' cx='10.5' cy='0.5' r='1'%3E%3C/circle%3E %3Cpath d='M11,2 L14,5 L11.9989566,5 C11.4472481,5 11,4.55733967 11,4.00104344 L11,2 Z' id='Rectangle-5' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M8.34791833,12.8771885 C8.26180668,12.9633001 8.14699113,13.0063559 8.03217559,13.0063559 C7.9030081,13.0063559 7.78819256,12.9633001 7.70208091,12.8771885 L5.86503222,11.0401398 C5.73586474,10.8966203 5.69280891,10.7100451 5.76456862,10.5378218 C5.83632834,10.3655985 5.99419971,10.2651349 6.18077497,10.2651349 L6.92707599,10.2651349 L7.28587456,7.66743321 C7.31457845,7.46650601 7.41504205,7.27993075 7.57291342,7.16511521 C7.73078479,7.03594773 7.94606393,6.97853995 8.13263919,7.00724384 C8.47708582,7.06321642 8.74977273,7.33733852 8.79282856,7.66743321 L9.16597907,10.2651349 L9.86922427,10.2651349 C10.0557995,10.2651349 10.2136709,10.3799504 10.2854306,10.5521737 C10.3571903,10.7100451 10.3141345,10.9109723 10.184967,11.0401398 L8.34791833,12.8771885 Z' id='Fill-1' fill='%23FFFFFF'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
 /* 228 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Ecurved-point%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='curved-point'%3E %3Cpath d='M2,15 C2,10.5818452 5.58151214,7 10.000744,7 C14.4184879,7 18,10.5818452 18,15' id='Stroke-3' stroke='%234C97FF' stroke-width='0.75' fill-opacity='0.25' fill='%234C97FF' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M3,7 L17,7' id='Stroke-7' stroke='%234C97FF' stroke-width='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Ccircle id='Oval-4' fill-opacity='0.25' fill='%234C97FF' cx='10' cy='7' r='3'%3E%3C/circle%3E %3Ccircle id='Oval-4' fill='%234C97FF' cx='10' cy='7' r='2'%3E%3C/circle%3E %3Ccircle id='Oval-5' fill='%234C97FF' cx='3' cy='7' r='1'%3E%3C/circle%3E %3Ccircle id='Oval-5-Copy' fill='%234C97FF' cx='17' cy='7' r='1'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Estraight-point%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='straight-point' fill='%234C97FF'%3E %3Cpolyline id='Path-2' stroke='%234C97FF' stroke-width='0.75' fill-opacity='0.25' stroke-linecap='round' stroke-linejoin='round' points='2 15 10 7 18 15'%3E%3C/polyline%3E %3Ccircle id='Oval-4' fill-opacity='0.25' cx='10' cy='7' r='3'%3E%3C/circle%3E %3Ccircle id='Oval-4' cx='10' cy='7' r='2'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+
+/***/ }),
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62400,9 +62482,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62410,17 +62492,23 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
+var _stylePath = __webpack_require__(6);
+
+var _fillColor = __webpack_require__(28);
+
+var _strokeColor = __webpack_require__(24);
+
 var _modes3 = __webpack_require__(14);
 
 var _selectedItems = __webpack_require__(9);
 
 var _selection = __webpack_require__(3);
 
-var _ovalTool = __webpack_require__(229);
+var _ovalTool = __webpack_require__(231);
 
 var _ovalTool2 = _interopRequireDefault(_ovalTool);
 
-var _ovalMode = __webpack_require__(232);
+var _ovalMode = __webpack_require__(234);
 
 var _ovalMode2 = _interopRequireDefault(_ovalMode);
 
@@ -62476,6 +62564,24 @@ var OvalMode = function (_React$Component) {
         key: 'activateTool',
         value: function activateTool() {
             (0, _selection.clearSelection)(this.props.clearSelectedItems);
+            // If fill and stroke color are both mixed/transparent/absent, set fill to default and stroke to transparent.
+            // If exactly one of fill or stroke color is set, set the other one to transparent.
+            // This way the tool won't draw an invisible state, or be unclear about what will be drawn.
+            var _props$colorState = this.props.colorState,
+                fillColor = _props$colorState.fillColor,
+                strokeColor = _props$colorState.strokeColor,
+                strokeWidth = _props$colorState.strokeWidth;
+
+            var fillColorPresent = fillColor !== _stylePath.MIXED && fillColor !== null;
+            var strokeColorPresent = strokeColor !== _stylePath.MIXED && strokeColor !== null && strokeWidth !== null && strokeWidth !== 0;
+            if (!fillColorPresent && !strokeColorPresent) {
+                this.props.onChangeFillColor(_fillColor.DEFAULT_COLOR);
+                this.props.onChangeStrokeColor(null);
+            } else if (!fillColorPresent && strokeColorPresent) {
+                this.props.onChangeFillColor(null);
+            } else if (fillColorPresent && !strokeColorPresent) {
+                this.props.onChangeStrokeColor(null);
+            }
             this.tool = new _ovalTool2.default(this.props.setSelectedItems, this.props.clearSelectedItems, this.props.onUpdateSvg);
             this.tool.setColorState(this.props.colorState);
             this.tool.activate();
@@ -62509,6 +62615,8 @@ OvalMode.propTypes = {
     }).isRequired,
     handleMouseDown: _propTypes2.default.func.isRequired,
     isOvalModeActive: _propTypes2.default.bool.isRequired,
+    onChangeFillColor: _propTypes2.default.func.isRequired,
+    onChangeStrokeColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired,
     selectedItems: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(_paper2.default.Item)),
     setSelectedItems: _propTypes2.default.func.isRequired
@@ -62531,6 +62639,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         handleMouseDown: function handleMouseDown() {
             dispatch((0, _modes3.changeMode)(_modes2.default.OVAL));
+        },
+        onChangeFillColor: function onChangeFillColor(fillColor) {
+            dispatch((0, _fillColor.changeFillColor)(fillColor));
+        },
+        onChangeStrokeColor: function onChangeStrokeColor(strokeColor) {
+            dispatch((0, _strokeColor.changeStrokeColor)(strokeColor));
         }
     };
 };
@@ -62538,7 +62652,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(OvalMode);
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62558,7 +62672,7 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _selection = __webpack_require__(3);
 
@@ -62724,7 +62838,7 @@ var OvalTool = function (_paper$Tool) {
 exports.default = OvalTool;
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63010,7 +63124,7 @@ var ScaleTool = function () {
 exports.default = ScaleTool;
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63155,7 +63269,7 @@ var RotateTool = function () {
 exports.default = RotateTool;
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63177,7 +63291,7 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _oval = __webpack_require__(233);
+var _oval = __webpack_require__(235);
 
 var _oval2 = _interopRequireDefault(_oval);
 
@@ -63204,13 +63318,13 @@ OvalModeComponent.propTypes = {
 exports.default = OvalModeComponent;
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Eoval%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='oval' stroke-width='1.5' stroke='%23575E75'%3E %3Ccircle id='oval-icon' cx='10' cy='10' r='5'%3E%3C/circle%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63230,9 +63344,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -63240,27 +63354,27 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _strokeColor = __webpack_require__(31);
+var _strokeColor = __webpack_require__(24);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
 var _modes3 = __webpack_require__(14);
 
 var _selectedItems = __webpack_require__(9);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _selection = __webpack_require__(3);
 
-var _penTool = __webpack_require__(235);
+var _penTool = __webpack_require__(237);
 
 var _penTool2 = _interopRequireDefault(_penTool);
 
-var _penToolTwo = __webpack_require__(236);
+var _penToolTwo = __webpack_require__(238);
 
 var _penToolTwo2 = _interopRequireDefault(_penToolTwo);
 
-var _penMode = __webpack_require__(237);
+var _penMode = __webpack_require__(239);
 
 var _penMode2 = _interopRequireDefault(_penMode);
 
@@ -63414,7 +63528,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PenMode);
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63430,7 +63544,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _snapping = __webpack_require__(52);
 
@@ -63643,7 +63757,7 @@ var PenTool = function (_paper$Tool) {
 exports.default = PenTool;
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63659,7 +63773,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _snapping = __webpack_require__(52);
 
@@ -63825,7 +63939,7 @@ var PenTool2 = function (_paper$Tool) {
 exports.default = PenTool2;
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63847,7 +63961,7 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _pen = __webpack_require__(84);
+var _pen = __webpack_require__(85);
 
 var _pen2 = _interopRequireDefault(_pen);
 
@@ -63874,7 +63988,7 @@ PenModeComponent.propTypes = {
 exports.default = PenModeComponent;
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63898,9 +64012,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -63908,17 +64022,23 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
+var _stylePath = __webpack_require__(6);
+
+var _fillColor = __webpack_require__(28);
+
+var _strokeColor = __webpack_require__(24);
+
 var _modes3 = __webpack_require__(14);
 
 var _selectedItems = __webpack_require__(9);
 
 var _selection = __webpack_require__(3);
 
-var _rectTool = __webpack_require__(239);
+var _rectTool = __webpack_require__(241);
 
 var _rectTool2 = _interopRequireDefault(_rectTool);
 
-var _rectMode = __webpack_require__(240);
+var _rectMode = __webpack_require__(242);
 
 var _rectMode2 = _interopRequireDefault(_rectMode);
 
@@ -63974,6 +64094,24 @@ var RectMode = function (_React$Component) {
         key: 'activateTool',
         value: function activateTool() {
             (0, _selection.clearSelection)(this.props.clearSelectedItems);
+            // If fill and stroke color are both mixed/transparent/absent, set fill to default and stroke to transparent.
+            // If exactly one of fill or stroke color is set, set the other one to transparent.
+            // This way the tool won't draw an invisible state, or be unclear about what will be drawn.
+            var _props$colorState = this.props.colorState,
+                fillColor = _props$colorState.fillColor,
+                strokeColor = _props$colorState.strokeColor,
+                strokeWidth = _props$colorState.strokeWidth;
+
+            var fillColorPresent = fillColor !== _stylePath.MIXED && fillColor !== null;
+            var strokeColorPresent = strokeColor !== _stylePath.MIXED && strokeColor !== null && strokeWidth !== null && strokeWidth !== 0;
+            if (!fillColorPresent && !strokeColorPresent) {
+                this.props.onChangeFillColor(_fillColor.DEFAULT_COLOR);
+                this.props.onChangeStrokeColor(null);
+            } else if (!fillColorPresent && strokeColorPresent) {
+                this.props.onChangeFillColor(null);
+            } else if (fillColorPresent && !strokeColorPresent) {
+                this.props.onChangeStrokeColor(null);
+            }
             this.tool = new _rectTool2.default(this.props.setSelectedItems, this.props.clearSelectedItems, this.props.onUpdateSvg);
             this.tool.setColorState(this.props.colorState);
             this.tool.activate();
@@ -64007,6 +64145,8 @@ RectMode.propTypes = {
     }).isRequired,
     handleMouseDown: _propTypes2.default.func.isRequired,
     isRectModeActive: _propTypes2.default.bool.isRequired,
+    onChangeFillColor: _propTypes2.default.func.isRequired,
+    onChangeStrokeColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired,
     selectedItems: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(_paper2.default.Item)),
     setSelectedItems: _propTypes2.default.func.isRequired
@@ -64030,14 +64170,19 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         handleMouseDown: function handleMouseDown() {
             dispatch((0, _modes3.changeMode)(_modes2.default.RECT));
         },
-        deactivateTool: function deactivateTool() {}
+        onChangeFillColor: function onChangeFillColor(fillColor) {
+            dispatch((0, _fillColor.changeFillColor)(fillColor));
+        },
+        onChangeStrokeColor: function onChangeStrokeColor(strokeColor) {
+            dispatch((0, _strokeColor.changeStrokeColor)(strokeColor));
+        }
     };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RectMode);
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64057,7 +64202,7 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _selection = __webpack_require__(3);
 
@@ -64217,7 +64362,7 @@ var RectTool = function (_paper$Tool) {
 exports.default = RectTool;
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64239,7 +64384,7 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _rectangle = __webpack_require__(241);
+var _rectangle = __webpack_require__(243);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
@@ -64266,13 +64411,13 @@ RectModeComponent.propTypes = {
 exports.default = RectModeComponent;
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Erectangle%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round'%3E %3Cg id='rectangle' stroke='%23575E75' stroke-width='1.5'%3E %3Crect id='rectangle-icon' x='5' y='5' width='10' height='10'%3E%3C/rect%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64292,9 +64437,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -64310,11 +64455,11 @@ var _selectedItems = __webpack_require__(9);
 
 var _selection = __webpack_require__(3);
 
-var _reshapeTool = __webpack_require__(243);
+var _reshapeTool = __webpack_require__(245);
 
 var _reshapeTool2 = _interopRequireDefault(_reshapeTool);
 
-var _reshapeMode = __webpack_require__(246);
+var _reshapeMode = __webpack_require__(248);
 
 var _reshapeMode2 = _interopRequireDefault(_reshapeMode);
 
@@ -64431,7 +64576,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ReshapeMode);
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64451,7 +64596,7 @@ var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
-var _keymirror = __webpack_require__(39);
+var _keymirror = __webpack_require__(40);
 
 var _keymirror2 = _interopRequireDefault(_keymirror);
 
@@ -64459,23 +64604,23 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _hover = __webpack_require__(87);
+var _hover = __webpack_require__(88);
 
 var _item = __webpack_require__(22);
 
-var _moveTool = __webpack_require__(85);
+var _moveTool = __webpack_require__(86);
 
 var _moveTool2 = _interopRequireDefault(_moveTool);
 
-var _pointTool = __webpack_require__(244);
+var _pointTool = __webpack_require__(246);
 
 var _pointTool2 = _interopRequireDefault(_pointTool);
 
-var _handleTool = __webpack_require__(245);
+var _handleTool = __webpack_require__(247);
 
 var _handleTool2 = _interopRequireDefault(_handleTool);
 
-var _selectionBoxTool = __webpack_require__(88);
+var _selectionBoxTool = __webpack_require__(89);
 
 var _selectionBoxTool2 = _interopRequireDefault(_selectionBoxTool);
 
@@ -64742,7 +64887,7 @@ var ReshapeTool = function (_paper$Tool) {
 exports.default = ReshapeTool;
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64758,7 +64903,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _math = __webpack_require__(86);
+var _math = __webpack_require__(87);
 
 var _selection = __webpack_require__(3);
 
@@ -65069,7 +65214,7 @@ var PointTool = function () {
 exports.default = PointTool;
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65269,7 +65414,7 @@ var HandleTool = function () {
 exports.default = HandleTool;
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65291,7 +65436,7 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _reshape = __webpack_require__(247);
+var _reshape = __webpack_require__(249);
 
 var _reshape2 = _interopRequireDefault(_reshape);
 
@@ -65318,13 +65463,13 @@ ReshapeModeComponent.propTypes = {
 exports.default = ReshapeModeComponent;
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Ereshape%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='reshape'%3E %3Cg id='reshape-icon' transform='translate(3.000000, 2.000000)'%3E %3Cpath d='M6.3718,4e-05 C6.3718,1.20298846 6.03840639,2.32811001 5.45898306,3.28804076 C5.31876362,3.52034235 4.30079812,3.15107034 3.82818604,3.61859131 C3.35557395,4.08611228 3.47873759,5.34529147 3.26181884,5.47482181 C2.30759304,6.04462589 1.19191205,6.37204 -0.0002,6.37204' id='Stroke-1' stroke='%23575E75' stroke-width='0.75'%3E%3C/path%3E %3Cpath d='M4,6.94999094 C2.85887984,6.71835578 2,5.70947896 2,4.5 C2,3.11928813 3.11928813,2 4.5,2 C5.88071187,2 7,3.11928813 7,4.5 C7,4.56854233 6.99724162,4.63644042 6.99182982,4.70358929 L6.68137747,4.42017327 C5.65792772,3.48493325 4,4.20484091 4,5.595932 L4,6.94999094 Z' id='Combined-Shape' fill='%23575E75'%3E%3C/path%3E %3Cpath d='M4,7.96455557 C2.30385293,7.72194074 1,6.26323595 1,4.5 C1,2.56700338 2.56700338,1 4.5,1 C6.43299662,1 8,2.56700338 8,4.5 C8,4.84508345 7.95005914,5.1785026 7.85701065,5.4934242 L6.68137747,4.42017327 C5.65792772,3.48493325 4,4.20484091 4,5.595932 L4,7.96455557 Z' id='Oval-2' fill-opacity='0.15' fill='%23575E75'%3E%3C/path%3E %3Cpath d='M7.87915329,13.1684522 L8.98467414,15.6316703 C9.20235954,16.1186581 9.76980913,16.3337238 10.2516521,16.1137141 C10.7334951,15.8924683 10.9462887,15.3189598 10.7286032,14.833208 L9.63583183,12.3973461 L12.3974628,12.3973461 C12.945512,12.3973461 13.207518,11.7313818 12.8048941,11.3644462 L6.00716065,5.15870674 C5.6225647,4.80725864 5,5.07769498 5,5.595932 L5,14.8026807 C5,15.3507015 5.68145595,15.608033 6.04802397,15.1994001 L7.87915329,13.1684522 Z' id='select-icon' fill='%23575E75'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65348,9 +65493,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -65366,11 +65511,11 @@ var _selectedItems = __webpack_require__(9);
 
 var _selection = __webpack_require__(3);
 
-var _selectTool = __webpack_require__(249);
+var _selectTool = __webpack_require__(251);
 
 var _selectTool2 = _interopRequireDefault(_selectTool);
 
-var _selectMode = __webpack_require__(250);
+var _selectMode = __webpack_require__(252);
 
 var _selectMode2 = _interopRequireDefault(_selectMode);
 
@@ -65490,7 +65635,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SelectMode);
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65506,7 +65651,7 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _hover = __webpack_require__(87);
+var _hover = __webpack_require__(88);
 
 var _selection = __webpack_require__(3);
 
@@ -65514,7 +65659,7 @@ var _boundingBoxTool = __webpack_require__(53);
 
 var _boundingBoxTool2 = _interopRequireDefault(_boundingBoxTool);
 
-var _selectionBoxTool = __webpack_require__(88);
+var _selectionBoxTool = __webpack_require__(89);
 
 var _selectionBoxTool2 = _interopRequireDefault(_selectionBoxTool);
 
@@ -65697,7 +65842,7 @@ var SelectTool = function (_paper$Tool) {
 exports.default = SelectTool;
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65719,7 +65864,7 @@ var _toolSelectBase = __webpack_require__(15);
 
 var _toolSelectBase2 = _interopRequireDefault(_toolSelectBase);
 
-var _select = __webpack_require__(251);
+var _select = __webpack_require__(253);
 
 var _select2 = _interopRequireDefault(_select);
 
@@ -65746,13 +65891,13 @@ SelectModeComponent.propTypes = {
 exports.default = SelectModeComponent;
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Eselect%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='select' fill='%23575E75'%3E %3Cpath d='M9.08480709,12.7519131 L10.2692937,15.3910753 C10.5025281,15.912848 11.1105098,16.1432755 11.6267701,15.9075508 C12.1430304,15.6705018 12.3710236,15.0560284 12.1377892,14.53558 L10.9669627,11.925728 L13.925853,11.925728 C14.5130486,11.925728 14.7937693,11.2121948 14.3623865,10.8190495 L7.0791007,4.17004294 C6.6670336,3.7934914 6,4.08324462 6,4.63849857 L6,14.5028722 C6,15.0900373 6.73013138,15.3657496 7.12288282,14.9279287 L9.08480709,12.7519131 Z' id='select-icon'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65766,7 +65911,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _propTypes = __webpack_require__(1);
 
@@ -65776,11 +65921,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _strokeColor = __webpack_require__(31);
+var _strokeColor = __webpack_require__(24);
 
 var _modals = __webpack_require__(46);
 
@@ -65788,11 +65933,11 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _strokeColorIndicator = __webpack_require__(253);
+var _strokeColorIndicator = __webpack_require__(255);
 
 var _strokeColorIndicator2 = _interopRequireDefault(_strokeColorIndicator);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65883,7 +66028,7 @@ StrokeColorIndicator.propTypes = {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StrokeColorIndicator);
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65915,7 +66060,7 @@ var _colorButton = __webpack_require__(82);
 
 var _colorButton2 = _interopRequireDefault(_colorButton);
 
-var _inputGroup = __webpack_require__(30);
+var _inputGroup = __webpack_require__(29);
 
 var _inputGroup2 = _interopRequireDefault(_inputGroup);
 
@@ -65973,7 +66118,7 @@ StrokeColorIndicatorComponent.propTypes = {
 exports.default = (0, _reactIntl.injectIntl)(StrokeColorIndicatorComponent);
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65985,7 +66130,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _propTypes = __webpack_require__(1);
 
@@ -65995,17 +66140,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
-var _strokeWidthIndicator = __webpack_require__(255);
+var _strokeWidthIndicator = __webpack_require__(257);
 
 var _strokeWidthIndicator2 = _interopRequireDefault(_strokeWidthIndicator);
 
-var _stylePath = __webpack_require__(8);
+var _stylePath = __webpack_require__(6);
 
 var _modes = __webpack_require__(5);
 
@@ -66075,7 +66220,7 @@ StrokeWidthIndicator.propTypes = {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StrokeWidthIndicator);
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66101,11 +66246,11 @@ var _input = __webpack_require__(51);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _inputGroup = __webpack_require__(30);
+var _inputGroup = __webpack_require__(29);
 
 var _inputGroup2 = _interopRequireDefault(_inputGroup);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66135,13 +66280,13 @@ StrokeWidthIndicatorComponent.propTypes = {
 exports.default = StrokeWidthIndicatorComponent;
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(257);
+var content = __webpack_require__(259);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -66166,7 +66311,7 @@ if(false) {
 }
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -66174,7 +66319,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n.paint-editor_editor-container_3ajxi {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: column;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding: calc(4 * .25rem);\n}\n\n.paint-editor_row_1psvV {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-align: center;\n    -webkit-align-items: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n\n.paint-editor_editor-container-top_23HHq {\n    border-bottom: 1px dashed #D9D9D9;\n    padding-bottom: calc(2 * .25rem);\n}\n\n.paint-editor_top-align-row_2Ky-F {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    padding-top: calc(5 * .25rem);\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n}\n\n.paint-editor_row_1psvV + .paint-editor_row_1psvV {\n    margin-top: calc(2 * .25rem);\n}\n\n.paint-editor_mod-dashed-border_1xeKo {\n    border-right: 1px dashed #D9D9D9;\n    padding-right: calc(3 * .25rem);\n}\n\n.paint-editor_button-group-button_1gq5A {\n    display: inline-block;\n    border: 1px solid #D9D9D9;\n    border-radius: 0;\n    border-left: none;\n    padding: calc(2 * .25rem);\n}\n\n.paint-editor_button-group-button_1gq5A:last-of-type {\n    border-top-right-radius: 0.25rem;\n    border-bottom-right-radius: 0.25rem;\n}\n\n.paint-editor_button-group-button_1gq5A:first-of-type {\n    border-left: 1px solid #D9D9D9;\n    border-top-left-radius: 0.25rem;\n    border-bottom-left-radius: 0.25rem;\n}\n\n.paint-editor_button-group-button_1gq5A.paint-editor_mod-left-border_3Rpmd {\n    border-left: 1px solid #D9D9D9;\n}\n\n.paint-editor_button-group-button_1gq5A.paint-editor_mod-no-right-border_3lvr3 {\n    border-right: none;\n}\n\n.paint-editor_button-group-button-icon_3BPxO {\n    width: 1.25rem;\n    height: 1.25rem;\n    vertical-align: middle;\n}\n\n.paint-editor_mod-mode-tools_1IXSj {\n    margin-left: calc(3 * .25rem);\n}\n\n.paint-editor_canvas-container_2rN98 {\n    width: 500px;\n    height: 400px;\n    -webkit-box-sizing: content-box;\n            box-sizing: content-box;\n    border: 1px solid #e8edf1;\n    border-radius: .25rem;\n    position: relative;\n    overflow: visible;\n}\n\n.paint-editor_mode-selector_1edhd {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    margin-right: calc(2 * .25rem);\n    max-width: 5.5rem;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-flex-wrap: wrap;\n        -ms-flex-wrap: wrap;\n            flex-wrap: wrap;\n    -webkit-box-align: start;\n    -webkit-align-items: flex-start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n    -webkit-align-content: flex-start;\n        -ms-flex-line-pack: start;\n            align-content: flex-start;\n    -webkit-box-pack: justify;\n    -webkit-justify-content: space-between;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n}\n\n.paint-editor_zoom-controls_3Qe-- {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: reverse;\n    -webkit-flex-direction: row-reverse;\n        -ms-flex-direction: row-reverse;\n            flex-direction: row-reverse;\n}\n", ""]);
+exports.push([module.i, "/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* DO NOT EDIT\n@todo This file is copied from GUI and should be pulled out into a shared library.\nSee https://github.com/LLK/scratch-paint/issues/13 */\n\n/* ACTUALLY, THIS IS EDITED ;)\nTHIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST\nGRID UNITS.*/\n\n.paint-editor_editor-container_3ajxi {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: column;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding: calc(4 * .25rem);\n}\n\n.paint-editor_row_1psvV {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-align: center;\n    -webkit-align-items: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n\n.paint-editor_editor-container-top_23HHq {\n    border-bottom: 1px dashed #D9D9D9;\n    padding-bottom: calc(2 * .25rem);\n}\n\n.paint-editor_top-align-row_2Ky-F {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    padding-top: calc(5 * .25rem);\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n}\n\n.paint-editor_row_1psvV + .paint-editor_row_1psvV {\n    margin-top: calc(2 * .25rem);\n}\n\n.paint-editor_mod-dashed-border_1xeKo {\n    border-right: 1px dashed #D9D9D9;\n    padding-right: calc(3 * .25rem);\n}\n\n.paint-editor_mod-labeled-icon-height_3hBCl {\n    height: 2.85rem; /* for the second row so the dashed borders are equal in size */\n}\n\n.paint-editor_button-group-button_1gq5A {\n    display: inline-block;\n    border: 1px solid #D9D9D9;\n    border-radius: 0;\n    border-left: none;\n    padding: calc(2 * .25rem);\n}\n\n.paint-editor_button-group-button_1gq5A:last-of-type {\n    border-top-right-radius: 0.25rem;\n    border-bottom-right-radius: 0.25rem;\n}\n\n.paint-editor_button-group-button_1gq5A:first-of-type {\n    border-left: 1px solid #D9D9D9;\n    border-top-left-radius: 0.25rem;\n    border-bottom-left-radius: 0.25rem;\n}\n\n.paint-editor_button-group-button_1gq5A.paint-editor_mod-left-border_3Rpmd {\n    border-left: 1px solid #D9D9D9;\n}\n\n.paint-editor_button-group-button_1gq5A.paint-editor_mod-no-right-border_3lvr3 {\n    border-right: none;\n}\n\n.paint-editor_button-group-button-icon_3BPxO {\n    width: 1.25rem;\n    height: 1.25rem;\n    vertical-align: middle;\n}\n\n.paint-editor_mod-mode-tools_1IXSj {\n    margin-left: calc(3 * .25rem);\n}\n\n.paint-editor_canvas-container_2rN98 {\n    width: 500px;\n    height: 400px;\n    -webkit-box-sizing: content-box;\n            box-sizing: content-box;\n    border: 1px solid #e8edf1;\n    border-radius: .25rem;\n    position: relative;\n    overflow: visible;\n}\n\n.paint-editor_mode-selector_1edhd {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    margin-right: calc(2 * .25rem);\n    max-width: 5.5rem;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n    -webkit-flex-direction: row;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-flex-wrap: wrap;\n        -ms-flex-wrap: wrap;\n            flex-wrap: wrap;\n    -webkit-box-align: start;\n    -webkit-align-items: flex-start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n    -webkit-align-content: flex-start;\n        -ms-flex-line-pack: start;\n            align-content: flex-start;\n    -webkit-box-pack: justify;\n    -webkit-justify-content: space-between;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n}\n\n.paint-editor_zoom-controls_3Qe-- {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: reverse;\n    -webkit-flex-direction: row-reverse;\n        -ms-flex-direction: row-reverse;\n            flex-direction: row-reverse;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -66187,6 +66332,8 @@ exports.locals = {
 	"topAlignRow": "paint-editor_top-align-row_2Ky-F",
 	"mod-dashed-border": "paint-editor_mod-dashed-border_1xeKo",
 	"modDashedBorder": "paint-editor_mod-dashed-border_1xeKo",
+	"mod-labeled-icon-height": "paint-editor_mod-labeled-icon-height_3hBCl",
+	"modLabeledIconHeight": "paint-editor_mod-labeled-icon-height_3hBCl",
 	"button-group-button": "paint-editor_button-group-button_1gq5A",
 	"buttonGroupButton": "paint-editor_button-group-button_1gq5A",
 	"mod-left-border": "paint-editor_mod-left-border_3Rpmd",
@@ -66206,73 +66353,73 @@ exports.locals = {
 };
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Egroup%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='group' stroke-width='0.75'%3E %3Cg id='group-icon' transform='translate(2.000000, 2.000000)'%3E %3Crect id='Rectangle-2' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='0' y='0' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-2' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='13' y='0' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='0' y='13' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-3' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='13' y='13' width='3' height='3'%3E%3C/rect%3E %3Cpath d='M1.5,3 L1.5,13' id='Line' stroke='%234C97FF' stroke-linecap='square'%3E%3C/path%3E %3Cpath d='M14.5,3 L14.5,13' id='Line-Copy' stroke='%234C97FF' stroke-linecap='square'%3E%3C/path%3E %3Cpath d='M13,1.5 L3,1.5' id='Line-Copy-2' stroke='%234C97FF' stroke-linecap='square'%3E%3C/path%3E %3Cpath d='M13,14.5 L3,14.5' id='Line-Copy-3' stroke='%234C97FF' stroke-linecap='square'%3E%3C/path%3E %3Cg id='Group' transform='translate(8.000000, 8.000000) rotate(180.000000) translate(-8.000000, -8.000000) translate(4.000000, 4.000000)' stroke='%23575E75'%3E %3Crect id='Rectangle-3-Copy' fill='%23FFFFFF' transform='translate(5.500000, 5.500000) rotate(180.000000) translate(-5.500000, -5.500000) ' x='3' y='3' width='5' height='5' rx='0.5'%3E%3C/rect%3E %3Crect id='Rectangle-3' fill='%23575E75' transform='translate(2.500000, 2.500000) rotate(180.000000) translate(-2.500000, -2.500000) ' x='0' y='0' width='5' height='5' rx='0.5'%3E%3C/rect%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Eredo%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='redo' fill='%234C97FF'%3E %3Cpath d='M17.5581635,12.7700651 L13.8403972,16.4941315 C13.5610922,16.7671364 13.1830854,16.9211391 12.7903784,16.9211391 C12.3990715,16.9211391 12.0210647,16.7671364 11.7403597,16.4941315 L8.02399342,12.7700651 C7.5969858,12.3430574 7.47098355,11.7060461 7.70198767,11.1530362 C7.93299179,10.6000263 8.46500128,10.24302 9.06701202,10.24302 L10.4040359,10.24302 C10.3690352,9.92101423 10.2780336,9.55700774 10.1240309,9.17200087 C10.07573,9.05999887 10.0260291,8.94799688 9.97002813,8.83599488 C9.89302676,8.70999263 9.90072689,8.67499201 9.79502501,8.52098926 C9.62702201,8.26898476 9.47301926,8.07998139 9.29031601,7.86297752 C8.9200094,7.4639704 8.47200141,7.12096429 7.99599292,6.86895979 C7.5129843,6.6169553 7.00897531,6.46295255 6.56096732,6.37895105 C6.11995945,6.30194968 5.71395221,6.29494955 5.47594796,6.29494955 C5.35694584,6.28794943 5.2029431,6.31594993 5.12594172,6.32295005 C5.04194022,6.32995018 4.99293935,6.3369503 4.99293935,6.3369503 C4.49593048,6.38595117 4.04792249,6.02194468 3.99892162,5.52493582 C3.95692087,5.10492832 4.20192524,4.72692158 4.57293186,4.58691908 C4.57293186,4.58691908 4.62193273,4.56591871 4.6989341,4.53791821 C4.78993573,4.50991771 4.87393723,4.46091684 5.06994072,4.40491584 C5.46194772,4.28591371 5.95895658,4.15991147 6.60996819,4.09691034 C7.25397968,4.04090934 8.03099354,4.05490959 8.85070816,4.22291259 C9.66902276,4.39791571 10.5300381,4.72692158 11.3280524,5.20293007 C11.7060591,5.44793444 12.1120663,5.73493956 12.427072,6.01494456 C12.5670745,6.11994643 12.8050787,6.35795068 12.9450812,6.5049533 C13.1060841,6.67295629 13.2530867,6.84095929 13.4007893,7.01596241 C13.9670994,7.7159749 14.3871069,8.47198839 14.6601118,9.15800062 C14.8211147,9.55000762 14.9331167,9.92101423 15.0171182,10.24302 L16.5151449,10.24302 C17.1171556,10.24302 17.6491651,10.6000263 17.8801692,11.1530362 C18.1111734,11.7060461 17.9851711,12.3430574 17.5581635,12.7700651' id='Fill-1' transform='translate(10.994247, 10.494247) rotate(-45.000000) translate(-10.994247, -10.494247) '%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Esend-back%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='send-back'%3E %3Cg transform='translate(10.000000, 10.000000) rotate(180.000000) translate(-10.000000, -10.000000) translate(2.000000, 3.000000)'%3E %3Cpath d='M12.3476736,5.92549723 L10.2407376,5.92549723 L9.33601611,12.7635981 C9.23807603,13.5476661 8.54025295,14.1003698 7.78121732,13.9846876 C7.16909181,13.8947126 6.69163391,13.3805697 6.6169546,12.7635981 L5.7122331,5.92549723 L3.65426714,5.92549723 C3.0678509,5.92549723 2.78504892,5.19284356 3.190276,4.76867564 L7.53514286,0.192803597 C7.79223558,-0.0642678658 8.20970517,-0.0642678658 8.45333113,0.192803597 L12.812889,4.76867564 C13.2168918,5.19284356 12.9230716,5.92549723 12.3476736,5.92549723' id='Fill-1' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M12,8 L16,8' id='Stroke-6' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M12,10 L15,10' id='Stroke-6-Copy' stroke='%23575E75' opacity='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M12,12 L14,12' id='Stroke-6-Copy-2' stroke='%23575E75' opacity='0.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M0,8 L4,8' id='Stroke-10' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M1,10 L4,10' id='Stroke-10-Copy' stroke='%23575E75' opacity='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M2,12 L4,12' id='Stroke-10-Copy-2' stroke='%23575E75' opacity='0.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Esend-backward%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='send-backward'%3E %3Cg id='send-forward' transform='translate(10.000000, 10.000000) rotate(180.000000) translate(-10.000000, -10.000000) translate(2.000000, 3.000000)'%3E %3Cpath d='M12.3476736,5.92549723 L10.2407376,5.92549723 L9.33601611,12.7635981 C9.23807603,13.5476661 8.54025295,14.1003698 7.78121732,13.9846876 C7.16909181,13.8947126 6.69163391,13.3805697 6.6169546,12.7635981 L5.7122331,5.92549723 L3.65426714,5.92549723 C3.0678509,5.92549723 2.78504892,5.19284356 3.190276,4.76867564 L7.53514286,0.192803597 C7.79223558,-0.0642678658 8.20970517,-0.0642678658 8.45333113,0.192803597 L12.812889,4.76867564 C13.2168918,5.19284356 12.9230716,5.92549723 12.3476736,5.92549723' id='Fill-1' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M12,8 L16,8' id='Stroke-6' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M0,8 L4,8' id='Stroke-10' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Esend-forward%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='send-forward'%3E %3Cg transform='translate(2.000000, 3.000000)'%3E %3Cpath d='M12.3476736,5.92549723 L10.2407376,5.92549723 L9.33601611,12.7635981 C9.23807603,13.5476661 8.54025295,14.1003698 7.78121732,13.9846876 C7.16909181,13.8947126 6.69163391,13.3805697 6.6169546,12.7635981 L5.7122331,5.92549723 L3.65426714,5.92549723 C3.0678509,5.92549723 2.78504892,5.19284356 3.190276,4.76867564 L7.53514286,0.192803597 C7.79223558,-0.0642678658 8.20970517,-0.0642678658 8.45333113,0.192803597 L12.812889,4.76867564 C13.2168918,5.19284356 12.9230716,5.92549723 12.3476736,5.92549723' id='Fill-1' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M12,8 L16,8' id='Stroke-6' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M0,8 L4,8' id='Stroke-10' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Esend-front%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='send-front'%3E %3Cg transform='translate(2.000000, 3.000000)'%3E %3Cpath d='M12.3476736,5.92549723 L10.2407376,5.92549723 L9.33601611,12.7635981 C9.23807603,13.5476661 8.54025295,14.1003698 7.78121732,13.9846876 C7.16909181,13.8947126 6.69163391,13.3805697 6.6169546,12.7635981 L5.7122331,5.92549723 L3.65426714,5.92549723 C3.0678509,5.92549723 2.78504892,5.19284356 3.190276,4.76867564 L7.53514286,0.192803597 C7.79223558,-0.0642678658 8.20970517,-0.0642678658 8.45333113,0.192803597 L12.812889,4.76867564 C13.2168918,5.19284356 12.9230716,5.92549723 12.3476736,5.92549723' id='Fill-1' fill='%234C97FF'%3E%3C/path%3E %3Cpath d='M12,8 L16,8' id='Stroke-6' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M12,10 L15,10' id='Stroke-6-Copy' stroke='%23575E75' opacity='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M12,12 L14,12' id='Stroke-6-Copy-2' stroke='%23575E75' opacity='0.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M0,8 L4,8' id='Stroke-10' stroke='%23575E75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M1,10 L4,10' id='Stroke-10-Copy' stroke='%23575E75' opacity='0.75' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3Cpath d='M2,12 L4,12' id='Stroke-10-Copy-2' stroke='%23575E75' opacity='0.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Eundo%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='undo' fill='%234C97FF'%3E %3Cpath d='M15.5581635,12.7700651 L11.8403972,16.4941315 C11.5610922,16.7671364 11.1830854,16.9211391 10.7903784,16.9211391 C10.3990715,16.9211391 10.0210647,16.7671364 9.74035971,16.4941315 L6.02399342,12.7700651 C5.5969858,12.3430574 5.47098355,11.7060461 5.70198767,11.1530362 C5.93299179,10.6000263 6.46500128,10.24302 7.06701202,10.24302 L8.40403587,10.24302 C8.36903525,9.92101423 8.27803362,9.55700774 8.12403088,9.17200087 C8.07573002,9.05999887 8.02602913,8.94799688 7.97002813,8.83599488 C7.89302676,8.70999263 7.90072689,8.67499201 7.79502501,8.52098926 C7.62702201,8.26898476 7.47301926,8.07998139 7.29031601,7.86297752 C6.9200094,7.4639704 6.47200141,7.12096429 5.99599292,6.86895979 C5.5129843,6.6169553 5.00897531,6.46295255 4.56096732,6.37895105 C4.11995945,6.30194968 3.71395221,6.29494955 3.47594796,6.29494955 C3.35694584,6.28794943 3.2029431,6.31594993 3.12594172,6.32295005 C3.04194022,6.32995018 2.99293935,6.3369503 2.99293935,6.3369503 C2.49593048,6.38595117 2.04792249,6.02194468 1.99892162,5.52493582 C1.95692087,5.10492832 2.20192524,4.72692158 2.57293186,4.58691908 C2.57293186,4.58691908 2.62193273,4.56591871 2.6989341,4.53791821 C2.78993573,4.50991771 2.87393723,4.46091684 3.06994072,4.40491584 C3.46194772,4.28591371 3.95895658,4.15991147 4.60996819,4.09691034 C5.25397968,4.04090934 6.03099354,4.05490959 6.85070816,4.22291259 C7.66902276,4.39791571 8.53003812,4.72692158 9.32805235,5.20293007 C9.7060591,5.44793444 10.1120663,5.73493956 10.427072,6.01494456 C10.5670745,6.11994643 10.8050787,6.35795068 10.9450812,6.5049533 C11.1060841,6.67295629 11.2530867,6.84095929 11.4007893,7.01596241 C11.9670994,7.7159749 12.3871069,8.47198839 12.6601118,9.15800062 C12.8211147,9.55000762 12.9331167,9.92101423 13.0171182,10.24302 L14.5151449,10.24302 C15.1171556,10.24302 15.6491651,10.6000263 15.8801692,11.1530362 C16.1111734,11.7060461 15.9851711,12.3430574 15.5581635,12.7700651' id='Fill-1' transform='translate(8.994247, 10.494247) scale(-1, 1) rotate(-45.000000) translate(-8.994247, -10.494247) '%3E%3C/path%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8' standalone='no'?%3E %3Csvg width='20px' height='20px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E %3C!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch --%3E %3Ctitle%3Eungroup%3C/title%3E %3Cdesc%3ECreated with Sketch.%3C/desc%3E %3Cdefs%3E%3C/defs%3E %3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E %3Cg id='ungroup' stroke-width='0.75'%3E %3Cg id='ungroup-icon' transform='translate(10.000000, 10.000000) rotate(180.000000) translate(-10.000000, -10.000000) translate(2.000000, 2.000000)'%3E %3Crect id='Rectangle-3-Copy' stroke='%23575E75' fill='%23FFFFFF' x='6.5' y='6.5' width='8' height='8' rx='0.5'%3E%3C/rect%3E %3Crect id='Rectangle-3' stroke='%23575E75' fill='%23575E75' x='1.5' y='1.5' width='8' height='8' rx='0.5'%3E%3C/rect%3E %3Crect id='Rectangle-2' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='0' y='0' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-2' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='8' y='0' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='0' y='8' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-3' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='8' y='8' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-4' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='13' y='5' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-5' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='13' y='13' width='3' height='3'%3E%3C/rect%3E %3Crect id='Rectangle-2-Copy-6' stroke='%234C97FF' fill='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' x='5' y='13' width='3' height='3'%3E%3C/rect%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0'?%3E %3Csvg xmlns='http://www.w3.org/2000/svg' id='Layer_1' data-name='Layer 1' viewBox='6 6 24 24'%3E %3Cdefs%3E %3Cstyle%3E .cls-4%7Bfill:none;stroke:%23575e75;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;%7D %3C/style%3E %3C/defs%3E %3Ctitle%3Ezoom-in%3C/title%3E %3Cg class='cls-3'%3E %3Ccircle class='cls-4' cx='18' cy='18' r='7'/%3E %3Cline class='cls-4' x1='23' y1='23' x2='26' y2='26'/%3E %3Cline class='cls-4' x1='16' y1='18' x2='20' y2='18'/%3E %3Cline class='cls-4' x1='18' y1='16' x2='18' y2='20'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0'?%3E %3Csvg xmlns='http://www.w3.org/2000/svg' id='Layer_1' data-name='Layer 1' viewBox='6 6 24 24'%3E %3Cdefs%3E %3Cstyle%3E .cls-4%7Bfill:none;stroke:%23575e75;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;%7D %3C/style%3E %3C/defs%3E %3Ctitle%3Ezoom-out%3C/title%3E %3Cg class='cls-3'%3E %3Ccircle class='cls-4' cx='18' cy='18' r='7'/%3E %3Cline class='cls-4' x1='23' y1='23' x2='26' y2='26'/%3E %3Cline class='cls-4' x1='16' y1='18' x2='20' y2='18'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 268 */
+/* 270 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0'?%3E %3Csvg xmlns='http://www.w3.org/2000/svg' id='Layer_1' data-name='Layer 1' viewBox='6 6 24 24'%3E %3Cdefs%3E %3Cstyle%3E .cls-4%7Bfill:%23575e75;%7D %3C/style%3E %3C/defs%3E %3Ctitle%3Ezoom-reset%3C/title%3E %3Cg class='cls-3'%3E %3Crect class='cls-4' x='13' y='14' width='10' height='2' rx='1' ry='1'/%3E %3Crect class='cls-4' x='13' y='20' width='10' height='2' rx='1' ry='1'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66296,9 +66443,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -66384,7 +66531,7 @@ var SelectionHOC = function SelectionHOC(WrappedComponent) {
 exports.default = SelectionHOC;
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66394,7 +66541,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _redux = __webpack_require__(26);
+var _redux = __webpack_require__(27);
 
 var _modes = __webpack_require__(14);
 
@@ -66404,7 +66551,7 @@ var _brushMode = __webpack_require__(43);
 
 var _brushMode2 = _interopRequireDefault(_brushMode);
 
-var _penMode = __webpack_require__(83);
+var _penMode = __webpack_require__(84);
 
 var _penMode2 = _interopRequireDefault(_penMode);
 
@@ -66412,7 +66559,7 @@ var _eraserMode = __webpack_require__(45);
 
 var _eraserMode2 = _interopRequireDefault(_eraserMode);
 
-var _color = __webpack_require__(271);
+var _color = __webpack_require__(273);
 
 var _color2 = _interopRequireDefault(_color);
 
@@ -66428,7 +66575,7 @@ var _selectedItems = __webpack_require__(9);
 
 var _selectedItems2 = _interopRequireDefault(_selectedItems);
 
-var _undo = __webpack_require__(40);
+var _undo = __webpack_require__(41);
 
 var _undo2 = _interopRequireDefault(_undo);
 
@@ -66447,7 +66594,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 271 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66457,17 +66604,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _redux = __webpack_require__(26);
+var _redux = __webpack_require__(27);
 
-var _fillColor = __webpack_require__(42);
+var _fillColor = __webpack_require__(28);
 
 var _fillColor2 = _interopRequireDefault(_fillColor);
 
-var _strokeColor = __webpack_require__(31);
+var _strokeColor = __webpack_require__(24);
 
 var _strokeColor2 = _interopRequireDefault(_strokeColor);
 
-var _strokeWidth = __webpack_require__(24);
+var _strokeWidth = __webpack_require__(25);
 
 var _strokeWidth2 = _interopRequireDefault(_strokeWidth);
 
@@ -66480,7 +66627,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 272 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66490,9 +66637,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _redux = __webpack_require__(26);
+var _redux = __webpack_require__(27);
 
-var _intl = __webpack_require__(89);
+var _intl = __webpack_require__(90);
 
 var _intl2 = _interopRequireDefault(_intl);
 
@@ -66506,7 +66653,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66521,15 +66668,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.intlReducer = intlReducer;
 
-var _warning = __webpack_require__(274);
+var _warning = __webpack_require__(276);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _IntlProvider2 = __webpack_require__(90);
+var _IntlProvider2 = __webpack_require__(91);
 
 var _IntlProvider3 = _interopRequireDefault(_IntlProvider2);
 
-var _Provider2 = __webpack_require__(275);
+var _Provider2 = __webpack_require__(277);
 
 var _Provider3 = _interopRequireDefault(_Provider2);
 
@@ -66572,7 +66719,7 @@ function intlReducer() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66640,7 +66787,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66650,7 +66797,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRedux = __webpack_require__(7);
+var _reactRedux = __webpack_require__(8);
 
 var _react = __webpack_require__(0);
 
@@ -66660,7 +66807,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _IntlProvider = __webpack_require__(90);
+var _IntlProvider = __webpack_require__(91);
 
 var _IntlProvider2 = _interopRequireDefault(_IntlProvider);
 
@@ -66689,7 +66836,7 @@ exports.default = Provider;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports) {
 
 module.exports =
@@ -66870,7 +67017,7 @@ exports.default = locales;
 //# sourceMappingURL=l10n.js.map
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, exports) {
 
 // GENERATED FILE:
