@@ -39,10 +39,10 @@ class PenMode extends React.Component {
         }
 
         if (
-                (nextProps.isPenModeActive &&
-                !this.props.isPenModeActive) ||
-                nextProps.brushPenMode !== this.props.brushPenMode ||
-                nextProps.pointPenMode !== this.props.pointPenMode) {
+            (nextProps.isPenModeActive &&
+            !this.props.isPenModeActive) ||
+            nextProps.brushPenMode !== this.props.brushPenMode ||
+            nextProps.pointPenMode !== this.props.pointPenMode) {
             if (nextProps.brushPenMode) {
                 if (!this.props.brushPenMode) {
                     this.deactivateTool();
@@ -59,7 +59,12 @@ class PenMode extends React.Component {
         }
     }
     shouldComponentUpdate (nextProps) {
-        return nextProps.isPenModeActive !== this.props.isPenModeActive || nextProps.brushPenMode !== this.props.brushPenMode || nextProps.pointPenMode !== this.props.pointPenMode;
+        return nextProps.isPenModeActive !==
+            this.props.isPenModeActive ||
+            nextProps.brushPenMode !==
+            this.props.brushPenMode ||
+            nextProps.pointPenMode !==
+            this.props.pointPenMode;
     }
     activateTool (mode) {
         clearSelection(this.props.clearSelectedItems);
