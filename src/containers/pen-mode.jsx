@@ -33,17 +33,14 @@ class PenMode extends React.Component {
     }
     componentWillReceiveProps (nextProps) {
         if (this.tool &&
-                (nextProps.colorState.strokeColor !== this.props.colorState.strokeColor ||
-                nextProps.colorState.strokeWidth !== this.props.colorState.strokeWidth ||
-                nextProps.colorState.fillColor !== this.props.colorState.fillColor)) {
+                nextProps.colorState !== this.props.colorState) {
             this.tool.setColorState(nextProps.colorState);
         }
 
-        if (
-            (nextProps.isPenModeActive &&
-            !this.props.isPenModeActive) ||
-            nextProps.brushPenMode !== this.props.brushPenMode ||
-            nextProps.pointPenMode !== this.props.pointPenMode) {
+        if ((nextProps.isPenModeActive &&
+                !this.props.isPenModeActive) ||
+                nextProps.brushPenMode !== this.props.brushPenMode ||
+                nextProps.pointPenMode !== this.props.pointPenMode) {
             if (nextProps.brushPenMode) {
                 if (!this.props.brushPenMode) {
                     this.deactivateTool();
