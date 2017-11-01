@@ -68,7 +68,7 @@ FillColorIndicator.propTypes = {
     brushPenMode: PropTypes.bool,
     fillColor: PropTypes.string,
     fillColorModalVisible: PropTypes.bool.isRequired,
-    mode: PropTypes.bool.isRequired,
+    mode: PropTypes.string.isRequired,
     onChangeFillColor: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired
 };
