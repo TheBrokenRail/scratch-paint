@@ -63827,8 +63827,7 @@ var PenTool2 = function (_paper$Tool) {
         // paper.js tools hook up the listeners in the setter functions.
         _this.onMouseDown = _this.handleMouseDown;
         _this.onMouseMove = _this.handleMouseMove;
-        _this.onMouseDrag = _this.handleMouseDrag;
-        _this.onMouseUp = _this.handleMouseUp;
+        _this.onFrame = _this.handleFrame;
 
         _this.fixedDistance = 2;
         return _this;
@@ -63927,6 +63926,13 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
+        }
+    }, {
+        key: 'handleFrame',
+        value: function handleFrame() {
+            if (this.path && !this.path.parent) {
+                this.path = null;
+            }
         }
     }, {
         key: 'deactivateTool',
