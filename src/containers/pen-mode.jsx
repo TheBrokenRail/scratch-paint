@@ -38,7 +38,11 @@ class PenMode extends React.Component {
             this.tool.setColorState(nextProps.colorState);
         }
 
-        if ((nextProps.isPenModeActive && !this.props.isPenModeActive) || nextProps.brushPenMode !== this.props.brushPenMode || nextProps.pointPenMode !== this.props.pointPenMode) {
+        if (
+                (nextProps.isPenModeActive &&
+                !this.props.isPenModeActive) ||
+                nextProps.brushPenMode !== this.props.brushPenMode ||
+                nextProps.pointPenMode !== this.props.pointPenMode) {
             if (nextProps.brushPenMode) {
                 if (!this.props.brushPenMode) {
                     this.deactivateTool();
@@ -98,6 +102,7 @@ class PenMode extends React.Component {
 }
 
 PenMode.propTypes = {
+    brushPenMode: PropTypes.bool,
     clearSelectedItems: PropTypes.func.isRequired,
     colorState: PropTypes.shape({
         fillColor: PropTypes.string,
@@ -109,7 +114,6 @@ PenMode.propTypes = {
     onChangeStrokeColor: PropTypes.func.isRequired,
     onChangeStrokeWidth: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired,
-    brushPenMode: PropTypes.bool,
     pointPenMode: PropTypes.bool
 };
 

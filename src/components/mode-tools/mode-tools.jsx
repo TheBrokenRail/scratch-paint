@@ -164,7 +164,7 @@ const mapStateToProps = state => ({
     brushValue: state.scratchPaint.brushMode.brushSize,
     eraserValue: state.scratchPaint.eraserMode.brushSize,
     brushPenMode: state.scratchPaint.penMode.brushEnabled,
-    pointPenMode: state.scratchPaint.penMode.pointEnabled,
+    pointPenMode: state.scratchPaint.penMode.pointEnabled
 });
 const mapDispatchToProps = dispatch => ({
     onBrushSliderChange: brushSize => {
