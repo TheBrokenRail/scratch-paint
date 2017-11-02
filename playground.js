@@ -63956,8 +63956,6 @@ var PenTool2 = function (_paper$Tool) {
                 this.path = new _paper2.default.Path();
                 (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
                 this.path.fillColor = this.colorState.fillColor === _stylePath.MIXED ? null : this.colorState.fillColor;
-                this.path.onFrame = this.handleFrame;
-                this.path.data.cursor = this.cursor;
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             if (this.hitResult) {
@@ -64008,14 +64006,6 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
-            this.path.data.cursor = this.cursor;
-        }
-    }, {
-        key: 'handleFrame',
-        value: function handleFrame() {
-            if (!this.parent) {
-                if (this.data.cursor) this.data.cursor.remove();
-            }
         }
     }, {
         key: 'deactivateTool',
