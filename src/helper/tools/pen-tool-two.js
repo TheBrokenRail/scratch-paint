@@ -113,6 +113,7 @@ class PenTool2 extends paper.Tool {
             point = event.point;
         }
         this.cursor = new paper.Path();
+        this.cursor.opacity = 0.5;
         this.cursor.parent = getGuideLayer();
         this.cursor.data.isHelperItem = true;
         stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
