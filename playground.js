@@ -64008,12 +64008,13 @@ var PenTool2 = function (_paper$Tool) {
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
+            this.path.data.cursor = this.cursor;
         }
     }, {
         key: 'handleFrame',
         value: function handleFrame() {
             if (!this.parent) {
-                this.data.cursor.remove();
+                if (this.data.cursor) this.data.cursor.remove();
             }
         }
     }, {
