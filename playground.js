@@ -63996,6 +63996,7 @@ var PenTool2 = function (_paper$Tool) {
                 point = event.point;
             }
             this.cursor = new _paper2.default.Path();
+            this.cursor.opacity = 0.5;
             this.cursor.parent = (0, _layer.getGuideLayer)();
             this.cursor.data.isHelperItem = true;
             (0, _stylePath.stylePath)(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
