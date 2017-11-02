@@ -74,6 +74,7 @@ class PenTool2 extends paper.Tool {
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
             this.path.fillColor = this.colorState.fillColor === MIXED ? null : this.colorState.fillColor;
             this.path.onFrame = this.handleFrame;
+            this.path.data.cursor = this.cursor;
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
@@ -127,7 +128,7 @@ class PenTool2 extends paper.Tool {
     }
     handleFrame () {
         if (!this.parent) {
-            this = null;
+            this.data.cursor = null;
         }
     }
     deactivateTool () {
