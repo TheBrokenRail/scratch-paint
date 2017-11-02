@@ -63956,6 +63956,8 @@ var PenTool2 = function (_paper$Tool) {
                 this.path = new _paper2.default.Path();
                 (0, _stylePath.stylePath)(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
                 this.path.fillColor = this.colorState.fillColor === _stylePath.MIXED ? null : this.colorState.fillColor;
+                this.path.onFrame = this.handleFrame;
+                this.path.data.cursor = this.cursor;
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             if (this.hitResult) {
@@ -64001,7 +64003,6 @@ var PenTool2 = function (_paper$Tool) {
             (0, _stylePath.stylePath)(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
             this.cursor.add(point);
             this.cursor.add(event.point);
-            this.cursor.onFrame = this.handleFrame;
             if (this.hitResult) {
                 (0, _guides.removeHitPoint)();
             }
@@ -64011,8 +64012,8 @@ var PenTool2 = function (_paper$Tool) {
     }, {
         key: 'handleFrame',
         value: function handleFrame() {
-            if (this.path && !this.path.parent) {
-                this.path = null;
+            if (!this.parent) {
+                this.data.cursor.remove();
             }
         }
     }, {
