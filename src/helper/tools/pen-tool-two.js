@@ -126,6 +126,7 @@ class PenTool2 extends paper.Tool {
         this.drawHitPoint(this.hitResult);
     }
     handleFrame () {
+        console.log(this);
         if (this.path && !this.path.parent) {
             this.path = null;
         }
