@@ -128,7 +128,7 @@ class PenTool2 extends paper.Tool {
     }
     handleFrame () {
         if (!this.parent) {
-            this.data.cursor = null;
+            this.data.cursor.remove();
         }
     }
     deactivateTool () {
