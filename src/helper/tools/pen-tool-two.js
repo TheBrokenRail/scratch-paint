@@ -73,8 +73,6 @@ class PenTool2 extends paper.Tool {
             this.path = new paper.Path();
             stylePath(this.path, this.colorState.strokeColor, this.colorState.strokeWidth);
             this.path.fillColor = this.colorState.fillColor === MIXED ? null : this.colorState.fillColor;
-            this.path.onFrame = this.handleFrame;
-            this.path.data.cursor = this.cursor;
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         if (this.hitResult) {
@@ -125,12 +123,6 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
-        this.path.data.cursor = this.cursor;
-    }
-    handleFrame () {
-        if (!this.parent) {
-            if (this.data.cursor) this.data.cursor.remove();
-        }
     }
     deactivateTool () {
         this.fixedDistance = 1;
