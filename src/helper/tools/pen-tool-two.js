@@ -125,10 +125,11 @@ class PenTool2 extends paper.Tool {
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
+        this.path.data.cursor = this.cursor;
     }
     handleFrame () {
         if (!this.parent) {
-            this.data.cursor.remove();
+            if (this.data.cursor) this.data.cursor.remove();
         }
     }
     deactivateTool () {
