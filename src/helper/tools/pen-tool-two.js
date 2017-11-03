@@ -35,7 +35,7 @@ class PenTool2 extends paper.Tool {
         paper.view.on('mouseleave', this.handleMouseLeave);
     }
     handleMouseLeave () {
-        log(this);
+        log.log(this);
         if (this.cursor) {
             this.cursor.remove();
             this.cursor = null;
