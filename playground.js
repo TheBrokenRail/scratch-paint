@@ -19400,7 +19400,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CHANGE_SELECTED_ITEMS = exports.clearSelectedItems = exports.setSelectedItems = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -19459,27 +19459,6 @@ exports.CHANGE_SELECTED_ITEMS = CHANGE_SELECTED_ITEMS;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _minilog = __webpack_require__(159);
-
-var _minilog2 = _interopRequireDefault(_minilog);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_minilog2.default.enable();
-
-exports.default = (0, _minilog2.default)('scratch-paint');
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports) {
 
 /*
@@ -19561,7 +19540,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -19920,6 +19899,27 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _minilog = __webpack_require__(159);
+
+var _minilog2 = _interopRequireDefault(_minilog);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_minilog2.default.enable();
+
+exports.default = (0, _minilog2.default)('scratch-paint');
+
+/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19990,7 +19990,7 @@ var _modes = __webpack_require__(5);
 
 var _modes2 = _interopRequireDefault(_modes);
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -22550,7 +22550,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.changeStrokeColor = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -22608,7 +22608,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MAX_STROKE_WIDTH = exports.changeStrokeWidth = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -22800,7 +22800,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DEFAULT_COLOR = exports.changeFillColor = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -23002,7 +23002,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.clearHoveredItem = exports.setHoveredItem = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -23431,7 +23431,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.clearUndoState = exports.undoSnapshot = exports.redo = exports.undo = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -23525,7 +23525,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.clearPasteOffset = exports.incrementPasteOffset = exports.setClipboardItems = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -23673,7 +23673,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.changeBrushSize = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -23834,7 +23834,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.changeBrushSize = exports.default = undefined;
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -26092,7 +26092,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -57139,7 +57139,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57159,7 +57159,7 @@ if(false) {
 /* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -57282,7 +57282,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57302,7 +57302,7 @@ if(false) {
 /* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -57375,7 +57375,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57395,7 +57395,7 @@ if(false) {
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -57913,7 +57913,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57933,7 +57933,7 @@ if(false) {
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61647,7 +61647,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61667,7 +61667,7 @@ if(false) {
 /* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61695,7 +61695,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61715,7 +61715,7 @@ if(false) {
 /* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61758,7 +61758,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61778,7 +61778,7 @@ if(false) {
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61814,7 +61814,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61834,7 +61834,7 @@ if(false) {
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61863,7 +61863,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61883,7 +61883,7 @@ if(false) {
 /* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61915,7 +61915,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61935,7 +61935,7 @@ if(false) {
 /* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -61965,7 +61965,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -61985,7 +61985,7 @@ if(false) {
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -62688,7 +62688,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -62708,7 +62708,7 @@ if(false) {
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
@@ -64075,10 +64075,6 @@ var _guides = __webpack_require__(23);
 
 var _layer = __webpack_require__(20);
 
-var _log = __webpack_require__(10);
-
-var _log2 = _interopRequireDefault(_log);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -64124,20 +64120,10 @@ var PenTool2 = function (_paper$Tool) {
         _this.onMouseMove = _this.handleMouseMove;
 
         _this.fixedDistance = 2;
-        _paper2.default.view.on('mouseleave', _this.handleMouseLeave);
         return _this;
     }
 
     _createClass(PenTool2, [{
-        key: 'handleMouseLeave',
-        value: function handleMouseLeave() {
-            _log2.default.log(this);
-            if (this.cursor) {
-                this.cursor.remove();
-                this.cursor = null;
-            }
-        }
-    }, {
         key: 'setColorState',
         value: function setColorState(colorState) {
             this.colorState = colorState;
@@ -64902,7 +64888,7 @@ var _paper = __webpack_require__(2);
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _log = __webpack_require__(10);
+var _log = __webpack_require__(12);
 
 var _log2 = _interopRequireDefault(_log);
 
@@ -66604,7 +66590,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(12)(content, options);
+var update = __webpack_require__(11)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -66624,7 +66610,7 @@ if(false) {
 /* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(11)(undefined);
+exports = module.exports = __webpack_require__(10)(undefined);
 // imports
 
 
