@@ -25,16 +25,19 @@ class PenTool2 extends paper.Tool {
         this.hitResult = null;
         this.cursor = null;
 
-        // Piece of whole path that was added by last stroke. Used to smooth just the added part.
-        this.subpath = null;
-        this.subpathIndex = 0;
-
         // We have to set these functions instead of just declaring them because
         // paper.js tools hook up the listeners in the setter functions.
         this.onMouseDown = this.handleMouseDown;
         this.onMouseMove = this.handleMouseMove;
 
         this.fixedDistance = 2;
+        paper.view.on('mouseleave', this.handleMouseLeave);
+    }
+    handleMouseLeave () {
+        if (this.cursor) {
+            this.cursor.remove();
+            this.cursor = null;
+        }
     }
     setColorState (colorState) {
         this.colorState = colorState;
