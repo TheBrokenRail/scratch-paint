@@ -17,7 +17,6 @@ export default combineReducers({
     eraserMode: eraserModeReducer,
     color: colorReducer,
     clipboard: clipboardReducer,
-    eraserMode: eraserModeReducer,
     hoveredItemId: hoverReducer,
     modals: modalsReducer,
     selectedItems: selectedItemReducer,
