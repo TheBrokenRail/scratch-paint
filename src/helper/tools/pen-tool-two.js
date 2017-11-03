@@ -3,6 +3,7 @@ import {MIXED, stylePath} from '../style-path';
 import {endPointHit, touching} from '../snapping';
 import {drawHitPoint, removeHitPoint} from '../guides';
 import {getGuideLayer} from '../../helper/layer';
+import log from '../../../log/log';
 
 /**
  * Tool to handle freehand drawing of lines.
@@ -34,7 +35,7 @@ class PenTool2 extends paper.Tool {
         paper.view.on('mouseleave', this.handleMouseLeave);
     }
     handleMouseLeave () {
-        console.log(this);
+        log(this);
         if (this.cursor) {
             this.cursor.remove();
             this.cursor = null;
