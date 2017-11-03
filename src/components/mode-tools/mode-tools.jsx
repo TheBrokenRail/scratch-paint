@@ -202,10 +202,10 @@ ModeToolsComponent.propTypes = {
     onCopyToClipboard: PropTypes.func.isRequired,
     onEraserSliderChange: PropTypes.func,
     onPasteFromClipboard: PropTypes.func.isRequired,
-    selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item)),
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
-    pointPenMode: PropTypes.bool
+    pointPenMode: PropTypes.bool,
+    selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item))
 };
 
 const mapStateToProps = state => ({
