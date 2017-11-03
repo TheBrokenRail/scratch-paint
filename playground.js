@@ -64114,20 +64114,25 @@ var PenTool2 = function (_paper$Tool) {
         _this.hitResult = null;
         _this.cursor = null;
 
-        // Piece of whole path that was added by last stroke. Used to smooth just the added part.
-        _this.subpath = null;
-        _this.subpathIndex = 0;
-
         // We have to set these functions instead of just declaring them because
         // paper.js tools hook up the listeners in the setter functions.
         _this.onMouseDown = _this.handleMouseDown;
         _this.onMouseMove = _this.handleMouseMove;
 
         _this.fixedDistance = 2;
+        _paper2.default.view.on('mouseleave', _this.handleMouseLeave);
         return _this;
     }
 
     _createClass(PenTool2, [{
+        key: 'handleMouseLeave',
+        value: function handleMouseLeave() {
+            if (this.cursor) {
+                this.cursor.remove();
+                this.cursor = null;
+            }
+        }
+    }, {
         key: 'setColorState',
         value: function setColorState(colorState) {
             this.colorState = colorState;
