@@ -1,3 +1,4 @@
+import paper from '@scratch/paper';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -123,16 +124,16 @@ const ModeToolsComponent = props => {
             <div className={classNames(props.className, styles.modeTools)}>
                 <InputGroup className={classNames(styles.modDashedBorder, styles.modLabeledIconHeight)}>
                     <LabeledIconButton
-                        disabled
+                        disabled={!props.selectedItems.length}
                         imgSrc={copyIcon}
                         title={props.intl.formatMessage(messages.copy)}
-                        onClick={function () {}}
+                        onClick={props.onCopyToClipboard}
                     />
                     <LabeledIconButton
-                        disabled
+                        disabled={!(props.clipboardItems.length > 0)}
                         imgSrc={pasteIcon}
                         title={props.intl.formatMessage(messages.paste)}
-                        onClick={function () {}}
+                        onClick={props.onPasteFromClipboard}
                     />
                 </InputGroup>
                 {/* <LabeledIconButton
@@ -193,20 +194,26 @@ ModeToolsComponent.propTypes = {
     brushPenMode: PropTypes.bool,
     brushValue: PropTypes.number,
     className: PropTypes.string,
+    clipboardItems: PropTypes.arrayOf(PropTypes.array),
     eraserValue: PropTypes.number,
     intl: intlShape.isRequired,
     mode: PropTypes.string.isRequired,
     onBrushSliderChange: PropTypes.func,
+    onCopyToClipboard: PropTypes.func.isRequired,
     onEraserSliderChange: PropTypes.func,
+    onPasteFromClipboard: PropTypes.func.isRequired,
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
-    pointPenMode: PropTypes.bool
+    pointPenMode: PropTypes.bool,
+    selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item))
 };
 
 const mapStateToProps = state => ({
     mode: state.scratchPaint.mode,
     brushValue: state.scratchPaint.brushMode.brushSize,
+    clipboardItems: state.scratchPaint.clipboard.items,
     eraserValue: state.scratchPaint.eraserMode.brushSize,
+    selectedItems: state.scratchPaint.selectedItems,
     brushPenMode: state.scratchPaint.penMode.brushEnabled,
     pointPenMode: state.scratchPaint.penMode.pointEnabled
 });

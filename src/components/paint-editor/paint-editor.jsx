@@ -248,7 +248,10 @@ class PaintEditorComponent extends React.Component {
                                 />
                             </InputGroup>
                             <InputGroup className={styles.modModeTools}>
-                                <ModeToolsComponent />
+                                <ModeToolsComponent
+                                    onCopyToClipboard={this.props.onCopyToClipboard}
+                                    onPasteFromClipboard={this.props.onPasteFromClipboard}
+                                />
                             </InputGroup>
                         </div>
                     </div>
@@ -343,7 +346,9 @@ PaintEditorComponent.propTypes = {
     canUndo: PropTypes.func.isRequired,
     intl: intlShape,
     name: PropTypes.string,
+    onCopyToClipboard: PropTypes.func.isRequired,
     onGroup: PropTypes.func.isRequired,
+    onPasteFromClipboard: PropTypes.func.isRequired,
     onRedo: PropTypes.func.isRequired,
     onSendBackward: PropTypes.func.isRequired,
     onSendForward: PropTypes.func.isRequired,
