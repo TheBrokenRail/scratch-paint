@@ -64212,11 +64212,17 @@ var PenTool2 = function (_paper$Tool) {
             (0, _stylePath.stylePath)(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
             this.cursor.add(point);
             this.cursor.add(event.point);
+            this.cursor.onMouseLeave = this.handleMouseLeave;
             if (this.hitResult) {
                 (0, _guides.removeHitPoint)();
             }
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
+        }
+    }, {
+        key: 'handleMouseLeave',
+        value: function handleMouseLeave() {
+            this.remove();
         }
     }, {
         key: 'deactivateTool',
