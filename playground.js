@@ -64269,6 +64269,10 @@ var PenTool2 = function (_paper$Tool) {
             if (this.hitResult) {
                 (0, _guides.removeHitPoint)();
             }
+            var cursor = this.cursor;
+            _paper2.default.view.onMouseLeave = function () {
+                cursor.remove();
+            };
             this.hitResult = (0, _snapping.endPointHit)(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
             this.drawHitPoint(this.hitResult);
         }
