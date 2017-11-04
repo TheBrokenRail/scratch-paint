@@ -115,11 +115,15 @@ class PenTool2 extends paper.Tool {
         stylePath(this.cursor, this.colorState.strokeColor, this.colorState.strokeWidth);
         this.cursor.add(point);
         this.cursor.add(event.point);
+        this.cursor.onMouseLeave = this.handleMouseLeave;
         if (this.hitResult) {
             removeHitPoint();
         }
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
+    }
+    handleMouseLeave () {
+        this.remove();
     }
     deactivateTool () {
         this.fixedDistance = 1;
