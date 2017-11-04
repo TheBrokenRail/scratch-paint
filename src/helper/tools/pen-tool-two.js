@@ -118,6 +118,10 @@ class PenTool2 extends paper.Tool {
         if (this.hitResult) {
             removeHitPoint();
         }
+        const cursor = this.cursor;
+        paper.view.onMouseLeave = () => {
+            cursor.remove();
+        };
         this.hitResult = endPointHit(event.point, PenTool2.SNAP_TOLERANCE, this.cursor);
         this.drawHitPoint(this.hitResult);
     }
