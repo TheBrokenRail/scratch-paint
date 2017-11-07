@@ -39,6 +39,7 @@ class PenTool extends paper.Tool {
         this.onMouseUp = this.handleMouseUp;
 
         this.fixedDistance = 2;
+        this.active = false;
     }
     setColorState (colorState) {
         this.colorState = colorState;
@@ -56,6 +57,7 @@ class PenTool extends paper.Tool {
     }
     handleMouseDown (event) {
         if (event.event.button > 0) return; // only first mouse button
+        this.active = true;
         this.subpath = new paper.Path({insert: false});
 
         // If you click near a point, continue that line instead of making a new line
@@ -90,7 +92,7 @@ class PenTool extends paper.Tool {
         this.drawHitPoint(this.hitResult);
     }
     handleMouseDrag (event) {
-        if (event.event.button > 0) return; // only first mouse button
+        if (event.event.button > 0 || !this.active) return; // only first mouse button
         
         // If near another path's endpoint, or this path's beginpoint, highlight it to suggest
         // joining/closing the paths.
@@ -119,7 +121,7 @@ class PenTool extends paper.Tool {
         this.subpath.add(event.point);
     }
     handleMouseUp (event) {
-        if (event.event.button > 0) return; // only first mouse button
+        if (event.event.button > 0 || !this.active) return; // only first mouse button
         
         // If I single clicked, don't do anything
         if (!this.hitResult && // Might be connecting 2 points that are very close
@@ -166,6 +168,7 @@ class PenTool extends paper.Tool {
             this.onUpdateSvg();
             this.path = null;
         }
+        this.active = false;
     }
     deactivateTool () {
         this.fixedDistance = 1;
