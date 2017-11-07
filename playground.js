@@ -64073,6 +64073,7 @@ var PenTool = function (_paper$Tool) {
         _this.onMouseUp = _this.handleMouseUp;
 
         _this.fixedDistance = 2;
+        _this.active = false;
         return _this;
     }
 
@@ -64098,6 +64099,7 @@ var PenTool = function (_paper$Tool) {
         key: 'handleMouseDown',
         value: function handleMouseDown(event) {
             if (event.event.button > 0) return; // only first mouse button
+            this.active = true;
             this.subpath = new _paper2.default.Path({ insert: false });
 
             // If you click near a point, continue that line instead of making a new line
@@ -64136,7 +64138,7 @@ var PenTool = function (_paper$Tool) {
     }, {
         key: 'handleMouseDrag',
         value: function handleMouseDrag(event) {
-            if (event.event.button > 0) return; // only first mouse button
+            if (event.event.button > 0 || !this.active) return; // only first mouse button
 
             // If near another path's endpoint, or this path's beginpoint, highlight it to suggest
             // joining/closing the paths.
@@ -64164,7 +64166,7 @@ var PenTool = function (_paper$Tool) {
     }, {
         key: 'handleMouseUp',
         value: function handleMouseUp(event) {
-            if (event.event.button > 0) return; // only first mouse button
+            if (event.event.button > 0 || !this.active) return; // only first mouse button
 
             // If I single clicked, don't do anything
             if (!this.hitResult && ( // Might be connecting 2 points that are very close
@@ -64209,6 +64211,7 @@ var PenTool = function (_paper$Tool) {
                 this.onUpdateSvg();
                 this.path = null;
             }
+            this.active = false;
         }
     }, {
         key: 'deactivateTool',
