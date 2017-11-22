@@ -14,7 +14,7 @@ import Input from '../forms/input.jsx';
 import InputGroup from '../input-group/input-group.jsx';
 import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
 // import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
-import Modes from '../../modes/modes';
+import Modes from '../../lib/modes';
 import styles from './mode-tools.css';
 
 import copyIcon from './icons/copy.svg';
@@ -73,7 +73,6 @@ const ModeToolsComponent = props => {
                     />
                 </div>
                 <LiveInput
-                    small
                     max={MAX_STROKE_WIDTH}
                     min="1"
                     type="number"
@@ -93,7 +92,6 @@ const ModeToolsComponent = props => {
                     />
                 </div>
                 <LiveInput
-                    small
                     max={MAX_STROKE_WIDTH}
                     min="1"
                     type="number"

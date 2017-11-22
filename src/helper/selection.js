@@ -1,5 +1,5 @@
 import paper from '@scratch/paper';
-import Modes from '../modes/modes';
+import Modes from '../lib/modes';
 
 import {getItemsGroup, isGroup} from './group';
 import {getRootItem, isCompoundPathItem, isBoundsItem, isPathItem, isPGTextItem} from './item';
@@ -12,7 +12,7 @@ import {getItemsCompoundPath, isCompoundPath, isCompoundPathChild} from './compo
  */
 const getItems = function (options) {
     const newMatcher = function (item) {
-        return !item.locked &&
+        return !(item instanceof paper.Layer) && !item.locked &&
             !(item.data && item.data.isHelperItem) &&
             (!options.match || options.match(item));
     };

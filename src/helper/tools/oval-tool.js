@@ -1,5 +1,5 @@
 import paper from '@scratch/paper';
-import Modes from '../../modes/modes';
+import Modes from '../../lib/modes';
 import {styleShape} from '../style-path';
 import {clearSelection} from '../selection';
 import BoundingBoxTool from '../selection-tools/bounding-box-tool';
@@ -18,6 +18,7 @@ class OvalTool extends paper.Tool {
      */
     constructor (setSelectedItems, clearSelectedItems, onUpdateSvg) {
         super();
+        this.setSelectedItems = setSelectedItems;
         this.clearSelectedItems = clearSelectedItems;
         this.onUpdateSvg = onUpdateSvg;
         this.prevHoveredItemId = null;
@@ -116,7 +117,7 @@ class OvalTool extends paper.Tool {
                 this.oval = null;
 
                 ovalPath.selected = true;
-                this.boundingBoxTool.setSelectionBounds();
+                this.setSelectedItems();
                 this.onUpdateSvg();
             }
         }
