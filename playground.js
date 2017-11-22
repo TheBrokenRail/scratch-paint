@@ -18886,7 +18886,8 @@ var Modes = (0, _keymirror2.default)({
     RESHAPE: null,
     OVAL: null,
     RECT: null,
-    ROUNDED_RECT: null
+    ROUNDED_RECT: null,
+    PEN: null
 });
 
 exports.default = Modes;
