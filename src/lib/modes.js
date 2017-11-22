@@ -8,7 +8,8 @@ const Modes = keyMirror({
     RESHAPE: null,
     OVAL: null,
     RECT: null,
-    ROUNDED_RECT: null
+    ROUNDED_RECT: null,
+    PEN: null
 });
 
 export default Modes;
