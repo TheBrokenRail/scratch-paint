@@ -12,18 +12,19 @@ const setDefaultGuideStyle = function (item) {
     item.guide = true;
 };
 
-const hoverItem = function (hitResult) {
-    const segments = hitResult.item.segments;
+const hoverItem = function (item) {
+    const segments = item.segments;
     const clone = new paper.Path(segments);
     setDefaultGuideStyle(clone);
-    if (hitResult.item.closed) {
+    if (item.closed) {
         clone.closed = true;
     }
     clone.parent = getGuideLayer();
-    clone.position = hitResult.item.position;
+    clone.position = item.position;
     clone.strokeColor = GUIDE_BLUE;
     clone.fillColor = null;
     clone.data.isHelperItem = true;
+    clone.data.origItem = item;
     clone.bringToFront();
 
     return clone;
@@ -88,6 +89,10 @@ const removeBoundsPath = function () {
     _removePaperItemsByDataTags(['isSelectionBound', 'isRotHandle', 'isScaleHandle']);
 };
 
+const removeBoundsHandles = function () {
+    _removePaperItemsByDataTags(['isRotHandle', 'isScaleHandle']);
+};
+
 const removeAllGuides = function () {
     _removePaperItemsByTags(['guide']);
 };
@@ -113,6 +118,7 @@ export {
     hoverBounds,
     rectSelect,
     removeAllGuides,
+    removeBoundsHandles,
     removeBoundsPath,
     drawHitPoint,
     removeHitPoint,

@@ -1,3 +1,4 @@
+import paper from '@scratch/paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import PaintEditorComponent from '../components/paint-editor/paint-editor.jsx';
@@ -5,19 +6,19 @@ import PaintEditorComponent from '../components/paint-editor/paint-editor.jsx';
 import {changeMode} from '../reducers/modes';
 import {undo, redo, undoSnapshot} from '../reducers/undo';
 import {clearSelectedItems, setSelectedItems} from '../reducers/selected-items';
-import {incrementPasteOffset, setClipboardItems} from '../reducers/clipboard';
+import {deactivateEyeDropper} from '../reducers/eye-dropper';
 
 import {hideGuideLayers, showGuideLayers} from '../helper/layer';
 import {performUndo, performRedo, performSnapshot, shouldShowUndo, shouldShowRedo} from '../helper/undo';
 import {bringToFront, sendBackward, sendToBack, bringForward} from '../helper/order';
 import {groupSelection, ungroupSelection} from '../helper/group';
-import {clearSelection, getSelectedLeafItems, getSelectedRootItems} from '../helper/selection';
+import {getSelectedLeafItems} from '../helper/selection';
 import {resetZoom, zoomOnSelection} from '../helper/view';
+import EyeDropperTool from '../helper/tools/eye-dropper';
 
 import Modes from '../lib/modes';
 import {connect} from 'react-redux';
 import bindAll from 'lodash.bindall';
-import paper from '@scratch/paper';
 
 class PaintEditor extends React.Component {
     static get ZOOM_INCREMENT () {
@@ -37,15 +38,29 @@ class PaintEditor extends React.Component {
             'handleUngroup',
             'canRedo',
             'canUndo',
-            'handleCopyToClipboard',
-            'handlePasteFromClipboard'
+            'onMouseDown',
+            'setCanvas',
+            'startEyeDroppingLoop',
+            'stopEyeDroppingLoop'
         ]);
+        this.state = {
+            canvas: null,
+            colorInfo: null
+        };
     }
     componentDidMount () {
         document.addEventListener('keydown', this.props.onKeyPress);
     }
+    componentDidUpdate (prevProps) {
+        if (this.props.isEyeDropping && !prevProps.isEyeDropping) {
+            this.startEyeDroppingLoop();
+        } else if (!this.props.isEyeDropping && prevProps.isEyeDropping) {
+            this.stopEyeDroppingLoop();
+        }
+    }
     componentWillUnmount () {
         document.removeEventListener('keydown', this.props.onKeyPress);
+        this.stopEyeDroppingLoop();
     }
     handleUpdateSvg (skipSnapshot) {
         // Store the zoom/pan and restore it after snapshotting
@@ -100,36 +115,6 @@ class PaintEditor extends React.Component {
     handleSendToFront () {
         bringToFront(this.handleUpdateSvg);
     }
-    handleCopyToClipboard () {
-        const selectedItems = getSelectedRootItems();
-        if (selectedItems.length > 0) {
-            const clipboardItems = [];
-            for (let i = 0; i < selectedItems.length; i++) {
-                const jsonItem = selectedItems[i].exportJSON({asString: false});
-                clipboardItems.push(jsonItem);
-            }
-            this.props.setClipboardItems(clipboardItems);
-        }
-    }
-    handlePasteFromClipboard () {
-        clearSelection(this.props.clearSelectedItems);
-
-        if (this.props.clipboardItems.length > 0) {
-            for (let i = 0; i < this.props.clipboardItems.length; i++) {
-                const item = paper.Base.importJSON(this.props.clipboardItems[i]);
-                if (item) {
-                    item.selected = true;
-                }
-                const placedItem = paper.project.getActiveLayer().addChild(item);
-                placedItem.position.x += 10 * this.props.pasteOffset;
-                placedItem.position.y += 10 * this.props.pasteOffset;
-            }
-            this.props.incrementPasteOffset();
-            this.props.setSelectedItems();
-            paper.project.view.update();
-            this.handleUpdateSvg();
-        }
-    }
     canUndo () {
         return shouldShowUndo(this.props.undoState);
     }
@@ -145,19 +130,83 @@ class PaintEditor extends React.Component {
     handleZoomReset () {
         resetZoom();
     }
+    setCanvas (canvas) {
+        this.setState({canvas: canvas});
+        this.canvas = canvas;
+    }
+    onMouseDown () {
+        if (this.props.isEyeDropping) {
+            const colorString = this.eyeDropper.colorString;
+            const callback = this.props.changeColorToEyeDropper;
+
+            this.eyeDropper.remove();
+            this.props.previousTool.activate();
+            this.props.onDeactivateEyeDropper();
+            this.stopEyeDroppingLoop();
+            if (!this.eyeDropper.hideLoupe) {
+                // If not hide loupe, that means the click is inside the canvas,
+                // so apply the new color
+                callback(colorString);
+            }
+            this.setState({colorInfo: null});
+        }
+    }
+    startEyeDroppingLoop () {
+        this.eyeDropper = new EyeDropperTool(
+            this.canvas,
+            paper.project.view.bounds.width,
+            paper.project.view.bounds.height,
+            paper.project.view.pixelRatio,
+            paper.view.zoom,
+            paper.project.view.bounds.x,
+            paper.project.view.bounds.y
+        );
+        this.eyeDropper.pickX = -1;
+        this.eyeDropper.pickY = -1;
+        this.eyeDropper.activate();
+
+        // document listeners used to detect if a mouse is down outside of the
+        // canvas, and should therefore stop the eye dropper
+        document.addEventListener('mousedown', this.onMouseDown);
+        document.addEventListener('touchstart', this.onMouseDown);
+        
+        this.intervalId = setInterval(() => {
+            const colorInfo = this.eyeDropper.getColorInfo(
+                this.eyeDropper.pickX,
+                this.eyeDropper.pickY,
+                this.eyeDropper.hideLoupe
+            );
+            if (
+                this.state.colorInfo === null ||
+                this.state.colorInfo.x !== colorInfo.x ||
+                this.state.colorInfo.y !== colorInfo.y
+            ) {
+                this.setState({
+                    colorInfo: colorInfo
+                });
+            }
+        }, 30);
+    }
+    stopEyeDroppingLoop () {
+        clearInterval(this.intervalId);
+        document.removeEventListener('mousedown', this.onMouseDown);
+        document.removeEventListener('touchstart', this.onMouseDown);
+    }
     render () {
         return (
             <PaintEditorComponent
                 canRedo={this.canRedo}
                 canUndo={this.canUndo}
+                canvas={this.state.canvas}
+                colorInfo={this.state.colorInfo}
+                isEyeDropping={this.props.isEyeDropping}
                 name={this.props.name}
                 rotationCenterX={this.props.rotationCenterX}
                 rotationCenterY={this.props.rotationCenterY}
+                setCanvas={this.setCanvas}
                 svg={this.props.svg}
                 svgId={this.props.svgId}
-                onCopyToClipboard={this.handleCopyToClipboard}
                 onGroup={this.handleGroup}
-                onPasteFromClipboard={this.handlePasteFromClipboard}
                 onRedo={this.handleRedo}
                 onSendBackward={this.handleSendBackward}
                 onSendForward={this.handleSendForward}
@@ -176,19 +225,22 @@ class PaintEditor extends React.Component {
 }
 
 PaintEditor.propTypes = {
+    changeColorToEyeDropper: PropTypes.func,
     clearSelectedItems: PropTypes.func.isRequired,
-    clipboardItems: PropTypes.arrayOf(PropTypes.array),
-    incrementPasteOffset: PropTypes.func.isRequired,
+    isEyeDropping: PropTypes.bool,
     name: PropTypes.string,
+    onDeactivateEyeDropper: PropTypes.func.isRequired,
     onKeyPress: PropTypes.func.isRequired,
     onRedo: PropTypes.func.isRequired,
     onUndo: PropTypes.func.isRequired,
     onUpdateName: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired,
-    pasteOffset: PropTypes.number,
+    previousTool: PropTypes.shape({ // paper.Tool
+        activate: PropTypes.func.isRequired,
+        remove: PropTypes.func.isRequired
+    }),
     rotationCenterX: PropTypes.number,
     rotationCenterY: PropTypes.number,
-    setClipboardItems: PropTypes.func.isRequired,
     setSelectedItems: PropTypes.func.isRequired,
     svg: PropTypes.string,
     svgId: PropTypes.string,
@@ -200,10 +252,13 @@ PaintEditor.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    selectedItems: state.scratchPaint.selectedItems,
-    undoState: state.scratchPaint.undo,
+    changeColorToEyeDropper: state.scratchPaint.color.eyeDropper.callback,
     clipboardItems: state.scratchPaint.clipboard.items,
-    pasteOffset: state.scratchPaint.clipboard.pasteOffset
+    isEyeDropping: state.scratchPaint.color.eyeDropper.active,
+    pasteOffset: state.scratchPaint.clipboard.pasteOffset,
+    previousTool: state.scratchPaint.color.eyeDropper.previousTool,
+    selectedItems: state.scratchPaint.selectedItems,
+    undoState: state.scratchPaint.undo
 });
 const mapDispatchToProps = dispatch => ({
     onKeyPress: event => {
@@ -232,11 +287,9 @@ const mapDispatchToProps = dispatch => ({
     undoSnapshot: snapshot => {
         dispatch(undoSnapshot(snapshot));
     },
-    setClipboardItems: items => {
-        dispatch(setClipboardItems(items));
-    },
-    incrementPasteOffset: () => {
-        dispatch(incrementPasteOffset());
+    onDeactivateEyeDropper: () => {
+        // set redux values to default for eye dropper reducer
+        dispatch(deactivateEyeDropper());
     }
 });
 

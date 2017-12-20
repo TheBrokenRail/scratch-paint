@@ -5,6 +5,16 @@ import {isGroup} from './group';
 
 const MIXED = 'scratch-paint/style-path/mixed';
 
+// Check if the item color matches the incoming color. If the item color is a gradient, we assume
+// that the incoming color never matches, since we don't support gradients yet.
+const _colorMatch = function (itemColor, incomingColor) {
+    // @todo check whether the gradient has changed when we support gradients
+    if (itemColor && itemColor.type === 'gradient') return false;
+    // Either both are null or both are the same color when converted to CSS.
+    return (!itemColor && !incomingColor) ||
+            (itemColor && incomingColor && itemColor.toCSS() === new paper.Color(incomingColor).toCSS());
+};
+
 /**
  * Called when setting fill color
  * @param {string} colorString New color, css format
@@ -13,22 +23,23 @@ const MIXED = 'scratch-paint/style-path/mixed';
 const applyFillColorToSelection = function (colorString) {
     const items = getSelectedLeafItems();
     let changed = false;
-    for (const item of items) {
+    for (let item of items) {
+        if (item.parent instanceof paper.CompoundPath) {
+            item = item.parent;
+        }
         if (isPGTextItem(item)) {
             for (const child of item.children) {
                 if (child.children) {
                     for (const path of child.children) {
                         if (!path.data.isPGGlyphRect) {
-                            if ((path.fillColor === null && colorString) ||
-                                    path.fillColor.toCSS() !== new paper.Color(colorString).toCSS()) {
+                            if (!_colorMatch(path.fillColor, colorString)) {
                                 changed = true;
                                 path.fillColor = colorString;
                             }
                         }
                     }
                 } else if (!child.data.isPGGlyphRect) {
-                    if ((child.fillColor === null && colorString) ||
-                            child.fillColor.toCSS() !== new paper.Color(colorString).toCSS()) {
+                    if (!_colorMatch(child.fillColor, colorString)) {
                         changed = true;
                         child.fillColor = colorString;
                     }
@@ -38,19 +49,13 @@ const applyFillColorToSelection = function (colorString) {
             if (isPointTextItem(item) && !colorString) {
                 colorString = 'rgba(0,0,0,0)';
             }
-            if ((item.fillColor === null && colorString) ||
-                    item.fillColor.toCSS() !== new paper.Color(colorString).toCSS()) {
+            if (!_colorMatch(item.fillColor, colorString)) {
                 changed = true;
                 item.fillColor = colorString;
             }
         }
     }
     return changed;
-};
-
-const _strokeColorMatch = function (item, incomingColor) {
-    return (!item.strokeColor && !incomingColor) ||
-        (item.strokeColor && incomingColor && item.strokeColor.toCSS() === new paper.Color(incomingColor).toCSS());
 };
 
 /**
@@ -61,14 +66,17 @@ const _strokeColorMatch = function (item, incomingColor) {
 const applyStrokeColorToSelection = function (colorString) {
     const items = getSelectedLeafItems();
     let changed = false;
-    for (const item of items) {
+    for (let item of items) {
+        if (item.parent instanceof paper.CompoundPath) {
+            item = item.parent;
+        }
         if (isPGTextItem(item)) {
             if (item.children) {
                 for (const child of item.children) {
                     if (child.children) {
                         for (const path of child.children) {
                             if (!path.data.isPGGlyphRect) {
-                                if (!_strokeColorMatch(path, colorString)) {
+                                if (!_colorMatch(path.strokeColor, colorString)) {
                                     changed = true;
                                     path.strokeColor = colorString;
                                 }
@@ -82,12 +90,12 @@ const applyStrokeColorToSelection = function (colorString) {
                     }
                 }
             } else if (!item.data.isPGGlyphRect) {
-                if (!_strokeColorMatch(item, colorString)) {
+                if (!_colorMatch(item.strokeColor, colorString)) {
                     changed = true;
                     item.strokeColor = colorString;
                 }
             }
-        } else if (!_strokeColorMatch(item, colorString)) {
+        } else if (!_colorMatch(item.strokeColor, colorString)) {
             changed = true;
             item.strokeColor = colorString;
         }
@@ -103,7 +111,10 @@ const applyStrokeColorToSelection = function (colorString) {
 const applyStrokeWidthToSelection = function (value, onUpdateSvg) {
     let changed = false;
     const items = getSelectedLeafItems();
-    for (const item of items) {
+    for (let item of items) {
+        if (item.parent instanceof paper.CompoundPath) {
+            item = item.parent;
+        }
         if (isGroup(item)) {
             continue;
         } else if (item.strokeWidth !== value) {
@@ -129,7 +140,11 @@ const getColorsFromSelection = function (selectedItems) {
     let selectionStrokeWidth;
     let firstChild = true;
 
-    for (const item of selectedItems) {
+    for (let item of selectedItems) {
+        if (item.parent instanceof paper.CompoundPath) {
+            // Compound path children inherit fill and stroke color from their parent.
+            item = item.parent;
+        }
         let itemFillColorString;
         let itemStrokeColorString;
 
