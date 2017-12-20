@@ -30,6 +30,7 @@ import OvalMode from '../../containers/oval-mode.jsx';
 import RectMode from '../../containers/rect-mode.jsx';
 import ReshapeMode from '../../containers/reshape-mode.jsx';
 import SelectMode from '../../containers/select-mode.jsx';
+import PenMode from '../../containers/pen-mode.jsx';
 import StrokeColorIndicatorComponent from '../../containers/stroke-color-indicator.jsx';
 import StrokeWidthIndicatorComponent from '../../containers/stroke-width-indicator.jsx';
 
@@ -347,6 +348,9 @@ const PaintEditorComponent = props => {
                             onUpdateSvg={props.onUpdateSvg}
                         />
                         <RectMode
+                            onUpdateSvg={props.onUpdateSvg}
+                        />
+                        <PenMode
                             onUpdateSvg={props.onUpdateSvg}
                         />
                     </div>
