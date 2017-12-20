@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import bindAll from 'lodash.bindall';
-import Modes from '../modes/modes';
+import Modes from '../lib/modes';
 
 import {changeStrokeColor} from '../reducers/stroke-color';
 import {changeStrokeWidth} from '../reducers/stroke-width';
@@ -12,6 +12,7 @@ import {MIXED} from '../helper/style-path';
 
 import {clearSelection} from '../helper/selection';
 import PenTool from '../helper/tools/pen-tool';
+import PenToolTwo from '../helper/tools/pen-tool-two';
 import PenModeComponent from '../components/pen-mode/pen-mode.jsx';
 
 class PenMode extends React.Component {
@@ -32,21 +33,38 @@ class PenMode extends React.Component {
     }
     componentWillReceiveProps (nextProps) {
         if (this.tool &&
-                (nextProps.colorState.strokeColor !== this.props.colorState.strokeColor ||
-                nextProps.colorState.strokeWidth !== this.props.colorState.strokeWidth)) {
+                nextProps.colorState !== this.props.colorState) {
             this.tool.setColorState(nextProps.colorState);
         }
 
-        if (nextProps.isPenModeActive && !this.props.isPenModeActive) {
-            this.activateTool();
+        if ((nextProps.isPenModeActive &&
+                !this.props.isPenModeActive) ||
+                nextProps.brushPenMode !== this.props.brushPenMode ||
+                nextProps.pointPenMode !== this.props.pointPenMode) {
+            if (nextProps.brushPenMode) {
+                if (!this.props.brushPenMode) {
+                    this.deactivateTool();
+                }
+                this.activateTool(false);
+            } else if (nextProps.pointPenMode) {
+                if (!this.props.pointPenMode) {
+                    this.deactivateTool();
+                }
+                this.activateTool(true);
+            }
         } else if (!nextProps.isPenModeActive && this.props.isPenModeActive) {
             this.deactivateTool();
         }
     }
     shouldComponentUpdate (nextProps) {
-        return nextProps.isPenModeActive !== this.props.isPenModeActive;
+        return nextProps.isPenModeActive !==
+            this.props.isPenModeActive ||
+            nextProps.brushPenMode !==
+            this.props.brushPenMode ||
+            nextProps.pointPenMode !==
+            this.props.pointPenMode;
     }
-    activateTool () {
+    activateTool (mode) {
         clearSelection(this.props.clearSelectedItems);
         // Force the default pen color if stroke is MIXED or transparent
         const {strokeColor} = this.props.colorState;
@@ -57,10 +75,17 @@ class PenMode extends React.Component {
         if (!this.props.colorState.strokeWidth) {
             this.props.onChangeStrokeWidth(1);
         }
-        this.tool = new PenTool(
-            this.props.clearSelectedItems,
-            this.props.onUpdateSvg
-        );
+        if (mode) {
+            this.tool = new PenToolTwo(
+                this.props.clearSelectedItems,
+                this.props.onUpdateSvg
+            );
+        } else {
+            this.tool = new PenTool(
+                this.props.clearSelectedItems,
+                this.props.onUpdateSvg
+            );
+        }
         this.tool.setColorState(this.props.colorState);
         this.tool.activate();
     }
@@ -80,6 +105,7 @@ class PenMode extends React.Component {
 }
 
 PenMode.propTypes = {
+    brushPenMode: PropTypes.bool,
     clearSelectedItems: PropTypes.func.isRequired,
     colorState: PropTypes.shape({
         fillColor: PropTypes.string,
@@ -90,13 +116,15 @@ PenMode.propTypes = {
     isPenModeActive: PropTypes.bool.isRequired,
     onChangeStrokeColor: PropTypes.func.isRequired,
     onChangeStrokeWidth: PropTypes.func.isRequired,
-    onUpdateSvg: PropTypes.func.isRequired
+    onUpdateSvg: PropTypes.func.isRequired,
+    pointPenMode: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     colorState: state.scratchPaint.color,
-    isPenModeActive: state.scratchPaint.mode === Modes.PEN
-
+    isPenModeActive: state.scratchPaint.mode === Modes.PEN,
+    brushPenMode: state.scratchPaint.penMode.brushEnabled,
+    pointPenMode: state.scratchPaint.penMode.pointEnabled
 });
 const mapDispatchToProps = dispatch => ({
     clearSelectedItems: () => {
