@@ -4,14 +4,13 @@ const Modes = keyMirror({
     BRUSH: null,
     ERASER: null,
     LINE: null,
-    FILL: null,
     SELECT: null,
     RESHAPE: null,
     PEN: null,
+    PENTWO: null,
     OVAL: null,
     RECT: null,
-    ROUNDED_RECT: null,
-    PEN: null
+    ROUNDED_RECT: null
 });
 
 export default Modes;
