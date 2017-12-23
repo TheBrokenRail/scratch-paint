@@ -13,7 +13,6 @@ import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import Input from '../forms/input.jsx';
 import InputGroup from '../input-group/input-group.jsx';
 import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
-// import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
 import Modes from '../../lib/modes';
 import styles from './mode-tools.css';
 
@@ -53,6 +52,16 @@ const ModeToolsComponent = props => {
             defaultMessage: 'Paste',
             description: 'Label for the paste button',
             id: 'paint.modeTools.paste'
+        },
+        curved: {
+            defaultMessage: 'Curved',
+            description: 'Label for the button that converts selected points to curves',
+            id: 'paint.modeTools.curved'
+        },
+        pointed: {
+            defaultMessage: 'Pointed',
+            description: 'Label for the button that converts selected points to sharp points',
+            id: 'paint.modeTools.pointed'
         },
         pen: {
             defaultMessage: 'Pen',
@@ -103,18 +112,18 @@ const ModeToolsComponent = props => {
     case Modes.RESHAPE:
         return (
             <div className={classNames(props.className, styles.modeTools)}>
-                {/* <LabeledIconButton
-                    imgAlt="Curved Point Icon"
+                <LabeledIconButton
+                    disabled={!props.hasSelectedUncurvedPoints}
                     imgSrc={curvedPointIcon}
-                    title="Curved"
-                    onClick={function () {}}
+                    title={props.intl.formatMessage(messages.curved)}
+                    onClick={props.onCurvePoints}
                 />
                 <LabeledIconButton
-                    imgAlt="Straight Point Icon"
+                    disabled={!props.hasSelectedUnpointedPoints}
                     imgSrc={straightPointIcon}
-                    title="Pointed"
-                    onClick={function () {}}
-                /> */}
+                    title={props.intl.formatMessage(messages.pointed)}
+                    onClick={props.onPointPoints}
+                />
             </div>
         );
     case Modes.SELECT:
@@ -194,12 +203,16 @@ ModeToolsComponent.propTypes = {
     className: PropTypes.string,
     clipboardItems: PropTypes.arrayOf(PropTypes.array),
     eraserValue: PropTypes.number,
+    hasSelectedUncurvedPoints: PropTypes.bool,
+    hasSelectedUnpointedPoints: PropTypes.bool,
     intl: intlShape.isRequired,
     mode: PropTypes.string.isRequired,
     onBrushSliderChange: PropTypes.func,
     onCopyToClipboard: PropTypes.func.isRequired,
+    onCurvePoints: PropTypes.func.isRequired,
     onEraserSliderChange: PropTypes.func,
     onPasteFromClipboard: PropTypes.func.isRequired,
+    onPointPoints: PropTypes.func.isRequired,
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
     pointPenMode: PropTypes.bool,
