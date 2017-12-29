@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {changeBrushSize} from '../../reducers/brush-mode';
+import {changePenMode} from '../../reducers/pen-mode';
 import {changeBrushSize as changeEraserSize} from '../../reducers/eraser-mode';
 
 import LiveInputHOC from '../forms/live-input-hoc.jsx';
@@ -19,11 +20,13 @@ import copyIcon from './icons/copy.svg';
 import pasteIcon from './icons/paste.svg';
 
 import brushIcon from '../brush-mode/brush.svg';
+import penIcon from '../pen-mode/pen.svg';
 import curvedPointIcon from './icons/curved-point.svg';
 import eraserIcon from '../eraser-mode/eraser.svg';
 import flipHorizontalIcon from './icons/flip-horizontal.svg';
 import flipVerticalIcon from './icons/flip-vertical.svg';
 import straightPointIcon from './icons/straight-point.svg';
+import ToolSelectComponent from '../tool-select-base/tool-select-base.jsx';
 
 import {MAX_STROKE_WIDTH} from '../../reducers/stroke-width';
 
@@ -69,6 +72,11 @@ const ModeToolsComponent = props => {
             defaultMessage: 'Flip Vertical',
             description: 'Label for the button to flip the image vertically',
             id: 'paint.modeTools.flipVertical'
+        },
+        pen: {
+            defaultMessage: 'Pen',
+            description: 'Label for the pen tool, which draws outlines',
+            id: 'paint.penMode.pen'
         }
     });
 
@@ -161,6 +169,38 @@ const ModeToolsComponent = props => {
                 </InputGroup>
             </div>
         );
+    case Modes.PEN:
+        return (
+            <div className={classNames(props.className, styles.modeTools)}>
+                <div>
+                    <img
+                        alt={props.intl.formatMessage(messages.pen)}
+                        className={styles.modeToolsIcon}
+                        src={penIcon}
+                    />
+                </div>
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Brush Mode',
+                        description: 'Pen Brush Mode',
+                        id: 'paint.penMode.brush'
+                    }}
+                    imgSrc={curvedPointIcon}
+                    isSelected={props.brushPenMode}
+                    onMouseDown={props.onPenModeBrush}
+                />
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Point Mode',
+                        description: 'Pen Point Mode',
+                        id: 'paint.penMode.point'
+                    }}
+                    imgSrc={straightPointIcon}
+                    isSelected={props.pointPenMode}
+                    onMouseDown={props.onPenModePoint}
+                />
+            </div>
+        );
     default:
         // Leave empty for now, if mode not supported
         return (
@@ -170,6 +210,7 @@ const ModeToolsComponent = props => {
 };
 
 ModeToolsComponent.propTypes = {
+    brushPenMode: PropTypes.bool,
     brushValue: PropTypes.number,
     className: PropTypes.string,
     clipboardItems: PropTypes.arrayOf(PropTypes.array),
@@ -186,6 +227,9 @@ ModeToolsComponent.propTypes = {
     onFlipVertical: PropTypes.func.isRequired,
     onPasteFromClipboard: PropTypes.func.isRequired,
     onPointPoints: PropTypes.func.isRequired,
+    onPenModeBrush: PropTypes.func,
+    onPenModePoint: PropTypes.func,
+    pointPenMode: PropTypes.bool,
     selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item))
 };
 
@@ -194,7 +238,9 @@ const mapStateToProps = state => ({
     brushValue: state.scratchPaint.brushMode.brushSize,
     clipboardItems: state.scratchPaint.clipboard.items,
     eraserValue: state.scratchPaint.eraserMode.brushSize,
-    selectedItems: state.scratchPaint.selectedItems
+    selectedItems: state.scratchPaint.selectedItems,
+    brushPenMode: state.scratchPaint.penMode.brushEnabled,
+    pointPenMode: state.scratchPaint.penMode.pointEnabled
 });
 const mapDispatchToProps = dispatch => ({
     onBrushSliderChange: brushSize => {
@@ -202,6 +248,12 @@ const mapDispatchToProps = dispatch => ({
     },
     onEraserSliderChange: eraserSize => {
         dispatch(changeEraserSize(eraserSize));
+    },
+    onPenModeBrush: () => {
+        dispatch(changePenMode(false));
+    },
+    onPenModePoint: () => {
+        dispatch(changePenMode(true));
     }
 });
 
