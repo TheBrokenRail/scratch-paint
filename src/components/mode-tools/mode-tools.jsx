@@ -212,9 +212,9 @@ ModeToolsComponent.propTypes = {
     onCurvePoints: PropTypes.func.isRequired,
     onEraserSliderChange: PropTypes.func,
     onPasteFromClipboard: PropTypes.func.isRequired,
-    onPointPoints: PropTypes.func.isRequired,
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
+    onPointPoints: PropTypes.func.isRequired,
     pointPenMode: PropTypes.bool,
     selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item))
 };
