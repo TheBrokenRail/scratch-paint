@@ -10,8 +10,7 @@ const Modes = keyMirror({
     PEN: null,
     OVAL: null,
     RECT: null,
-    ROUNDED_RECT: null,
-    PEN: null
+    ROUNDED_RECT: null
 });
 
 export default Modes;
