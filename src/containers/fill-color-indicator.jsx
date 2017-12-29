@@ -79,6 +79,7 @@ FillColorIndicator.propTypes = {
     isEyeDropping: PropTypes.bool.isRequired,
     mode: PropTypes.string.isRequired,
     onChangeFillColor: PropTypes.func.isRequired,
+    onCloseFillColor: PropTypes.func.isRequired,
     onUpdateSvg: PropTypes.func.isRequired
 };
 
