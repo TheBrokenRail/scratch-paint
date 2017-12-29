@@ -23,8 +23,8 @@ import brushIcon from '../brush-mode/brush.svg';
 import penIcon from '../pen-mode/pen.svg';
 import curvedPointIcon from './icons/curved-point.svg';
 import eraserIcon from '../eraser-mode/eraser.svg';
-// import flipHorizontalIcon from './icons/flip-horizontal.svg';
-// import flipVerticalIcon from './icons/flip-vertical.svg';
+import flipHorizontalIcon from './icons/flip-horizontal.svg';
+import flipVerticalIcon from './icons/flip-vertical.svg';
 import straightPointIcon from './icons/straight-point.svg';
 import ToolSelectComponent from '../tool-select-base/tool-select-base.jsx';
 
@@ -62,6 +62,16 @@ const ModeToolsComponent = props => {
             defaultMessage: 'Pointed',
             description: 'Label for the button that converts selected points to sharp points',
             id: 'paint.modeTools.pointed'
+        },
+        flipHorizontal: {
+            defaultMessage: 'Flip Horizontal',
+            description: 'Label for the button to flip the image horizontally',
+            id: 'paint.modeTools.flipHorizontal'
+        },
+        flipVertical: {
+            defaultMessage: 'Flip Vertical',
+            description: 'Label for the button to flip the image vertically',
+            id: 'paint.modeTools.flipVertical'
         },
         pen: {
             defaultMessage: 'Pen',
@@ -143,18 +153,52 @@ const ModeToolsComponent = props => {
                         onClick={props.onPasteFromClipboard}
                     />
                 </InputGroup>
-                {/* <LabeledIconButton
-                    imgAlt="Flip Horizontal Icon"
-                    imgSrc={flipHorizontalIcon}
-                    title="Flip Horizontal"
-                    onClick={function () {}}
+                <InputGroup className={classNames(styles.modLabeledIconHeight)}>
+                    <LabeledIconButton
+                        disabled={!props.selectedItems.length}
+                        imgSrc={flipHorizontalIcon}
+                        title={props.intl.formatMessage(messages.flipHorizontal)}
+                        onClick={props.onFlipHorizontal}
+                    />
+                    <LabeledIconButton
+                        disabled={!props.selectedItems.length}
+                        imgSrc={flipVerticalIcon}
+                        title={props.intl.formatMessage(messages.flipVertical)}
+                        onClick={props.onFlipVertical}
+                    />
+                </InputGroup>
+            </div>
+        );
+    case Modes.PEN:
+        return (
+            <div className={classNames(props.className, styles.modeTools)}>
+                <div>
+                    <img
+                        alt={props.intl.formatMessage(messages.pen)}
+                        className={styles.modeToolsIcon}
+                        src={penIcon}
+                    />
+                </div>
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Brush Mode',
+                        description: 'Pen Brush Mode',
+                        id: 'paint.penMode.brush'
+                    }}
+                    imgSrc={curvedPointIcon}
+                    isSelected={props.brushPenMode}
+                    onMouseDown={props.onPenModeBrush}
                 />
-                <LabeledIconButton
-                    imgAlt="Flip Vertical Icon"
-                    imgSrc={flipVerticalIcon}
-                    title="Flip Vertical"
-                    onClick={function () {}}
-                /> */}
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Point Mode',
+                        description: 'Pen Point Mode',
+                        id: 'paint.penMode.point'
+                    }}
+                    imgSrc={straightPointIcon}
+                    isSelected={props.pointPenMode}
+                    onMouseDown={props.onPenModePoint}
+                />
             </div>
         );
     case Modes.PEN:
@@ -211,6 +255,8 @@ ModeToolsComponent.propTypes = {
     onCopyToClipboard: PropTypes.func.isRequired,
     onCurvePoints: PropTypes.func.isRequired,
     onEraserSliderChange: PropTypes.func,
+    onFlipHorizontal: PropTypes.func.isRequired,
+    onFlipVertical: PropTypes.func.isRequired,
     onPasteFromClipboard: PropTypes.func.isRequired,
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
