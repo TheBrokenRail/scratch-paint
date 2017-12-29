@@ -201,6 +201,38 @@ const ModeToolsComponent = props => {
                 />
             </div>
         );
+    case Modes.PEN:
+        return (
+            <div className={classNames(props.className, styles.modeTools)}>
+                <div>
+                    <img
+                        alt={props.intl.formatMessage(messages.pen)}
+                        className={styles.modeToolsIcon}
+                        src={penIcon}
+                    />
+                </div>
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Brush Mode',
+                        description: 'Pen Brush Mode',
+                        id: 'paint.penMode.brush'
+                    }}
+                    imgSrc={curvedPointIcon}
+                    isSelected={props.brushPenMode}
+                    onMouseDown={props.onPenModeBrush}
+                />
+                <ToolSelectComponent
+                    imgDescriptor={{
+                        defaultMessage: 'Point Mode',
+                        description: 'Pen Point Mode',
+                        id: 'paint.penMode.point'
+                    }}
+                    imgSrc={straightPointIcon}
+                    isSelected={props.pointPenMode}
+                    onMouseDown={props.onPenModePoint}
+                />
+            </div>
+        );
     default:
         // Leave empty for now, if mode not supported
         return (
@@ -226,9 +258,9 @@ ModeToolsComponent.propTypes = {
     onFlipHorizontal: PropTypes.func.isRequired,
     onFlipVertical: PropTypes.func.isRequired,
     onPasteFromClipboard: PropTypes.func.isRequired,
-    onPointPoints: PropTypes.func.isRequired,
     onPenModeBrush: PropTypes.func,
     onPenModePoint: PropTypes.func,
+    onPointPoints: PropTypes.func.isRequired,
     pointPenMode: PropTypes.bool,
     selectedItems: PropTypes.arrayOf(PropTypes.instanceOf(paper.Item))
 };
