@@ -66464,7 +66464,9 @@ var FillColorIndicator = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var disabled = this.props.mode === _modes2.default.PEN && this.props.brushPenMode;
             return _react2.default.createElement(_fillColorIndicator2.default, _extends({}, this.props, {
+                disabled: disabled,
                 onChangeFillColor: this.handleChangeFillColor,
                 onCloseFillColor: this.handleCloseFillColor
             }));
@@ -66476,7 +66478,8 @@ var FillColorIndicator = function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        disabled: state.scratchPaint.mode === _modes2.default.PEN,
+        brushPenMode: state.scratchPaint.penMode.brushEnabled,
+        mode: state.scratchPaint.mode,
         fillColor: state.scratchPaint.color.fillColor,
         fillColorModalVisible: state.scratchPaint.modals.fillColor,
         isEyeDropping: state.scratchPaint.color.eyeDropper.active
@@ -66498,10 +66501,11 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 FillColorIndicator.propTypes = {
-    disabled: _propTypes2.default.bool.isRequired,
+    brushPenMode: _propTypes2.default.bool,
     fillColor: _propTypes2.default.string,
     fillColorModalVisible: _propTypes2.default.bool.isRequired,
     isEyeDropping: _propTypes2.default.bool.isRequired,
+    mode: _propTypes2.default.string.isRequired,
     onChangeFillColor: _propTypes2.default.func.isRequired,
     onCloseFillColor: _propTypes2.default.func.isRequired,
     onUpdateSvg: _propTypes2.default.func.isRequired
