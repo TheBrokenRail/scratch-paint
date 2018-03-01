@@ -161,6 +161,7 @@ const PaintEditorComponent = props => {
                                     <img
                                         alt={props.intl.formatMessage(messages.undo)}
                                         className={styles.buttonGroupButtonIcon}
+                                        draggable={false}
                                         src={undoIcon}
                                     />
                                 </Button>
@@ -179,6 +180,7 @@ const PaintEditorComponent = props => {
                                     <img
                                         alt={props.intl.formatMessage(messages.redo)}
                                         className={styles.buttonGroupButtonIcon}
+                                        draggable={false}
                                         src={redoIcon}
                                     />
                                 </Button>
@@ -259,6 +261,7 @@ const PaintEditorComponent = props => {
                                             >
                                                 <img
                                                     className={styles.menuItemIcon}
+                                                    draggable={false}
                                                     src={sendFrontIcon}
                                                 />
                                                 <span>{props.intl.formatMessage(messages.front)}</span>
@@ -272,6 +275,7 @@ const PaintEditorComponent = props => {
                                             >
                                                 <img
                                                     className={styles.menuItemIcon}
+                                                    draggable={false}
                                                     src={sendBackIcon}
                                                 />
                                                 <span>{props.intl.formatMessage(messages.back)}</span>
@@ -284,6 +288,7 @@ const PaintEditorComponent = props => {
                                             >
                                                 <img
                                                     className={styles.menuItemIcon}
+                                                    draggable={false}
                                                     src={rotationPointIcon}
                                                 />
                                                 <span>{'Rotation Point'}</span>
@@ -402,6 +407,7 @@ const PaintEditorComponent = props => {
                             <div className={styles.bitmapButton}>
                                 <img
                                     className={styles.bitmapButtonIcon}
+                                    draggable={false}
                                     src={bitmapIcon}
                                 />
                                 <span>
@@ -419,6 +425,7 @@ const PaintEditorComponent = props => {
                                     <img
                                         alt="Zoom Out"
                                         className={styles.buttonGroupButtonIcon}
+                                        draggable={false}
                                         src={zoomOutIcon}
                                     />
                                 </Button>
@@ -429,6 +436,7 @@ const PaintEditorComponent = props => {
                                     <img
                                         alt="Zoom Reset"
                                         className={styles.buttonGroupButtonIcon}
+                                        draggable={false}
                                         src={zoomResetIcon}
                                     />
                                 </Button>
@@ -439,6 +447,7 @@ const PaintEditorComponent = props => {
                                     <img
                                         alt="Zoom In"
                                         className={styles.buttonGroupButtonIcon}
+                                        draggable={false}
                                         src={zoomInIcon}
                                     />
                                 </Button>
