@@ -30,7 +30,7 @@ class FillColorIndicator extends React.Component {
     }
     handleChangeFillColor (newColor) {
         // Apply color and update redux, but do not update svg until picker closes.
-        const isDifferent = applyFillColorToSelection(newColor);
+        const isDifferent = applyFillColorToSelection(newColor, this.props.textEditTarget);
         this._hasChanged = this._hasChanged || isDifferent;
         this.props.onChangeFillColor(newColor);
     }
@@ -57,7 +57,8 @@ const mapStateToProps = state => ({
     mode: state.scratchPaint.mode,
     fillColor: state.scratchPaint.color.fillColor,
     fillColorModalVisible: state.scratchPaint.modals.fillColor,
-    isEyeDropping: state.scratchPaint.color.eyeDropper.active
+    isEyeDropping: state.scratchPaint.color.eyeDropper.active,
+    textEditTarget: state.scratchPaint.textEditTarget
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -80,7 +81,8 @@ FillColorIndicator.propTypes = {
     mode: PropTypes.string.isRequired,
     onChangeFillColor: PropTypes.func.isRequired,
     onCloseFillColor: PropTypes.func.isRequired,
-    onUpdateSvg: PropTypes.func.isRequired
+    onUpdateSvg: PropTypes.func.isRequired,
+    textEditTarget: PropTypes.number
 };
 
 export default connect(

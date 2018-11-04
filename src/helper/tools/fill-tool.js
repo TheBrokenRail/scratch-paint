@@ -1,6 +1,6 @@
 import paper from '@scratch/paper';
 import {getHoveredItem} from '../hover';
-import {expandByOne} from '../math';
+import {expandBy} from '../math';
 
 class FillTool extends paper.Tool {
     static get TOLERANCE () {
@@ -38,14 +38,14 @@ class FillTool extends paper.Tool {
                 item.lastSegment.point.getDistance(item.firstSegment.point) < 8;
         };
         return {
-            class: paper.Path,
             segments: true,
             stroke: true,
             curves: true,
             fill: true,
             guide: false,
             match: function (hitResult) {
-                return (hitResult.item.hasFill() || hitResult.item.closed || isAlmostClosedPath(hitResult.item));
+                return (hitResult.item instanceof paper.Path || hitResult.item instanceof paper.PointText) &&
+                    (hitResult.item.hasFill() || hitResult.item.closed || isAlmostClosedPath(hitResult.item));
             },
             hitUnfilledPaths: true,
             tolerance: FillTool.TOLERANCE / paper.view.zoom
@@ -104,7 +104,7 @@ class FillTool extends paper.Tool {
                 this.addedFillItem.data.origItem = hitItem;
                 // This usually fixes it so there isn't a teeny tiny gap in between the fill and the outline
                 // when filling in a hole
-                expandByOne(this.addedFillItem);
+                expandBy(this.addedFillItem, .1);
                 this.addedFillItem.insertAbove(hitItem.parent);
             } else if (this.fillItem.parent instanceof paper.CompoundPath) {
                 this.fillItemOrigColor = hitItem.parent.fillColor;
@@ -122,7 +122,10 @@ class FillTool extends paper.Tool {
                     this.fillItem.parent.fillColor.toCSS() === this.addedFillItem.fillColor.toCSS()) {
                 this.addedFillItem.remove();
                 this.addedFillItem = null;
+                let parent = this.fillItem.parent;
                 this.fillItem.remove();
+                parent = parent.reduce();
+                parent.fillColor = this.fillColor;
             } else if (this.addedFillItem) {
                 // Fill in a hole.
                 this.addedFillItem.data.noHover = false;

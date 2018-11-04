@@ -7,6 +7,8 @@ import {changeMode} from '../reducers/modes';
 import {undo, redo, undoSnapshot} from '../reducers/undo';
 import {clearSelectedItems, setSelectedItems} from '../reducers/selected-items';
 import {deactivateEyeDropper} from '../reducers/eye-dropper';
+import {setTextEditTarget} from '../reducers/text-edit-target';
+import {updateViewBounds} from '../reducers/view-bounds';
 
 import {hideGuideLayers, showGuideLayers} from '../helper/layer';
 import {performUndo, performRedo, performSnapshot, shouldShowUndo, shouldShowRedo} from '../helper/undo';
@@ -36,10 +38,14 @@ class PaintEditor extends React.Component {
             'handleSendToFront',
             'handleGroup',
             'handleUngroup',
+            'handleZoomIn',
+            'handleZoomOut',
+            'handleZoomReset',
             'canRedo',
             'canUndo',
             'onMouseDown',
             'setCanvas',
+            'setTextArea',
             'startEyeDroppingLoop',
             'stopEyeDroppingLoop'
         ]);
@@ -49,7 +55,18 @@ class PaintEditor extends React.Component {
         };
     }
     componentDidMount () {
-        document.addEventListener('keydown', this.props.onKeyPress);
+        document.addEventListener('keydown', (/* event */) => {
+            // Don't activate keyboard shortcuts during text editing
+            if (!this.props.textEditing) {
+                // @todo disabling keyboard shortcuts because there is a bug
+                // that is interfering with text editing.
+                // this.props.onKeyPress(event);
+            }
+        });
+        // document listeners used to detect if a mouse is down outside of the
+        // canvas, and should therefore stop the eye dropper
+        document.addEventListener('mousedown', this.onMouseDown);
+        document.addEventListener('touchstart', this.onMouseDown);
     }
     componentDidUpdate (prevProps) {
         if (this.props.isEyeDropping && !prevProps.isEyeDropping) {
@@ -61,6 +78,8 @@ class PaintEditor extends React.Component {
     componentWillUnmount () {
         document.removeEventListener('keydown', this.props.onKeyPress);
         this.stopEyeDroppingLoop();
+        document.removeEventListener('mousedown', this.onMouseDown);
+        document.removeEventListener('touchstart', this.onMouseDown);
     }
     handleUpdateSvg (skipSnapshot) {
         // Store the zoom/pan and restore it after snapshotting
@@ -90,7 +109,6 @@ class PaintEditor extends React.Component {
         // Restore old zoom
         paper.project.view.zoom = oldZoom;
         paper.project.view.center = oldCenter;
-        paper.project.view.update();
     }
     handleUndo () {
         performUndo(this.props.undoState, this.props.onUndo, this.props.setSelectedItems, this.handleUpdateSvg);
@@ -124,18 +142,37 @@ class PaintEditor extends React.Component {
     }
     handleZoomIn () {
         zoomOnSelection(PaintEditor.ZOOM_INCREMENT);
+        this.props.updateViewBounds(paper.view.matrix);
+        this.props.setSelectedItems();
     }
     handleZoomOut () {
         zoomOnSelection(-PaintEditor.ZOOM_INCREMENT);
+        this.props.updateViewBounds(paper.view.matrix);
+        this.props.setSelectedItems();
     }
     handleZoomReset () {
         resetZoom();
+        this.props.updateViewBounds(paper.view.matrix);
+        this.props.setSelectedItems();
     }
     setCanvas (canvas) {
         this.setState({canvas: canvas});
         this.canvas = canvas;
     }
-    onMouseDown () {
+    setTextArea (element) {
+        this.setState({textArea: element});
+    }
+    onMouseDown (event) {
+        if (event.target === paper.view.element &&
+                document.activeElement instanceof HTMLInputElement) {
+            document.activeElement.blur();
+        }
+
+        if (event.target !== paper.view.element && event.target !== this.state.textArea) {
+            // Exit text edit mode if you click anywhere outside of canvas
+            this.props.removeTextEditTarget();
+        }
+
         if (this.props.isEyeDropping) {
             const colorString = this.eyeDropper.colorString;
             const callback = this.props.changeColorToEyeDropper;
@@ -165,11 +202,6 @@ class PaintEditor extends React.Component {
         this.eyeDropper.pickX = -1;
         this.eyeDropper.pickY = -1;
         this.eyeDropper.activate();
-
-        // document listeners used to detect if a mouse is down outside of the
-        // canvas, and should therefore stop the eye dropper
-        document.addEventListener('mousedown', this.onMouseDown);
-        document.addEventListener('touchstart', this.onMouseDown);
         
         this.intervalId = setInterval(() => {
             const colorInfo = this.eyeDropper.getColorInfo(
@@ -191,8 +223,6 @@ class PaintEditor extends React.Component {
     }
     stopEyeDroppingLoop () {
         clearInterval(this.intervalId);
-        document.removeEventListener('mousedown', this.onMouseDown);
-        document.removeEventListener('touchstart', this.onMouseDown);
     }
     render () {
         return (
@@ -206,8 +236,10 @@ class PaintEditor extends React.Component {
                 rotationCenterX={this.props.rotationCenterX}
                 rotationCenterY={this.props.rotationCenterY}
                 setCanvas={this.setCanvas}
+                setTextArea={this.setTextArea}
                 svg={this.props.svg}
                 svgId={this.props.svgId}
+                textArea={this.state.textArea}
                 onGroup={this.handleGroup}
                 onRedo={this.handleRedo}
                 onSendBackward={this.handleSendBackward}
@@ -241,16 +273,19 @@ PaintEditor.propTypes = {
         activate: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired
     }),
+    removeTextEditTarget: PropTypes.func.isRequired,
     rotationCenterX: PropTypes.number,
     rotationCenterY: PropTypes.number,
     setSelectedItems: PropTypes.func.isRequired,
     svg: PropTypes.string,
     svgId: PropTypes.string,
+    textEditing: PropTypes.bool.isRequired,
     undoSnapshot: PropTypes.func.isRequired,
     undoState: PropTypes.shape({
         stack: PropTypes.arrayOf(PropTypes.object).isRequired,
         pointer: PropTypes.number.isRequired
-    })
+    }),
+    updateViewBounds: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -260,6 +295,7 @@ const mapStateToProps = state => ({
     pasteOffset: state.scratchPaint.clipboard.pasteOffset,
     previousTool: state.scratchPaint.color.eyeDropper.previousTool,
     selectedItems: state.scratchPaint.selectedItems,
+    textEditing: state.scratchPaint.textEditTarget !== null,
     undoState: state.scratchPaint.undo
 });
 const mapDispatchToProps = dispatch => ({
@@ -272,13 +308,30 @@ const mapDispatchToProps = dispatch => ({
             dispatch(changeMode(Modes.LINE));
         } else if (event.key === 's') {
             dispatch(changeMode(Modes.SELECT));
+        } else if (event.key === 'w') {
+            dispatch(changeMode(Modes.RESHAPE));
+        } else if (event.key === 'f') {
+            dispatch(changeMode(Modes.FILL));
+        } else if (event.key === 't') {
+            dispatch(changeMode(Modes.TEXT));
+        } else if (event.key === 'c') {
+            dispatch(changeMode(Modes.OVAL));
+        } else if (event.key === 'r') {
+            dispatch(changeMode(Modes.RECT));
         }
     },
     clearSelectedItems: () => {
         dispatch(clearSelectedItems());
     },
+    removeTextEditTarget: () => {
+        dispatch(setTextEditTarget());
+    },
     setSelectedItems: () => {
         dispatch(setSelectedItems(getSelectedLeafItems()));
+    },
+    onDeactivateEyeDropper: () => {
+        // set redux values to default for eye dropper reducer
+        dispatch(deactivateEyeDropper());
     },
     onUndo: () => {
         dispatch(undo());
@@ -289,9 +342,8 @@ const mapDispatchToProps = dispatch => ({
     undoSnapshot: snapshot => {
         dispatch(undoSnapshot(snapshot));
     },
-    onDeactivateEyeDropper: () => {
-        // set redux values to default for eye dropper reducer
-        dispatch(deactivateEyeDropper());
+    updateViewBounds: matrix => {
+        dispatch(updateViewBounds(matrix));
     }
 });
 
